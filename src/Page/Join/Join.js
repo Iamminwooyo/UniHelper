@@ -1,6 +1,7 @@
 import "./Join.css";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";  
+import { useMediaQuery } from 'react-responsive';
 import { Select, Input, Button, message } from "antd";
 import { RiArrowGoBackFill } from "react-icons/ri";
 import { BiSolidRightArrow, BiSolidLeftArrow } from "react-icons/bi";
@@ -46,6 +47,8 @@ const Join = () => {
   const selectRef = useRef(null);
 
   const navigate = useNavigate();
+
+  const isMobile = useMediaQuery({ maxWidth: 768 })
 
   useEffect(() => {
     if (emailVerificationStatus !== "sent" || timer <= 0) return;
@@ -117,7 +120,7 @@ const Join = () => {
 
   const handleSendEmail = () => {
     if (!email) {
-      alert("이메일을 입력해주세요.");
+      message.error("이메일을 입력해주세요.");
       return;
     }
     setEmailVerificationStatus("sending");
@@ -134,7 +137,7 @@ const Join = () => {
 
   const handleVerifyCode = () => {
     if (!authCode) {
-      alert("인증번호를 입력해주세요.");
+      message.error("인증코드를 입력해주세요.");
       return;
     }
     if (authCode === "123456") {
@@ -210,18 +213,19 @@ const Join = () => {
 
   return (
     <div className="join_layout">
-      <section className="join_image_frame">
-        <img className="join_image" src="/image/login.png" alt="로그인 이미지" />
-        <div className="join_image_overlay">
-          <h1 className="join_logo_text">UniHelper</h1>
-        </div>
-      </section>
-
+      {!isMobile && (
+        <section className="join_image_frame">
+          <img className="join_image" src="/image/login.png" alt="로그인 이미지" />
+          <div className="join_image_overlay">
+            <h1 className="join_logo_text">UniHelper</h1>
+          </div>
+        </section>
+      )}
       <section className="join_text">
+        <div className="join_text_group">
         {step === 1 && (
         <RiArrowGoBackFill
             className="join_back_icon"
-            style={{ fontSize: "25px", cursor: "pointer" }}
             onClick={() => navigate(-1)}
         />
         )}
@@ -230,11 +234,11 @@ const Join = () => {
           {step === 1 ? (
             <>
               <div className="join_input_group join_input_with_input">
-                <p className="join_input_label">학교 이메일</p>
+                <p className="join_input_label">이메일</p>
                 <div style={{ display: "flex", gap: "10px" }}>
                   <Input
                     type="email"
-                    placeholder="학교 이메일"
+                    placeholder="이메일"
                     value={email}
                     onChange={handleEmailChange}
                   />
@@ -396,6 +400,8 @@ const Join = () => {
             />
           </div>
         </form>
+        </div>
+        
       </section>
     </div>
   );

@@ -78,6 +78,7 @@ const PasswordModal = ({ open, onCancel }) => {
 
   const handleSendEmail = () => {
     if (!state.email) {
+      message.error("이메일을 입력해주세요.");
       return;
     }
     setState((prev) => ({
@@ -109,6 +110,7 @@ const PasswordModal = ({ open, onCancel }) => {
 
   const handleVerifyCode = () => {
     if (!state.authCode) {
+      message.error("인증코드를 입력해주세요.");
       return;
     }
     if (state.authCode === "123456") {
