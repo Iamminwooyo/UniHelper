@@ -1,0 +1,142 @@
+.passwordmodal_wrap .ant-modal {
+  width: 400px !important; /* ✅ 원하는 너비 설정 */
+}
+
+
+.passwordmodal_wrap .ant-modal-content {
+  background-color: #1B1B1B;
+  border-radius: 30px !important;
+  overflow: hidden;
+}
+
+.passwordmodal_layout {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  justify-content: center; 
+  height: 100%;
+
+}
+
+.passwordmodal_title {
+    margin: 20px 0 20px 20px;
+    font-size: 25px;
+    align-self: flex-start;
+    color: #ffffff;
+}
+
+.passwordmodal_input_group {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+  }
+
+  .passwordmodal_input_label {
+    display: flex;
+    justify-content: flex-start;
+
+    margin: 0 0 0.3vw 0;
+
+    color: #ffffff;
+    font-size: 14px;
+  }
+
+  .passwordmodal_input_group .ant-input,
+  .passwordmodal_input_group .ant-btn
+  .passwordmodal_input_group .ant-input-affix-wrapper {
+    height: 42px !important;
+    font-size: 13px;
+
+    padding: 0 12px !important;
+    background-color: #3a3a3a;
+    color: rgb(255, 255, 255);
+
+    border: none;
+    box-shadow: none;
+  }
+
+  .passwordmodal_input_group .ant-input::placeholder {
+    color: #ffffff !important;  /* 원하는 색상으로 바꿔주세요 */
+    opacity: 0.3;
+  }
+
+  .passwordmodal_input_group .ant-input-password {
+    height: 42px !important;
+    font-size: 13px;
+    padding: 0 12px 0 0 !important;
+    background-color: #3a3a3a;
+    color: rgb(255, 255, 255);
+    border: none;
+  }
+
+  .passwordmodal_input_button.ant-btn {
+    height: 42px;
+    font-size: 13px;
+    padding: 0 16px;
+
+    background-color: #78D900;
+    border: none;
+    color: white;
+    border-radius: 8px;
+  }
+
+  .passwordmodal_input_button.ant-btn:hover {
+    background-color: #63b400;
+  }
+
+  .passwordmodal_input_button:disabled,
+  .passwordmodal_input_button[disabled] {
+    cursor: not-allowed;
+  }
+
+  .passwordmodal_button_ok.ant-btn {
+    margin-top: 38px;
+    height: 38px;
+    font-size: 13px;
+    padding: 0 16px;
+
+    background-color: #78D900;
+    border: none;
+    color: white;
+    border-radius: 8px;
+  }
+
+  .passwordmodal_button_ok.ant-btn:hover {
+    background-color: #63b400 !important;
+    color: white !important;
+  }
+
+  .passwordmodal_button_cancle.ant-btn {
+    margin-top: 38px;
+    height: 38px;
+    font-size: 13px;
+    padding: 0 16px;
+
+    background-color: #ffffff;
+    border: none;
+    color: rgb(0, 0, 0);
+    border-radius: 8px;
+  }
+
+  .passwordmodal_button_cancle.ant-btn:hover {
+    background-color: #3a3a3a !important;
+    color: rgb(255, 255, 255) !important;
+    border: none;
+  }
+
+  .passwordmodal_input_message {
+    min-height: 1.5em; /* 메시지 높이 고정 */
+    font-size: 0.8rem;
+    margin: 0;
+    color: #78D900; /* 기본 성공 색 */
+  }
+
+  .passwordmodal_input_message.error {
+    color: red;
+  }
+
+  .passwordmodal_input_message.hidden {
+    visibility: hidden;
+    color: transparent; /* 공간 유지 위해 투명 처리 */
+  }

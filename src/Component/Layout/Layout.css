@@ -1,0 +1,21 @@
+.layout_background{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    min-height: 100vh;
+    background-color: #060F0E;
+}
+
+.layout_body{
+    display: flex;
+}
+
+.layout_loading {
+  width: 100vw;
+  height: 100vh;
+  background-color: #1b1b1b;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

@@ -1,0 +1,553 @@
+@media (min-width: 1241px) {
+  .join_layout {
+    display: flex;
+
+    height: 70vh;
+    min-width: 60vw; 
+    padding: 3vw 0 3vw 3vw;
+
+    border: 2px solid #1B1B1B;
+    background-color: #1B1B1B;
+    border-radius: 15px;
+  }
+
+  .join_image_frame {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    border-radius: 15px;
+
+    clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
+  }
+
+  .join_image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+  }
+
+  .join_image_overlay {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    position: absolute;
+
+    height: 100%;
+    width: 100%;
+
+    z-index: 1;
+  }
+
+  .join_logo_text {
+    display: flex;
+    justify-content: flex-start;
+
+    margin: 1vw 0 0 2vw;
+
+    color: #78D900;
+    font-size: 2.5vw;
+    font-weight: bold;
+    font-family: 'DOSSaemmul', sans-serif;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  }
+
+  .join_text {
+    flex: 0.65;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background-color: #1B1B1B;
+    border-radius: 15px;
+  }
+
+  .join_back_icon {
+    align-self: flex-start; /* 부모 flex 컨테이너 내에서 왼쪽 정렬 */
+    margin: 0 0 0 60px; /* 필요하면 여백 추가 */
+    cursor: pointer;
+    color: #78D900;
+  } 
+
+  .join_title {
+    font-size: 2.5vw;
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: 2px;
+    color: #78D900;
+    margin: 0 0 50px 0;
+  }
+
+  .join_form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    gap: 10px;
+    width: 70%;
+    margin-bottom: 10px;
+  }
+
+  .join_input_group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .join_input_label {
+    display: flex;
+    justify-content: flex-start;
+
+    margin: 0 0 0.3vw 0;
+
+    color: #ffffff;
+    font-size: max(15px,0.9vw);
+  }
+
+  .join_input_group .ant-input,
+  .join_input_group .ant-select-selector,
+  .join_input_group .ant-btn,
+  .join_input_group .ant-input-affix-wrapper {
+    height: 42px !important;
+    font-size: 13px !important;
+
+    padding: 0 12px !important;
+    background-color: #3a3a3a;
+    color: rgb(255, 255, 255);
+
+    border: none;
+    box-shadow: none;
+  }
+
+  /* 모든 Input placeholder 색상 변경 */
+.join_input_group .ant-input::placeholder {
+  color: #ffffff !important;  /* 원하는 색상으로 바꿔주세요 */
+  opacity: 0.3;
+}
+
+/* PasswordInput placeholder 색상 변경 */
+.join_input_group .ant-input-password input::placeholder {
+  color: #ffffff !important;  /* 원하는 색상으로 바꿔주세요 */
+  opacity: 0.3;
+}
+
+.join_input_group .ant-input-password-icon {
+  color: #ffffff !important; /* 원하는 색상 */
+  opacity: 0.3;
+}
+
+/* Select placeholder 색상 변경 */
+.join_input_group .ant-select-selection-placeholder {
+  color: #ffffff !important;  /* 원하는 색상으로 바꿔주세요 */
+  opacity: 0.3;
+   text-align: left !important;
+}
+  
+  .join_input_group .ant-input-affix-wrapper {
+    height: 42px !important;
+    background-color: #3a3a3a;
+    color: rgb(255, 255, 255);
+    padding: 0 12px 0 0 !important;
+    box-shadow: none;
+    font-size: 16px;
+  }
+
+  .join_input_group .ant-input-suffix {
+    height: 42px;
+    line-height: 42px;
+  }
+
+  .join_input_group .ant-select-selector {
+    background-color: #3a3a3a !important; /* 원하는 색상으로 변경 */
+    border: none !important;
+  }
+
+  .join_input_group .ant-select .ant-select-selection-item {
+    text-align: left !important;
+  }
+
+  .join_input_group .ant-select-arrow {
+    top: 85% !important;
+    transform: translateY(-50%) !important;
+    color: #ffffff !important;  /* 원하는 색상으로 바꿔주세요 */
+    opacity: 0.3;
+  }
+
+  .join_input_button.ant-btn {
+    height: 42px;
+    font-size: 16px;
+    padding: 0 16px;
+
+    background-color: #78D900;
+    border: none;
+    color: white;
+    border-radius: 8px;
+  }
+
+  .join_input_button.ant-btn:hover {
+    background-color: #63b400;
+  }
+
+  .join_input_button:disabled,
+  .join_input_button[disabled] {
+    cursor: not-allowed;
+  }
+
+  .join_button.ant-btn {
+    margin-top: 38px;
+    height: 42px;
+    font-size: 16px;
+    padding: 0 16px;
+
+    background-color: #78D900;
+    border: none;
+    color: white;
+    border-radius: 8px;
+  }
+
+  .join_button.ant-btn:hover {
+    background-color: #63b400 !important;
+    color: white !important;
+  }
+
+  .join_input_with_feedback {
+    display: flex;
+    flex-direction: column;
+    gap: 4px; /* 인풋과 메시지 사이 간격 */
+    margin-bottom: 5px; /* 인풋+피드백 묶음 간 간격 */
+    align-items: flex-start; /* 추가 */
+  }
+
+  .join_input_group > div {
+    display: flex;
+    gap: 10px;
+    width: 100%; /* 추가 */
+  }
+
+  .join_input_message {
+    min-height: 1.5em; /* 메시지 높이 고정 */
+    font-size: 0.8rem;
+    margin: 0;
+    color: #78D900; /* 기본 성공 색 */
+    text-align: left
+  }
+
+  .join_input_message.error {
+    color: red;
+  }
+
+  .join_input_message.hidden {
+    visibility: hidden;
+    color: transparent; /* 공간 유지 위해 투명 처리 */
+  }
+
+  .join_step {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+
+    margin-top: 40px;
+  }
+
+  .join_icon_on {
+    color: #78D900;
+
+    cursor: pointer;
+  }
+
+  .join_icon_off {
+    color: #3a3a3a;
+  }
+
+  .join_input_row {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    width: 100%;
+  }
+
+
+}
+
+@media (min-width: 769px) and (max-width: 1240px) {
+    .join_layout {
+    display: flex;
+
+    height: 70vh;
+    min-width: 60vw; 
+    padding: 3vw 0 3vw 3vw;
+
+    border: 2px solid #1B1B1B;
+    background-color: #1B1B1B;
+    border-radius: 15px;
+  }
+
+  .join_image_frame {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    border-radius: 15px;
+
+    clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
+  }
+
+  .join_image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+  }
+
+  .join_image_overlay {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    position: absolute;
+
+    height: 100%;
+    width: 100%;
+
+    z-index: 1;
+  }
+
+  .join_logo_text {
+    display: flex;
+    justify-content: flex-start;
+
+    margin: 1vw 0 0 2vw;
+
+    color: #78D900;
+    font-size: 2.5vw;
+    font-weight: bold;
+    font-family: 'DOSSaemmul', sans-serif;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  }
+
+  .join_text {
+    flex: 0.65;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background-color: #1B1B1B;
+    border-radius: 15px;
+  }
+
+  .join_back_icon {
+    align-self: flex-start; /* 부모 flex 컨테이너 내에서 왼쪽 정렬 */
+    margin: 0 0 0 60px; /* 필요하면 여백 추가 */
+    cursor: pointer;
+    color: #78D900;
+  } 
+
+  .join_title {
+    font-size: 2.5vw;
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: 2px;
+    color: #78D900;
+    margin: 0 0 50px 0;
+  }
+
+  .join_form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    gap: 10px;
+    width: 70%;
+    margin-bottom: 10px;
+  }
+
+  .join_input_group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .join_input_label {
+    display: flex;
+    justify-content: flex-start;
+
+    margin: 0 0 0.3vw 0;
+
+    color: #ffffff;
+    font-size: max(15px,0.9vw);
+  }
+
+  .join_input_group .ant-input,
+  .join_input_group .ant-select-selector,
+  .join_input_group .ant-btn,
+  .join_input_group .ant-input-affix-wrapper {
+    height: 42px !important;
+    font-size: 13px !important;
+
+    padding: 0 12px !important;
+    background-color: #3a3a3a;
+    color: rgb(255, 255, 255);
+
+    border: none;
+    box-shadow: none;
+  }
+
+  /* 모든 Input placeholder 색상 변경 */
+.join_input_group .ant-input::placeholder {
+  color: #ffffff !important;  /* 원하는 색상으로 바꿔주세요 */
+  opacity: 0.3;
+}
+
+/* PasswordInput placeholder 색상 변경 */
+.join_input_group .ant-input-password input::placeholder {
+  color: #ffffff !important;  /* 원하는 색상으로 바꿔주세요 */
+  opacity: 0.3;
+}
+
+.join_input_group .ant-input-password-icon {
+  color: #ffffff !important; /* 원하는 색상 */
+  opacity: 0.3;
+}
+
+/* Select placeholder 색상 변경 */
+.join_input_group .ant-select-selection-placeholder {
+  color: #ffffff !important;  /* 원하는 색상으로 바꿔주세요 */
+  opacity: 0.3;
+   text-align: left !important;
+}
+  
+  .join_input_group .ant-input-affix-wrapper {
+    height: 42px !important;
+    background-color: #3a3a3a;
+    color: rgb(255, 255, 255);
+    padding: 0 12px 0 0 !important;
+    box-shadow: none;
+    font-size: 16px;
+  }
+
+  .join_input_group .ant-input-suffix {
+    height: 42px;
+    line-height: 42px;
+  }
+
+  .join_input_group .ant-select-selector {
+    background-color: #3a3a3a !important; /* 원하는 색상으로 변경 */
+    border: none !important;
+  }
+
+  .join_input_group .ant-select .ant-select-selection-item {
+    text-align: left !important;
+  }
+
+  .join_input_group .ant-select-arrow {
+    top: 85% !important;
+    transform: translateY(-50%) !important;
+    color: #ffffff !important;  /* 원하는 색상으로 바꿔주세요 */
+    opacity: 0.3;
+  }
+
+  .join_input_button.ant-btn {
+    height: 42px;
+    font-size: 16px;
+    padding: 0 16px;
+
+    background-color: #78D900;
+    border: none;
+    color: white;
+    border-radius: 8px;
+  }
+
+  .join_input_button.ant-btn:hover {
+    background-color: #63b400;
+  }
+
+  .join_input_button:disabled,
+  .join_input_button[disabled] {
+    cursor: not-allowed;
+  }
+
+  .join_button.ant-btn {
+    margin-top: 38px;
+    height: 42px;
+    font-size: 16px;
+    padding: 0 16px;
+
+    background-color: #78D900;
+    border: none;
+    color: white;
+    border-radius: 8px;
+  }
+
+  .join_button.ant-btn:hover {
+    background-color: #63b400 !important;
+    color: white !important;
+  }
+
+  .join_input_with_feedback {
+    display: flex;
+    flex-direction: column;
+    gap: 4px; /* 인풋과 메시지 사이 간격 */
+    margin-bottom: 5px; /* 인풋+피드백 묶음 간 간격 */
+    align-items: flex-start; /* 추가 */
+  }
+
+  .join_input_group > div {
+    display: flex;
+    gap: 10px;
+    width: 100%; /* 추가 */
+  }
+
+  .join_input_message {
+    min-height: 1.5em; /* 메시지 높이 고정 */
+    font-size: 0.8rem;
+    margin: 0;
+    color: #78D900; /* 기본 성공 색 */
+    text-align: left
+  }
+
+  .join_input_message.error {
+    color: red;
+  }
+
+  .join_input_message.hidden {
+    visibility: hidden;
+    color: transparent; /* 공간 유지 위해 투명 처리 */
+  }
+
+  .join_step {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+
+    margin-top: 40px;
+  }
+
+  .join_icon_on {
+    color: #78D900;
+
+    cursor: pointer;
+  }
+
+  .join_icon_off {
+    color: #3a3a3a;
+  }
+
+  .join_input_row {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    width: 100%;
+  }
+}
+
+@media (min-width: 1px) and (max-width: 768px) {}
