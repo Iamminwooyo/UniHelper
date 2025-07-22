@@ -186,7 +186,7 @@
   .login_layout {
     display: flex;
 
-    height: 50vw;
+    height: 55vw;
     min-width: 85vw; 
     padding: 3vw 0 3vw 3vw;
 
@@ -248,7 +248,7 @@
     justify-content: center;
     align-items: center;
 
-    gap: min(2.5vw, 5vw) !important;
+    gap: min(4vw, 5vw) !important;
 
     background-color: #1B1B1B;
     border-radius: 15px;

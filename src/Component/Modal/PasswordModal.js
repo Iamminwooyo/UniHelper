@@ -18,6 +18,7 @@ const PasswordModal = ({ open, onCancel }) => {
     confirmPassword: "",
     passwordMatch: null,
     passwordError: "",
+    userError: ""
   });
 
   const [state, setState] = useState(getInitialState());
@@ -78,6 +79,7 @@ const PasswordModal = ({ open, onCancel }) => {
 
   const handleSendEmail = () => {
     if (!state.email) {
+      message.error("이메일을 입력해주세요.");
       return;
     }
     setState((prev) => ({
@@ -109,6 +111,7 @@ const PasswordModal = ({ open, onCancel }) => {
 
   const handleVerifyCode = () => {
     if (!state.authCode) {
+      message.error("인증코드를 입력해주세요.");
       return;
     }
     if (state.authCode === "123456") {
@@ -170,6 +173,16 @@ const PasswordModal = ({ open, onCancel }) => {
       message.error("이름을 입력해주세요.");
       return false;
     }
+
+    const isUserValid = state.email === "user@example.com" && state.name === "홍길동";
+
+    if (!isUserValid) {
+      setState((prev) => ({
+        ...prev,
+        userError: "해당 정보의 회원이 없습니다.",
+      }));
+      return false;
+    } 
     setState((prev) => ({ ...prev, showPasswordFields: true }));
     return true;
   };
@@ -228,7 +241,7 @@ const PasswordModal = ({ open, onCancel }) => {
           <div style={{ display: "flex", gap: "10px" }}>
             <Input
               type="email"
-              placeholder="학교 이메일"
+              placeholder="이메일"
               value={state.email}
               onChange={handleEmailChange}
               disabled={state.showPasswordFields}
@@ -302,7 +315,9 @@ const PasswordModal = ({ open, onCancel }) => {
             onChange={handleNameChange}
             disabled={state.showPasswordFields}
           />
-          <p className="passwordmodal_input_message hidden">&nbsp;</p>
+          <p className={`passwordmodal_input_message ${state.userError ? "error" : "hidden"}`}>
+            {state.userError || "\u00A0"}
+          </p>
         </div>
 
         {state.showPasswordFields && (
@@ -318,7 +333,7 @@ const PasswordModal = ({ open, onCancel }) => {
             </div>
 
             <div className="passwordmodal_input_group">
-              <p className="passwordmodal_input_label">비밀번호 확인</p>
+              <p className="passwordmodal_input_label">새 비밀번호 확인</p>
               <Input.Password
                 value={state.confirmPassword}
                 onChange={handleConfirmPasswordChange}
@@ -344,7 +359,7 @@ const PasswordModal = ({ open, onCancel }) => {
         )}
       </section>
 
-      <section style={{ marginTop: "20px", marginBottom: "10px",textAlign: "right" }}>
+      <section style={{ marginTop: "10px", marginBottom: "10px",textAlign: "right" }}>
         <Button
           type="primary"
           className="passwordmodal_button_ok"
