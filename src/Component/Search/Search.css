@@ -1,0 +1,23 @@
+.searchbar_layout {
+  display: flex;
+  align-items: center;
+  
+  min-width: 400px;
+  height: 50%;
+  
+  background-color: white;
+  border-radius: 10px;
+}
+
+.searchbar_icon {
+  font-size: 16px;
+  color: #888;
+  margin: 0 10px;
+}
+
+.searchbar_input {
+  border: none;
+  outline: none;
+
+  font-size: 16px;
+}

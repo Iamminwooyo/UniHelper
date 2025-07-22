@@ -5,16 +5,22 @@ import Main from "./Main";
 import Footer from "./Footer";
 import Login from "../../Page/Login/Login";
 import Join from "../../Page/Join/Join";
+import Notice from "../../Page/Notice/Notice";
 
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 
+import { useRecoilValue } from "recoil";
+import { MenuState } from "../../Recoil/Atom";
+
 const antIcon = (
   <LoadingOutlined style={{ fontSize: 48, color: "#78D900" }} spin />
 );
-
+const pageComponents = {
+  notice: Notice,
+};
 
 const Layout = () => {
     const location = useLocation();
@@ -22,8 +28,10 @@ const Layout = () => {
 
     const [loading, setLoading] = useState(true);
 
+    const currentMenu = useRecoilValue(MenuState);
+
     useEffect(() => {
-        setLoading(true); // 경로 바뀔 때마다 로딩 초기화
+        setLoading(true);
         const timer = setTimeout(() => {
             setLoading(false);
         }, 800); // 원하는 로딩 시간 설정
@@ -55,14 +63,22 @@ const Layout = () => {
         );
     }
 
+    const PageComponent = currentMenu ? pageComponents[currentMenu] : null;
+
     return(
         <div className="layout_background">
-            <Header/>
+            <Header />
             <div className="layout_body">
-                <Side/>
-                <Main/>
+                {PageComponent ? (
+                <>
+                    <Side />
+                    <PageComponent />
+                </>
+                ) : (
+                <Main />
+                )}
             </div>
-            <Footer/>
+            <Footer />
         </div>
     );
 }
