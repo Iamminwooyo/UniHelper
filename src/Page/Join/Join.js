@@ -2,6 +2,7 @@ import "./Join.css";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";  
 import { useMediaQuery } from 'react-responsive';
+import axios from "axios";
 import { Select, Input, Button, message } from "antd";
 import { RiArrowGoBackFill } from "react-icons/ri";
 import { BiSolidRightArrow, BiSolidLeftArrow } from "react-icons/bi";
@@ -44,6 +45,10 @@ const Join = () => {
   const [timer, setTimer] = useState(0);
   const [passwordMatch, setPasswordMatch] = useState(null);
 
+  const [isPasswordValid, setIsPasswordValid] = useState(true);
+
+  const [isLoading, setIsLoading] = useState(false);
+
   const selectRef = useRef(null);
 
   const navigate = useNavigate();
@@ -82,20 +87,29 @@ const Join = () => {
 
   const handleAuthCodeChange = (e) => {
     setAuthCode(e.target.value);
-    if (codeVerificationStatus === "verified") {
+    if (codeVerificationStatus === "verified" || codeVerificationStatus === "error") {
       setCodeVerificationStatus("idle");
       setCodeVerificationMessage("");
     }
   };
 
+  const validatePassword = (pw) => {
+    const lengthCheck = pw.length >= 8;
+    const upperCheck = /[A-Z]/.test(pw);
+    const lowerCheck = /[a-z]/.test(pw);
+    const specialCheck = /[^A-Za-z0-9]/.test(pw);
+    return lengthCheck && upperCheck && lowerCheck && specialCheck;
+  };
+
   const handlePasswordChange = (e) => {
     const newPassword = e.target.value;
     setPassword(newPassword);
+    setIsPasswordValid(validatePassword(newPassword));
 
     if (confirmPassword !== "") {
-        setPasswordMatch(newPassword === confirmPassword);
+      setPasswordMatch(newPassword === confirmPassword);
     } else {
-        setPasswordMatch(null);
+      setPasswordMatch(null);
     }
   };
 
@@ -118,97 +132,166 @@ const Join = () => {
     }
   };
 
-  const handleSendEmail = () => {
+
+  // 이메일 인증번호 전송 API
+  const handleSendEmail = async () => {
     if (!email) {
       message.error("이메일을 입력해주세요.");
       return;
     }
+
     setEmailVerificationStatus("sending");
     setEmailVerificationMessage("인증번호 전송중...");
     setCodeVerificationStatus("idle");
     setCodeVerificationMessage("");
     setTimer(0);
-    setTimeout(() => {
-      setEmailVerificationStatus("sent");
-      setEmailVerificationMessage("인증번호 전송됨");
-      setTimer(10);
-    }, 1000);
+
+    try {
+      const res = await axios.post("/auth/email/signup/request", { email });
+
+      const messageText = typeof res.data === "string" ? res.data : res.data?.message || "";
+      const isSuccess = messageText.includes("인증코드가 전송");
+
+      if (isSuccess) {
+        setTimeout(() => {
+          setEmailVerificationStatus("sent");
+          setEmailVerificationMessage("인증번호 전송됨");
+          setTimer(180);
+        }, 1000);
+      } else {
+        throw new Error(messageText || "이메일 전송 실패");
+      }
+    } catch (error) {
+      console.error(error);
+      const status = error.response?.status;
+
+      let errorMessage = "이메일 전송 실패";
+      if (status === 403) {
+        message.error("이미 가입된 이메일입니다.");
+        errorMessage = "이미 가입된 이메일입니다.";
+      } else {
+        errorMessage = error.response?.data?.message || error.message || "이메일 전송 실패";
+      }
+
+      setEmailVerificationStatus("error");
+      setEmailVerificationMessage(errorMessage);
+    }
   };
 
-  const handleVerifyCode = () => {
+  // 이메일 인증코드 확인 API
+  const handleVerifyCode = async () => {
     if (!authCode) {
       message.error("인증코드를 입력해주세요.");
       return;
     }
-    if (authCode === "123456") {
-      setCodeVerificationStatus("verified");
-      setCodeVerificationMessage("이메일 인증 완료");
-      setEmailVerificationStatus("verified");
-      setEmailVerificationMessage("인증 완료");
-    } else {
-      setCodeVerificationStatus("error");
-      setCodeVerificationMessage("인증번호가 틀립니다.");
+
+    setIsLoading(true);
+
+    try {
+      const res = await axios.post("/auth/email/verify", {
+        email,
+        code: authCode,
+      });
+
+      if (typeof res.data === "string" && res.data.includes("인증 성공")) {
+        setCodeVerificationStatus("verified");
+        setCodeVerificationMessage("이메일 인증 완료");
+        setEmailVerificationStatus("verified");
+        setEmailVerificationMessage("인증 완료");
+      } else {
+        setCodeVerificationStatus("error");
+        setCodeVerificationMessage("인증번호가 틀립니다.");
+      }
+    } catch (error) {
+      console.error(error);
+      const status = error.response?.status;
+
+      if (status === 403) {
+        setCodeVerificationStatus("error");
+        setCodeVerificationMessage("인증번호가 틀립니다.");
+      } else {
+        setCodeVerificationStatus("error");
+        setCodeVerificationMessage("인증 중 오류가 발생했습니다.");
+        message.error("인증 중 오류가 발생했습니다.");
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const handleJoin = (e) => {
+  // 회원가입 API
+  const handleJoin = async (e) => {
     e.preventDefault();
-    console.log('handleJoin called');
+  
+    setIsLoading(true);
 
-    // 이메일 인증 완료 여부 검사
     if (emailVerificationStatus !== "verified") {
-        message.error("이메일 인증을 완료해주세요.");
-        setStep(1);
-        return;
+    message.error("이메일 인증을 완료해주세요.");
+    setStep(1);
+    setIsLoading(false); 
+    return;
     }
-
-    // 비밀번호 입력 검사
     if (!password) {
-        message.error("비밀번호를 입력해주세요.");
-        setStep(1);
-        return;
+      message.error("비밀번호를 입력해주세요.");
+      setStep(1);
+      setIsLoading(false);
+      return;
     }
-
-    // 비밀번호 확인 입력 검사
     if (!confirmPassword) {
-        message.error("비밀번호 확인을 입력해주세요.");
-        setStep(1);
-        return;
+      message.error("비밀번호 확인을 입력해주세요.");
+      setStep(1);
+      setIsLoading(false);
+      return;
     }
-
-    // 비밀번호 일치 여부 검사
     if (password !== confirmPassword) {
-        message.error("비밀번호가 일치하지 않습니다.");
-        setStep(1);
-        return;
+      message.error("비밀번호가 일치하지 않습니다.");
+      setStep(1);
+      setIsLoading(false);
+      return;
     }
-
-    // 이름 검사
     if (!name) {
-        message.error("이름을 입력해주세요.");
-        setStep(2);
-        return;
+      message.error("이름을 입력해주세요.");
+      setStep(2);
+      setIsLoading(false);
+      return;
     }
-
-    // 학번 검사
     if (!studentId) {
-        message.error("학번을 입력해주세요.");
-        setStep(2);
-        return;
+      message.error("학번을 입력해주세요.");
+      setStep(2);
+      setIsLoading(false);
+      return;
     }
-
-    // 학과 검사
     if (!department) {
-        message.error("학과를 선택해주세요.");
-        setStep(2);
-        return;
+      message.error("학과를 선택해주세요.");
+      setStep(2);
+      setIsLoading(false);
+      return;
     }
 
-    // 모든 검사 통과 시 가입 시도
-    console.log("가입 시도:", { email, password, name, studentId, department });
-    message.success("회원가입 완료!");
-    navigate("/login");
+    try {
+      const res = await axios.post("/auth/signup", {
+        username: name,
+        password: password,
+        email: email,
+        department: department,
+        role: "STUDENT",
+        student_number: studentId,
+      });
+
+      if (res.data.success || res.status === 200) {
+        message.success("회원가입 완료!");
+        navigate("/login");
+      } else {
+        message.error(res.data.message || "회원가입에 실패했습니다.");
+      }
+    } catch (error) {
+      console.error(error);
+      message.error("회원가입 중 오류가 발생했습니다: " + (error.response?.data || error.message));
+    } finally {
+      setIsLoading(false);
+    }
   };
+
 
 
   return (
@@ -268,7 +351,11 @@ const Join = () => {
                     </Button>
                     )}
                 </div>
-                <p className="join_input_message">
+                <p className={`join_input_message ${
+                  emailVerificationStatus === "error" ? "error" :
+                  emailVerificationStatus === "verified" ? "success" :
+                  ""
+                }`}>
                   {emailVerificationMessage}
                   {timer > 0 && emailVerificationStatus === "sent" && (
                     <span> ({formatTime(timer)})</span>
@@ -290,7 +377,9 @@ const Join = () => {
                         type="button"
                         className="join_input_button"
                         onClick={handleVerifyCode}
-                        disabled={!["sent", "resend"].includes(emailVerificationStatus)}
+                        disabled={
+                          isLoading || !["sent", "resend"].includes(emailVerificationStatus)
+                        }
                         style={{ cursor: ["sent", "resend"].includes(emailVerificationStatus) ? "pointer" : "not-allowed" }}
                     >
                         인증
@@ -310,7 +399,11 @@ const Join = () => {
                   value={password}
                   onChange={handlePasswordChange}
                 />
-                <p className="join_input_message hidden">&nbsp;</p>
+                <p className={`join_input_message ${!isPasswordValid ? "error" : ""}`} style={{ minHeight: "18px" }}>
+                  {!isPasswordValid
+                    ? "비밀번호는 대/소문자, 특수기호 포함 8자 이상"
+                    : "\u00A0"}
+                </p>
               </div>
 
               <div className="join_input_group join_input_with_input">
@@ -326,8 +419,8 @@ const Join = () => {
                     passwordMatch === null ? "hidden" : passwordMatch ? "" : "error"
                   }`}
                 >
-                  {passwordMatch === false && "비밀번호가 일치하지 않습니다."}
-                  {passwordMatch === true && "비밀번호가 일치합니다."}
+                  {passwordMatch === false && "비밀번호 불일치"}
+                  {passwordMatch === true && "비밀번호 일치"}
                 </p>
               </div>
             </>
@@ -370,7 +463,7 @@ const Join = () => {
                 <p className="join_input_message hidden">&nbsp;</p>
               </div>
 
-              <Button type="default" htmlType="submit" className="join_button">
+              <Button type="default" htmlType="submit" className="join_button" disabled={isLoading}>
                 회원가입
               </Button>
             </>
