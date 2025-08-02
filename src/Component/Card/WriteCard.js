@@ -1,17 +1,13 @@
 import "./Card.css"; 
 import { useState } from "react";
-import { IoBookmark, IoBookmarkOutline } from "react-icons/io5";
 import TextModal from "../Modal/TextModal";
+import { HiDotsVertical } from "react-icons/hi";
+import { Dropdown, Menu } from "antd";
 
-const NoticeCard = ({ id, profile, name, date,  title, content, images, bookmarked, onBookmarkToggle, onClick, }) => {
+
+const WriteCard = ({ id, profile, name, date,  title, content, images, bookmarked, onBookmarkToggle, onClick,  onEdit, onDelete }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalMode, setModalMode] = useState("subscribe"); // "subscribe" or "unsubscribe"
-
-  const openModal = (e, mode) => {
-    e.stopPropagation();
-    setModalMode(mode);      // 모드 설정
-    setIsModalOpen(true);    // 모달 열기
-  };
+  const [modalMode, ] = useState("subscribe"); // "subscribe" or "unsubscribe"
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -24,12 +20,27 @@ const NoticeCard = ({ id, profile, name, date,  title, content, images, bookmark
     return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
   };
   
+  const handleMenuClick = ({ key }) => {
+    if (key === "edit") {
+      onEdit?.(id); // 선택적 실행
+    } else if (key === "delete") {
+      onDelete?.(id);
+    }
+  };
+
+  const menu = (
+    <Menu onClick={handleMenuClick} className="custom-dropdown-menu">
+        <Menu.Item key="edit" className="custom-dropdown-item">수정</Menu.Item>
+        <Menu.Item key="delete" className="custom-dropdown-item delete">삭제</Menu.Item>
+    </Menu>
+  );
+
 
   return (
      <>
       <section className="noticecard_layout" onClick={onClick}>
 
-        <h4 className="noticecard_title">{truncateText(title, 20)}</h4>
+        <h4 className="noticecard_title">{truncateText(title, 15)}</h4>
 
         {firstImage ? (
           <img src={firstImage} alt="공지 이미지" className="noticecard_image" />
@@ -45,23 +56,18 @@ const NoticeCard = ({ id, profile, name, date,  title, content, images, bookmark
                   <p className="noticecard_date">{date}</p>
               </div>
           </div>
-          <div
-            className="noticecard_icon"
-            onClick={(e) => openModal(e, bookmarked ? "unsubscribe" : "subscribe")}
-            style={{ cursor: "pointer" }}
-          >
-            {bookmarked ? (
-              <IoBookmark size={28} color="#78D900" />
-            ) : (
-              <IoBookmarkOutline size={28} />
-            )}
-          </div>
+
+          <Dropdown overlay={menu} trigger={['click']}>
+            <div className="noticecard_icon" style={{ cursor: "pointer" }} onClick={(e) => e.stopPropagation()}>
+              <HiDotsVertical />
+            </div>
+          </Dropdown>
         </div>
       </section>
 
-      <TextModal open={isModalOpen} onCancel={closeModal} mode={modalMode} name={name} />
+      <TextModal open={isModalOpen} onCancel={closeModal} mode={modalMode} />
      </>
   );
 };
 
-export default NoticeCard;
+export default WriteCard;

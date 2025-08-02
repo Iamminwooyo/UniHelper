@@ -2,6 +2,7 @@ import "./Login.css";
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
+import axios from "axios";
 import PasswordModal from "../../Component/Modal/PasswordModal";
 import { Input, Button, message } from "antd";
 
@@ -21,7 +22,8 @@ const Login = () => {
     setPassword(e.target.value);
   };
 
-  const handleLogin = (e) => {
+  // 로그인 API
+  const handleLogin = async (e) => {
     e.preventDefault();
 
     if (!email) {
@@ -33,8 +35,26 @@ const Login = () => {
       return;
     }
 
-    console.log("로그인 시도:", { email, password });
-    // 여기에 실제 로그인 API 호출 로직 추가
+    try {
+      const res = await axios.post("/auth/login", {
+        email,
+        password,
+      });
+
+      if (res.data.success || res.status === 200) {
+        sessionStorage.setItem("accessToken", res.data.accessToken);
+        sessionStorage.setItem("refreshToken", res.data.refreshToken);
+
+        message.success("로그인 성공!");
+        
+        navigate("/");  // 로그인 후 이동할 페이지 경로 수정 가능
+      } else {
+        message.error(res.data.message || "로그인에 실패했습니다.");
+      }
+    } catch (error) {
+      console.error(error);
+      message.error("로그인 중 오류가 발생했습니다: " + (error.response?.data || error.message));
+    }
   };
 
   const handleJoinClick = () => navigate("/join");

@@ -1,34 +1,33 @@
 import "./Modal.css";
 import { useState, useEffect } from "react";
 import { Modal, Input, Button, message } from "antd";
+import axios from "axios";
 
 const PasswordModal = ({ open, onCancel }) => {
   // 내부 상태 초기화 함수
   const getInitialState = () => ({
     email: "",
     authCode: "",
-    name: "",
     emailVerificationStatus: "idle",
     emailVerificationMessage: "",
     codeVerificationStatus: "idle",
     codeVerificationMessage: "",
     timer: 0,
-    showPasswordFields: false,
     newPassword: "",
     confirmPassword: "",
     passwordMatch: null,
-    passwordError: "",
+    isPasswordValid: false, 
     userError: ""
   });
 
   const [state, setState] = useState(getInitialState());
 
-  // useEffect 타이머 관련
+  // 타이머 관련 useEffect
   useEffect(() => {
     if (state.emailVerificationStatus !== "sent" || state.timer <= 0) return;
 
     const interval = setInterval(() => {
-      setState((prev) => {
+      setState(prev => {
         if (prev.timer <= 1) {
           clearInterval(interval);
           return {
@@ -48,12 +47,11 @@ const PasswordModal = ({ open, onCancel }) => {
     return () => clearInterval(interval);
   }, [state.emailVerificationStatus, state.timer]);
 
-  // 상태 초기화 함수 (모달 닫을 때 호출)
+  // 상태 초기화 및 모달 닫기
   const resetState = () => {
     setState(getInitialState());
   };
 
-  // 모달 닫기 핸들러
   const handleCancel = () => {
     resetState();
     onCancel();
@@ -65,43 +63,22 @@ const PasswordModal = ({ open, onCancel }) => {
     return `${min}:${sec}`;
   };
 
-  // 각 핸들러에서 state 업데이트
+  // 이메일 입력 변경
   const handleEmailChange = (e) => {
-    setState((prev) => ({
+    setState(prev => ({
       ...prev,
       email: e.target.value,
       emailVerificationStatus: "idle",
       emailVerificationMessage: "",
       codeVerificationStatus: "idle",
       codeVerificationMessage: "",
+      userError: ""
     }));
   };
 
-  const handleSendEmail = () => {
-    if (!state.email) {
-      message.error("이메일을 입력해주세요.");
-      return;
-    }
-    setState((prev) => ({
-      ...prev,
-      emailVerificationStatus: "sending",
-      emailVerificationMessage: "인증번호 전송중...",
-      codeVerificationStatus: "idle",
-      codeVerificationMessage: "",
-      timer: 0,
-    }));
-    setTimeout(() => {
-      setState((prev) => ({
-        ...prev,
-        emailVerificationStatus: "sent",
-        emailVerificationMessage: "인증번호 전송됨",
-        timer: 10,
-      }));
-    }, 1000);
-  };
-
+  // 인증번호 입력 변경
   const handleAuthCodeChange = (e) => {
-    setState((prev) => ({
+    setState(prev => ({
       ...prev,
       authCode: e.target.value,
       codeVerificationStatus: prev.codeVerificationStatus === "verified" ? "idle" : prev.codeVerificationStatus,
@@ -109,118 +86,183 @@ const PasswordModal = ({ open, onCancel }) => {
     }));
   };
 
-  const handleVerifyCode = () => {
-    if (!state.authCode) {
-      message.error("인증코드를 입력해주세요.");
-      return;
-    }
-    if (state.authCode === "123456") {
-      setState((prev) => ({
-        ...prev,
-        codeVerificationStatus: "verified",
-        codeVerificationMessage: "이메일 인증 완료",
-        emailVerificationStatus: "verified",
-        emailVerificationMessage: "인증 완료",
-      }));
-    } else {
-      setState((prev) => ({
-        ...prev,
-        codeVerificationStatus: "error",
-        codeVerificationMessage: "인증번호가 틀립니다.",
-      }));
-    }
-  };
-
-  const handleNameChange = (e) => {
-    setState((prev) => ({
-      ...prev,
-      name: e.target.value,
-    }));
-  };
-
+  // 새 비밀번호 입력 변경
   const handlePasswordChange = (e) => {
     const value = e.target.value;
+
+    const regexUpper = /[A-Z]/;
+    const regexLower = /[a-z]/;
+    const regexSpecial = /[!@#$%^&*(),.?":{}|<>]/;
+    const isValid =
+      value.length >= 8 &&
+      regexUpper.test(value) &&
+      regexLower.test(value) &&
+      regexSpecial.test(value);
+
     setState((prev) => {
       const passwordMatch = prev.confirmPassword !== "" ? value === prev.confirmPassword : null;
       return {
         ...prev,
         newPassword: value,
         passwordMatch,
+        isPasswordValid: isValid,
       };
     });
   };
 
+  // 새 비밀번호 확인 입력 변경
   const handleConfirmPasswordChange = (e) => {
     const value = e.target.value;
-    setState((prev) => ({
+    setState(prev => ({
       ...prev,
       confirmPassword: value,
       passwordMatch: prev.newPassword === value && value !== "",
     }));
   };
 
-  // 1차: 확인 버튼 눌렀을 때 유효성 검사
-  const handleConfirm = () => {
+  // 이메일 인증번호 전송 API
+  const handleSendEmail = async () => {
     if (!state.email) {
       message.error("이메일을 입력해주세요.");
-      return false;
+      return;
     }
+
+    setState(prev => ({
+      ...prev,
+      emailVerificationStatus: "sending",
+      emailVerificationMessage: "인증번호 전송중...",
+      codeVerificationStatus: "idle",
+      codeVerificationMessage: "",
+      timer: 0,
+      userError: ""
+    }));
+
+    try {
+      const res = await axios.post("/auth/email/password-reset/request", { email: state.email });
+
+      const messageText = typeof res.data === "string" ? res.data : res.data?.message || "";
+
+      if (messageText.includes("인증코드가 전송")) {
+        setTimeout(() => {
+          setState(prev => ({
+            ...prev,
+            emailVerificationStatus: "sent",
+            emailVerificationMessage: "인증번호 전송됨",
+            timer: 180,
+          }));
+        }, 1000);
+      } else {
+        throw new Error(messageText || "이메일 전송 실패");
+      }
+    } catch (error) {
+
+      if (error.response?.status === 403) {
+        setState(prev => ({
+          ...prev,
+          emailVerificationStatus: "idle",
+          emailVerificationMessage: "",
+          userError: "회원가입 되지 않은 이메일입니다.",
+        }));
+      } else {
+        message.error("이메일 전송 실패: " + (error.response?.data || error.message));
+        setState(prev => ({
+          ...prev,
+          emailVerificationStatus: "idle",
+          emailVerificationMessage: "",
+          userError: "",
+        }));
+      }
+    }
+  };
+
+  // 이메일 인증번호 확인 API
+  const handleVerifyCode = async () => {
+    if (!state.authCode) {
+      message.error("인증코드를 입력해주세요.");
+      return;
+    }
+
+    try {
+      const res = await axios.post("/auth/email/verify", {
+        email: state.email,
+        code: state.authCode,
+      });
+
+      const responseData = res.data;
+
+      if (
+        (typeof responseData === "string" && responseData.includes("인증 성공")) ||
+        (responseData.success === true)
+      ) {
+        setState(prev => ({
+          ...prev,
+          codeVerificationStatus: "verified",
+          codeVerificationMessage: "이메일 인증 완료",
+          emailVerificationStatus: "verified",
+          emailVerificationMessage: "인증 완료",
+        }));
+        message.success("이메일 인증이 완료되었습니다.");
+      } else {
+        setState(prev => ({
+          ...prev,
+          codeVerificationStatus: "error",
+          codeVerificationMessage: responseData.message || "인증번호가 틀립니다.",
+        }));
+        message.error(responseData.message || "인증번호가 틀립니다.");
+      }
+    } catch (error) {
+      console.error(error);
+      setState(prev => ({
+        ...prev,
+        codeVerificationStatus: "error",
+        codeVerificationMessage: "인증 중 오류가 발생했습니다.",
+      }));
+      message.error("인증 중 오류가 발생했습니다.");
+    }
+  };
+
+  // 비밀번호 변경 API
+  const handlePasswordUpdate = async () => {
+    if (!state.email) {
+      message.error("이메일을 입력해주세요.");
+      return;
+    }
+
     if (state.codeVerificationStatus !== "verified") {
       message.error("이메일 인증을 완료해주세요.");
-      return false;
-    }
-    if (!state.name) {
-      message.error("이름을 입력해주세요.");
-      return false;
+      return;
     }
 
-    const isUserValid = state.email === "user@example.com" && state.name === "홍길동";
-
-    if (!isUserValid) {
-      setState((prev) => ({
-        ...prev,
-        userError: "해당 정보의 회원이 없습니다.",
-      }));
-      return false;
-    } 
-    setState((prev) => ({ ...prev, showPasswordFields: true }));
-    return true;
-  };
-
-  // 2차: 변경 버튼 눌렀을 때 유효성 검사 및 제출
-  const handleChange = () => {
     if (!state.newPassword) {
       message.error("새 비밀번호를 입력해주세요.");
-      return false;
+      return;
     }
+
     if (!state.confirmPassword) {
-      message.error("비밀번호 확인을 입력해주세요.");
-      return false;
+      message.error("새 비밀번호 확인을 입력해주세요.");
+      return;
     }
-    if (state.newPassword !== state.confirmPassword) {
+
+    if (!state.passwordMatch) {
       message.error("비밀번호가 일치하지 않습니다.");
-      return false;
+      return;
     }
 
-    message.success("비밀번호가 변경되었습니다!");
+    try {
+      await axios.post("/auth/password/reset/confirm", {
+        email: state.email,
+        newPassword: state.newPassword,
+      });
 
-    console.log("최종 제출:", {
-      email: state.email,
-      authCode: state.authCode,
-      name: state.name,
-      newPassword: state.newPassword,
-    });
-
-    handleCancel(); // 초기화 포함 닫기
-    return true;
-  };
-
-  // 제출 버튼 핸들러
-  const handleSubmit = () => {
-    if (!state.showPasswordFields) {
-      handleConfirm();
-    } else {
-      handleChange();
+      message.success("비밀번호가 성공적으로 변경되었습니다.");
+      handleCancel();
+    } catch (error) {
+      console.error(error);
+      const msg =
+        error.response?.data?.message ||
+        error.response?.data ||
+        "비밀번호 변경에 실패했습니다.";
+      message.error(msg);
     }
   };
 
@@ -244,14 +286,13 @@ const PasswordModal = ({ open, onCancel }) => {
               placeholder="이메일"
               value={state.email}
               onChange={handleEmailChange}
-              disabled={state.showPasswordFields}
             />
             {state.emailVerificationStatus !== "verified" && (
               <Button
                 type="button"
                 className="passwordmodal_input_button"
                 onClick={handleSendEmail}
-                disabled={state.showPasswordFields || ["sending", "sent"].includes(state.emailVerificationStatus)}
+                disabled={["sending", "sent"].includes(state.emailVerificationStatus)}
               >
                 {{
                   idle: "인증번호 전송",
@@ -262,8 +303,10 @@ const PasswordModal = ({ open, onCancel }) => {
               </Button>
             )}
           </div>
-          <p className="passwordmodal_input_message">
+          <p className={`passwordmodal_input_message ${state.userError ? "error" : ""}`}>
             {state.emailVerificationMessage}
+            {state.emailVerificationMessage && state.userError ? " - " : ""}
+            {state.userError}
             {state.timer > 0 && state.emailVerificationStatus === "sent" && (
               <span> ({formatTime(state.timer)})</span>
             )}
@@ -279,13 +322,11 @@ const PasswordModal = ({ open, onCancel }) => {
                 placeholder="인증번호"
                 value={state.authCode}
                 onChange={handleAuthCodeChange}
-                disabled={state.showPasswordFields}
               />
               <Button
                 type="button"
                 className="passwordmodal_input_button"
                 onClick={handleVerifyCode}
-                disabled={state.showPasswordFields}
               >
                 인증
               </Button>
@@ -305,23 +346,7 @@ const PasswordModal = ({ open, onCancel }) => {
             </p>
           </div>
         )}
-
-        <div className="passwordmodal_input_group">
-          <p className="passwordmodal_input_label">이름</p>
-          <Input
-            type="text"
-            placeholder="이름"
-            value={state.name}
-            onChange={handleNameChange}
-            disabled={state.showPasswordFields}
-          />
-          <p className={`passwordmodal_input_message ${state.userError ? "error" : "hidden"}`}>
-            {state.userError || "\u00A0"}
-          </p>
-        </div>
-
-        {state.showPasswordFields && (
-          <>
+        
             <div className="passwordmodal_input_group">
               <p className="passwordmodal_input_label">새 비밀번호</p>
               <Input.Password
@@ -329,7 +354,17 @@ const PasswordModal = ({ open, onCancel }) => {
                 onChange={handlePasswordChange}
                 placeholder="새 비밀번호"
               />
-              <p className="passwordmodal_input_message hidden">&nbsp;</p>
+              <p
+                className={`passwordmodal_input_message ${
+                  state.newPassword && !state.isPasswordValid ? "error" : ""
+                }`}
+                style={{ minHeight: "18px" }}
+              >
+                {state.newPassword && !state.isPasswordValid
+                  ? "비밀번호는 대/소문자, 특수기호 포함 8자 이상"
+                  : "\u00A0"}
+              </p>
+
             </div>
 
             <div className="passwordmodal_input_group">
@@ -348,25 +383,20 @@ const PasswordModal = ({ open, onCancel }) => {
                     : "error"
                 }`}
               >
-                {state.passwordMatch === false && "비밀번호가 일치하지 않습니다."}
-                {state.passwordMatch === true && "비밀번호가 일치합니다."}
+                {state.passwordMatch === false && "비밀번호 불일치"}
+                {state.passwordMatch === true && "비밀번호 일치"}
               </p>
             </div>
-            {state.passwordError && (
-              <p className="passwordmodal_input_message error">{state.passwordError}</p>
-            )}
-          </>
-        )}
       </section>
 
-      <section style={{ marginTop: "10px", marginBottom: "10px",textAlign: "right" }}>
+      <section style={{ marginTop: "10px", marginBottom: "10px", textAlign: "right" }}>
         <Button
           type="primary"
           className="passwordmodal_button_ok"
-          onClick={handleSubmit}
+          onClick={handlePasswordUpdate}
           style={{ marginRight: "20px" }}
         >
-          {state.showPasswordFields ? "변경" : "확인"}
+          변경
         </Button>
         <Button className="passwordmodal_button_cancle" onClick={handleCancel}>
           취소

@@ -6,29 +6,24 @@ import Footer from "./Footer";
 import Login from "../../Page/Login/Login";
 import Join from "../../Page/Join/Join";
 import Notice from "../../Page/Notice/Notice";
+import NoticeDetail from "../../Page/Notice/NoticeDetail";
+import NoticeWrite from "../../Page/Notice/NoticeWrite";
+import NoticeSub from "../../Page/Notice/NoticeSub";
 
-import { useLocation } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 
-import { useRecoilValue } from "recoil";
-import { MenuState } from "../../Recoil/Atom";
-
 const antIcon = (
   <LoadingOutlined style={{ fontSize: 48, color: "#78D900" }} spin />
 );
-const pageComponents = {
-  notice: Notice,
-};
 
 const Layout = () => {
     const location = useLocation();
     const path = location.pathname;
 
     const [loading, setLoading] = useState(true);
-
-    const currentMenu = useRecoilValue(MenuState);
 
     useEffect(() => {
         setLoading(true);
@@ -63,20 +58,22 @@ const Layout = () => {
         );
     }
 
-    const PageComponent = currentMenu ? pageComponents[currentMenu] : null;
+    const isMain = path === "/";
 
     return(
         <div className="layout_background">
             <Header />
             <div className="layout_body">
-                {PageComponent ? (
-                <>
-                    <Side />
-                    <PageComponent />
-                </>
-                ) : (
-                <Main />
-                )}
+                {!isMain && <Side />}
+               <Routes>
+                    <Route path="/" element={<Main />} />
+                    <Route path="/notice" element={<Notice />} />
+                    <Route path="/notice/:id" element={<NoticeDetail />} />
+                    <Route path="/notice/write" element={<NoticeWrite />} />
+                    <Route path="/notice/subscribe" element={<NoticeSub />} />
+                    {/* 추가 라우트 필요하면 여기에 작성 */}
+                    <Route path="*" element={<Main />} />
+                </Routes>
             </div>
             <Footer />
         </div>

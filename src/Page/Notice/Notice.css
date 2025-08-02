@@ -21,6 +21,8 @@
         align-items: center;
 
         width: 98%;
+        max-height: 50px;
+        padding: 10px 0;
         
     }
 
@@ -39,6 +41,7 @@
         align-items: center;
 
         width: 100%;
+        padding: 20px 0;
 
         background-color: #1b1b1b;
         border-radius: 20px;
@@ -49,7 +52,7 @@
         gap: 40px;
 
         width: 90%;
-        padding: 30px 0;
+        padding: 0 0 30px 0;
     }
 
     .notice_filter_select {
@@ -73,7 +76,7 @@
 
     .notice_post {
         display: flex;
-        justify-content: center;
+        justify-content: flex-start !important;
         gap: 10px; /* 열 간격을 flex gap으로 설정 */
 
         width: 85%;
@@ -94,7 +97,330 @@
         margin-bottom: 16px;
     }
 
+    .notice_back_icon {
+        width: 90%;
+
+        color: #78D900;
+        font-size: 28px;
+        text-align: left;
+    }
+
+    .notice_detail_body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+
+        width: 100%;
+        padding: 30px 0;
+
+        background-color: #1b1b1b;
+        border-radius: 20px;
+    }
+
+    .notice_info {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 10px;
+
+        width: 90%;
+        padding: 15px 12px;
+
+        border-radius: 10px;
+        background-color: #2e2e2e;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+        box-sizing: border-box;
+    }
+
+     .notice_title {
+        width: 100%;
+        margin: 0 0;
+        padding: 10px 0;
+        
+        font-size: 21px;
+        text-align: left;
+    }
+
+    .notice_divider {
+        width: 100%;
+        border: none;
+        border-top: 1px solid #707070;
+    }
+
+    .notice_info_block {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        width: 100%;
+    }
+
+    .notice_profile {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        width: 80%;
+    }
+
+    .notice_profile_img {
+        width: 40px;
+        height: 40px;
+
+        border-radius: 50%;
+
+        object-fit: cover;
+    }
+
+    .notice_text {
+        font-size: 12px;
+    }
+
+    .notice_name {
+        display: flex;
+        align-items: center;
+
+        margin: 0;
+    }
+
+    .notice_date {
+        display: flex;
+        align-items: center;
+
+        margin: 0;
+    }
+
+    .notice_icon {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    .notice_file {
+        display: flex;
+        justify-content: space-between;
+
+        width: 90%;
+        padding: 5px 15px 5px 12px;
+
+        background-color: #2e2e2e;
+        border-radius: 12px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+        box-sizing: border-box
+    }
+
+    .notice_file_title {
+        font-size: 18px;
+    }
+
+    .notice_file_list {
+        display: flex;
+        gap: 20px;
+    }
+
+    .notice_file_item {
+        
+        color: #fff;
+    }
+
+    .notice_detail {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+
+        width: 90%;
+        
+        box-sizing: border-box
+    }
+
+    .notice_detail_img_group {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+
+        width: 100%; 
+        height: 600px;
+    }
+
+    .notice_detail_img {
+        width: 100%;
+        height: 100%;
+
+        background-color: #2e2e2e;
+        border: 1px solid #2a2a2a;
+        border-radius: 10px;
+
+        object-fit: contain;
+    }
+
+    .notice_detail_content {
+        display: flex;
+
+        width: 100%;
+        min-height: 200px;
+        padding: 12px;
+
+        text-align: left; 
+        white-space: pre-line;
+
+        background-color: #2e2e2e;
+        border: 1px solid #2a2a2a;
+        border-radius: 12px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+        box-sizing: border-box;
+    }
     
+    .subscribe_layout {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        width: 100%;
+
+        color: #ffffff;
+
+        border-radius: 20px;
+    }
+
+    .subscribe_header {
+        flex: 0.2;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        width: 98%;
+        max-height: 50px;
+        padding: 10px 0;
+        
+    }
+
+    .subscribe_header_title {
+        display: flex;
+
+        margin: 0;
+
+        font-size: 40px;
+    }
+
+    .subscribe_body {
+        flex: 1;
+        display: flex;
+
+        width: 100%;
+        padding: 20px 0;
+
+        background-color: #1b1b1b;
+        border-radius: 20px;
+    }
+
+    .subscribe_text {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 20px;
+
+        margin: 0 20px;
+
+        background-color: #242424;
+        border: 1px solid #2a2a2a;
+        border-radius: 12px;
+    }
+
+    .subscribe_title {
+        font-size: 20px;
+    }
+
+    .subscribe_list {
+        display: flex;
+        align-items: center;
+
+        width: 80%;
+        padding: 10px 10px;
+
+        border-radius: 15px;
+
+        cursor: pointer;
+    }
+
+    .subscribe_list:hover,
+    .subscribe_list.active {
+        background-color: #424242;
+    }
+
+    .subscribe_list.active .subscribe_name,
+    .subscribe_list:hover .subscribe_name  {
+        color: #78D900;
+        font-weight: 600;
+    }
+
+    .subscribe_profile {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        
+        gap: 10px;
+
+        width: 80%;
+    }
+
+    .subscribe_profile_img {
+        width: 30px;
+        height: 30px;
+
+        border-radius: 50%;
+
+        object-fit: cover;
+    }
+
+    .subscribe_name {
+        display: flex;  
+
+        margin: 0;
+
+        font-size: 12px;
+    }
+
+    .subscribe_icon {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        gap: 15px;
+
+        font-size: 22px;
+    }
+
+    .subscribe_post {
+        flex: 3;
+        display: flex;
+        justify-content: flex-start !important;
+        gap: 10px;
+
+        width: 85%;
+        
+        box-sizing: border-box
+    }
+
+    .subscribe_post_column {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+
+        background-clip: padding-box;
+    }
+
+    .subscribe_post_column > div {
+        margin-bottom: 16px;
+    }
 }
 @media (min-width: 769px) and (max-width: 1240px) {}
 @media (min-width: 1px) and (max-width: 768px) {}

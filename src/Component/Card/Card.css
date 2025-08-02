@@ -7,15 +7,27 @@
     width: 300px;
     height: auto;
 
-    border: 1px solid #fff;
+    background-color: #242424;
+    border: 1px solid #2a2a2a;
     border-radius: 15px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+
+    cursor: pointer;
+}
+
+.noticecard_title {
+    width: 80%;
+    margin: 0 0 0 0;
+    padding: 20px 0;
+
+    text-align: left;
 }
 
 .noticecard_image {
     width: 80%;
-    margin: 30px 0 0 0;
+    margin: 0 0;
 
-    border: 1px solid #fff;
+    border: 1px solid #2a2a2a;
     border-radius: 8px;
 
     object-fit: cover;
@@ -23,15 +35,17 @@
 
 .noticecard_content {
     display: flex;
-    justify-content: flex-start;
 
     width: 80%;
     min-height: 100px;
-    margin: 30px 0 0 0;
+    margin: 0 0;
 
     font-size: 12px;
+    white-space: pre-line;
+    text-align: left; 
 
-    border: 1px solid #fff;
+    background-color: #2e2e2e;
+    border: 1px solid #2a2a2a;
     border-radius: 8px;
 
     padding: 12px;
@@ -89,4 +103,125 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
+}
+
+
+
+.subscribecard_layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 250px;
+    height: auto;
+
+    background-color: #242424;
+    border: 1px solid #2a2a2a;
+    border-radius: 15px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+
+    cursor: pointer;
+}
+
+.subscribecard_title {
+    width: 80%;
+    margin: 0 0 0 0;
+    padding: 20px 0;
+
+    text-align: left;
+}
+
+.subscribecard_image {
+    width: 80%;
+    margin: 0 0;
+
+    border: 1px solid #2a2a2a;
+    border-radius: 8px;
+
+    object-fit: cover;
+}
+
+.subscribecard_content {
+    display: flex;
+
+    width: 80%;
+    min-height: 100px;
+    margin: 0 0;
+
+    font-size: 12px;
+    white-space: pre-line;
+    text-align: left; 
+
+    background-color: #2e2e2e;
+    border: 1px solid #2a2a2a;
+    border-radius: 8px;
+
+    padding: 12px;
+    box-sizing: border-box;
+
+}
+
+.subscribecard_info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 80%;
+    padding: 15px 0;
+}
+
+.subscribecard_profile {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    width: 80%;
+}
+
+.subscribecard_profile_img {
+    width: 30px;
+    height: 30px;
+
+    border-radius: 50%;
+
+    object-fit: cover;
+}
+
+.subscribecard_text {
+    font-size: 12px;
+}
+
+.subscribecard_name {
+    display: flex;
+    align-items: flex-end;
+
+    margin: 0;
+}
+
+.subscribecard_date {
+    display: flex;
+    align-items: flex-end;
+
+    margin: 0;
+}
+
+.custom-dropdown-menu {
+    background-color: #2e2e2e !important;
+    border: 1px solid #d9d9d9;
+    padding: 4px 0;
+    border-radius: 10px;
+}
+
+.custom-dropdown-item {
+    color: #ffffff !important;
+    font-weight: 500;
+    padding: 8px 20px;
+    transition: all 0.2s ease;
+}
+
+.custom-dropdown-item:hover {
+    background-color: #585858 !important;
+    color: #78D900 !important;
 }

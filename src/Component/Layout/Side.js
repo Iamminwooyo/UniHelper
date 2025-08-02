@@ -8,7 +8,9 @@ const Side = () => {
   const location = useLocation();
   const path = location.pathname;
 
-  const setMenu = useSetRecoilState(MenuState)
+  const setMenu = useSetRecoilState(MenuState);
+
+  const user = usersdata[0];
 
   const menusByPath = [
     {
@@ -35,18 +37,21 @@ const Side = () => {
     },
     {
       match: (p) => p.startsWith("/notice"),
-      items: [
-        { name: "공지사항", link: "/notice" },
-        { name: "구독 관리", link: "/notice/subscribe" },
-      ],
+      items: (user.role === 2 || user.role === 3) 
+      ? [
+          { name: "공지사항", link: "/notice" },
+          { name: "작성 목록", link: "/notice/write" },
+          { name: "구독 관리", link: "/notice/subscribe" },
+        ]
+      : [
+          { name: "공지사항", link: "/notice" },
+          { name: "구독 관리", link: "/notice/subscribe" },
+        ],
     },
   ];
 
   const currentMenu = menusByPath.find((menu) => menu.match(path))?.items || [];
 
-  const user = usersdata[0];
-
-  
   const isActiveMenu = (currentPath, itemLink) => {
     const normalize = (url) => url.replace(/\/+$/, "");
     const getBasePath = (url) => normalize(url).split("/").slice(0, 3).join("/");

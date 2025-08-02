@@ -146,6 +146,110 @@
       visibility: hidden;
       color: transparent; 
     }
+
+    .textmodal_wrap .ant-modal {
+      width: 400px !important;
+    }
+
+
+    .textmodal_wrap .ant-modal-content {
+      background-color: #1B1B1B;
+      border-radius: 30px !important;
+      overflow: hidden;
+    }
+
+    .textmodal_layout {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: flex-start;
+      justify-content: center; 
+      height: 100%;
+
+    }
+
+    .textmodal_title {
+      margin: 20px 0 20px 20px;
+      font-size: 25px;
+      align-self: flex-start;
+      color: #ffffff;
+    }
+
+    .textmodal_text {
+      margin: 0 0 0 20px;
+
+      color: #ffffff;
+    }
+
+    .textmodal_button_ok.ant-btn {
+      margin-top: 20px;
+      height: 38px;
+      font-size: 13px;
+      padding: 0 16px;
+
+      background-color: #78D900;
+      border: none;
+      color: white;
+      border-radius: 8px;
+    }
+
+    .textmodal_button_ok.ant-btn:hover {
+      background-color: #63b400 !important;
+      color: white !important;
+    }
+
+    .textmodal_button_cancle.ant-btn {
+      margin-top: 20px;
+      height: 38px;
+      font-size: 13px;
+      padding: 0 16px;
+
+      background-color: #ffffff;
+      border: none;
+      color: rgb(0, 0, 0);
+      border-radius: 8px;
+    }
+
+    .textmodal_button_cancle.ant-btn:hover {
+      background-color: #3a3a3a !important;
+      color: rgb(255, 255, 255) !important;
+      border: none;
+    }
+
+    .noticemodal_img_upload .ant-upload.ant-upload-select {
+      background-color: #3a3a3a !important;
+      color: #fff;
+    }
+
+    .noticemodal_img_upload .ant-upload:hover,
+    .noticemodal_img_upload .ant-upload:focus,
+    .noticemodal_img_upload .ant-upload:active {
+      border-color: #78D900 !important;
+      box-shadow: none !important; 
+      outline: none;
+    }
+
+    .noticemodal_img_upload .ant-upload > div > div,
+    .noticemodal_img_upload .anticon {
+      color: white;
+      opacity: 0.3;
+    }
+
+    .noticemodal_file_upload {
+      display: block;         
+      background-color: #3a3a3a;
+      border-radius: 8px;
+      padding: 8px;
+      cursor: pointer;
+    }
+
+    .noticemodal_file_upload .ant-btn {
+      width: 100%;
+      background: transparent;
+      color: white;
+      opacity: 0.3;
+      border: none;
+    }
 }
   @media (min-width: 769px) and (max-width: 1240px) {
     .passwordmodal_wrap .ant-modal {
@@ -282,7 +386,7 @@
 
   .passwordmodal_input_message {
     min-height: 1.5em; /* 메시지 높이 고정 */
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     margin: 0;
     color: #78D900; /* 기본 성공 색 */
   }
@@ -431,7 +535,7 @@
 
     .passwordmodal_input_message {
       min-height: 1.5em; /* 메시지 높이 고정 */
-      font-size: 0.8rem;
+      font-size: 0.65rem;
       margin: 0;
       color: #78D900; /* 기본 성공 색 */
     }

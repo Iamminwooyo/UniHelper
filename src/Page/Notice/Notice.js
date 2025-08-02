@@ -1,10 +1,14 @@
 import "./Notice.css";
 import Masonry from "react-masonry-css";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Cascader, Tag } from "antd";
 import SearchBar from "../../Component/Search/Search";
 import NoticeCard from "../../Component/Card/NoticeCard";
+import NoticeModal from "../../Component/Modal/NoticeModal";
 import { noticedata } from "../../Data/Noticedata";
+import { usersdata } from "../../Data/Userdata";
+import { TbEdit } from "react-icons/tb";
 
 const options = [
   {
@@ -60,6 +64,10 @@ const Notice = () => {
   const [selectedTags, setSelectedTags] = useState([]);
   const [tagColors, setTagColors] = useState({}); // { tagStr: color }
   const [cascaderValue, setCascaderValue] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const currentUser = usersdata[0];
 
   const onFilterChange = (value) => {
     const tagStr = value[value.length - 1];
@@ -81,6 +89,28 @@ const Notice = () => {
       return newColors;
     });
   };
+
+  const handleCardClick = (id) => {
+    navigate(`/notice/${id}`);
+  };
+
+  // 모달 닫기 함수
+  const handleModalCancel = () => {
+    setIsModalOpen(false);
+  };
+
+  // 모달 제출 함수 (예시)
+  const handleModalSubmit = async (data) => {
+    // data = { title, content, imageUrl, attachments }
+    // TODO: 실제 API 호출 코드 작성 필요
+    console.log("모달 제출 데이터:", data);
+
+  
+    setIsModalOpen(false);
+
+    // 작성 후 리스트 리프레시 등 필요한 작업 추가
+  };
+
 
   return (
     <main className="notice_layout">
@@ -128,26 +158,52 @@ const Notice = () => {
                     </Tag>
                 ))}
             </div>
+            {(currentUser?.role === 2 || currentUser?.role === 3) && (
+              <TbEdit
+                style={{
+                  marginLeft: "10px",
+                  fontSize: "30px",
+                  cursor: "pointer",
+                  color: "#ffffff",
+                }}
+                onClick={() => setIsModalOpen(true)} 
+              />
+            )}
         </div>
         <Masonry
           breakpointCols={{ default: 3, 1100: 2, 700: 1 }}
           className="notice_post"
           columnClassName="notice_post_column"
         >
-          {noticedata.map((post) => (
-            <NoticeCard
-              key={post.id}
-              profile={post.profile}
-              name={post.name}
-              date={post.date}
-              check={post.check}
-              image={post.imageUrl}
-              content={post.content}
-              bookmarked={post.bookmarked}
-            />
+          {noticedata
+             .filter(post => 
+                keyword === "" || 
+                post.content.toLowerCase().includes(keyword.toLowerCase()) || 
+                post.title.toLowerCase().includes(keyword.toLowerCase())
+              )
+            .map(post => (
+              <NoticeCard
+                key={post.id}
+                title={post.title} 
+                profile={post.profile}
+                name={post.name}
+                date={post.date}
+                check={post.check}
+                images={post.imageUrls}
+                content={post.content}
+                bookmarked={post.bookmarked}
+                onClick={() => handleCardClick(post.id)}
+              />
           ))}
         </Masonry>
       </section>
+      {isModalOpen && (
+        <NoticeModal
+          open={isModalOpen}
+          onCancel={handleModalCancel}
+          onSubmit={handleModalSubmit}
+        />
+      )}
     </main>
   );
 };
