@@ -1,18 +1,8 @@
 import "./Card.css"; 
-import { useState } from "react";
-import TextModal from "../Modal/TextModal";
 import { HiDotsVertical } from "react-icons/hi";
 import { Dropdown, Menu } from "antd";
 
-
-const WriteCard = ({ id, profile, name, date,  title, content, images, bookmarked, onBookmarkToggle, onClick,  onEdit, onDelete }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalMode, ] = useState("subscribe"); // "subscribe" or "unsubscribe"
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
+const WriteCard = ({ id, profile, name, date, title, content, images, onClick, onEdit, onDelete }) => {
   const firstImage = images && images.length > 0 ? images[0] : null;
 
   const truncateText = (text, maxLength) => {
@@ -20,10 +10,12 @@ const WriteCard = ({ id, profile, name, date,  title, content, images, bookmarke
     return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
   };
   
-  const handleMenuClick = ({ key }) => {
-    if (key === "edit") {
-      onEdit?.(id); // 선택적 실행
-    } else if (key === "delete") {
+  const handleMenuClick = (info) => {
+    info.domEvent.stopPropagation();
+
+    if (info.key === "edit") {
+      onEdit?.(id);
+    } else if (info.key === "delete") {
       onDelete?.(id);
     }
   };
@@ -35,38 +27,32 @@ const WriteCard = ({ id, profile, name, date,  title, content, images, bookmarke
     </Menu>
   );
 
-
   return (
-     <>
-      <section className="noticecard_layout" onClick={onClick}>
+    <section className="noticecard_layout">
+      <h4 className="noticecard_title">{truncateText(title, 15)}</h4>
 
-        <h4 className="noticecard_title">{truncateText(title, 15)}</h4>
+      {firstImage ? (
+        <img onClick={onClick} src={firstImage} alt="공지 이미지" className="noticecard_image" />
+      ) : (
+        <div onClick={onClick} className="noticecard_content"> {truncateText(content, 100)}</div>
+      )}
 
-        {firstImage ? (
-          <img src={firstImage} alt="공지 이미지" className="noticecard_image" />
-        ) : (
-          <div className="noticecard_content"> {truncateText(content, 100)}</div>
-        )}
-
-        <div className="noticecard_info">
-          <div className="noticecard_profile">
-              <img src={profile} alt="profile" className="noticecard_profile_img" />
-              <div className="noticecard_text">
-                  <p className="noticecard_name">{name}</p>
-                  <p className="noticecard_date">{date}</p>
-              </div>
+      <div className="noticecard_info">
+        <div className="noticecard_profile">
+          <img src={profile} alt="profile" className="noticecard_profile_img" />
+          <div className="noticecard_text">
+            <p className="noticecard_name">{name}</p>
+            <p className="noticecard_date">{date}</p>
           </div>
-
-          <Dropdown overlay={menu} trigger={['click']}>
-            <div className="noticecard_icon" style={{ cursor: "pointer" }} onClick={(e) => e.stopPropagation()}>
-              <HiDotsVertical />
-            </div>
-          </Dropdown>
         </div>
-      </section>
 
-      <TextModal open={isModalOpen} onCancel={closeModal} mode={modalMode} />
-     </>
+        <Dropdown overlay={menu} trigger={['click']}>
+          <div className="noticecard_icon" style={{ cursor: "pointer" }} onClick={(e) => e.stopPropagation()}>
+            <HiDotsVertical />
+          </div>
+        </Dropdown>
+      </div>
+    </section>
   );
 };
 

@@ -1,9 +1,12 @@
 import "./Card.css"; 
 import { useState } from "react";
-import { IoBookmark, IoBookmarkOutline } from "react-icons/io5";
 import TextModal from "../Modal/TextModal";
+import { Dropdown, Menu } from "antd";
+import { IoBookmark, IoBookmarkOutline } from "react-icons/io5";
+import { HiDotsVertical } from "react-icons/hi";
 
-const NoticeCard = ({ id, profile, name, date,  title, content, images, bookmarked, onBookmarkToggle, onClick, }) => {
+const NoticeCard = ({ id, profile, name, date,  title, content, images, bookmarked, onBookmarkToggle, currentUserRole, onEdit,
+  onDelete, onClick, }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState("subscribe"); // "subscribe" or "unsubscribe"
 
@@ -25,16 +28,38 @@ const NoticeCard = ({ id, profile, name, date,  title, content, images, bookmark
   };
   
 
+   // 드롭다운 메뉴 클릭 핸들러
+  const handleMenuClick = (info) => {
+    info.domEvent.stopPropagation(); // 클릭 이벤트 버블링 막기
+    if (info.key === "edit") {
+      onEdit?.(id);
+    } else if (info.key === "delete") {
+      onDelete?.(id);
+    }
+  };
+
+  // 메뉴 정의
+  const menu = (
+    <Menu onClick={handleMenuClick} className="custom-dropdown-menu">
+      <Menu.Item key="edit" className="custom-dropdown-item">
+        수정
+      </Menu.Item>
+      <Menu.Item key="delete" className="custom-dropdown-item delete">
+        삭제
+      </Menu.Item>
+    </Menu>
+  );
+
   return (
      <>
-      <section className="noticecard_layout" onClick={onClick}>
+      <section className="noticecard_layout">
 
         <h4 className="noticecard_title">{truncateText(title, 20)}</h4>
 
         {firstImage ? (
-          <img src={firstImage} alt="공지 이미지" className="noticecard_image" />
+          <img onClick={onClick} src={firstImage} alt="공지 이미지" className="noticecard_image" />
         ) : (
-          <div className="noticecard_content"> {truncateText(content, 100)}</div>
+          <div onClick={onClick} className="noticecard_content"> {truncateText(content, 100)}</div>
         )}
 
         <div className="noticecard_info">
@@ -45,15 +70,29 @@ const NoticeCard = ({ id, profile, name, date,  title, content, images, bookmark
                   <p className="noticecard_date">{date}</p>
               </div>
           </div>
-          <div
-            className="noticecard_icon"
-            onClick={(e) => openModal(e, bookmarked ? "unsubscribe" : "subscribe")}
-            style={{ cursor: "pointer" }}
-          >
-            {bookmarked ? (
-              <IoBookmark size={28} color="#78D900" />
-            ) : (
-              <IoBookmarkOutline size={28} />
+         <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+            <div
+              className="noticecard_icon"
+              onClick={(e) => openModal(e, bookmarked ? "unsubscribe" : "subscribe")}
+              style={{ cursor: "pointer" }}
+            >
+              {bookmarked ? (
+                <IoBookmark size={28} color="#78D900" />
+              ) : (
+                <IoBookmarkOutline size={28} />
+              )}
+            </div>
+
+            {currentUserRole === 3 && (
+              <Dropdown overlay={menu} trigger={["click"]}>
+                <div
+                  className="noticecard_icon"
+                  style={{ cursor: "pointer" }}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <HiDotsVertical size={20} />
+                </div>
+              </Dropdown>
             )}
           </div>
         </div>

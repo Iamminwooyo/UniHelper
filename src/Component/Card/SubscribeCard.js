@@ -11,14 +11,14 @@ const SubscribeCard = ({ id, profile, name, date,  title, content, images, onCli
   
 
   return (
-      <section className="subscribecard_layout" onClick={onClick}>
+      <section className="subscribecard_layout">
 
         <h4 className="subscribecard_title">{truncateText(title, 15)}</h4>
 
         {firstImage ? (
-          <img src={firstImage} alt="공지 이미지" className="subscribecard_image" />
+          <img  onClick={onClick} src={firstImage} alt="공지 이미지" className="subscribecard_image" />
         ) : (
-          <div className="subscribecard_content"> {truncateText(content, 100)}</div>
+          <div  onClick={onClick} className="subscribecard_content"> {truncateText(content, 100)}</div>
         )}
 
         <div className="subscribecard_info">

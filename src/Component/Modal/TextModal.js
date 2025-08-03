@@ -34,6 +34,13 @@ const modalConfig = {
       onCancel();
     },
   },
+  noticedelete: {
+    title: "공지사항 삭제",
+    content: () => `해당 공지사항을 삭제하시겠습니까?`,
+    onOk: (name, onCancel) => {
+      onCancel(); // 삭제 실제 로직은 부모 컴포넌트에서 처리
+    },
+  },
 };
 
 const TextModal = ({ open, onCancel, mode, name }) => {
