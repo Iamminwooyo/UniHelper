@@ -11,8 +11,6 @@
     border: 1px solid #2a2a2a;
     border-radius: 15px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
-
-    cursor: pointer;
 }
 
 .noticecard_title {
@@ -31,6 +29,8 @@
     border-radius: 8px;
 
     object-fit: cover;
+
+    cursor: pointer;
 }
 
 .noticecard_content {
@@ -51,6 +51,7 @@
     padding: 12px;
     box-sizing: border-box;
 
+    cursor: pointer;
 }
 
 .noticecard_info {
@@ -120,8 +121,6 @@
     border: 1px solid #2a2a2a;
     border-radius: 15px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
-
-    cursor: pointer;
 }
 
 .subscribecard_title {
@@ -140,6 +139,8 @@
     border-radius: 8px;
 
     object-fit: cover;
+
+    cursor: pointer;
 }
 
 .subscribecard_content {
@@ -160,6 +161,7 @@
     padding: 12px;
     box-sizing: border-box;
 
+    cursor: pointer;
 }
 
 .subscribecard_info {

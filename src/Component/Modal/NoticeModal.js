@@ -1,25 +1,27 @@
 import "./Modal.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Modal, Input, Button, Upload, message } from "antd";
 import { UploadOutlined, PlusOutlined } from "@ant-design/icons";
 
-const NoticeModal = ({ open, onCancel, onSubmit }) => {
+const NoticeModal = ({ open, onCancel, onSubmit, initialData = null, mode = "create" }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [imageFiles, setImageFiles] = useState([]);
   const [fileList, setFileList] = useState([]);
   const [submitting, setSubmitting] = useState(false);
 
-  const resetState = () => {
-    setTitle("");
-    setContent("");
-    setImageFiles([]);
-    setFileList([]);
-    setSubmitting(false);
-  };
+  // 모달 열릴 때마다 initialData로 초기화
+  useEffect(() => {
+    if (open) {
+      setTitle(initialData?.title || "");
+      setContent(initialData?.content || "");
+      setImageFiles(initialData?.images || []);
+      setFileList(initialData?.attachments || []);
+      setSubmitting(false);
+    }
+  }, [open, initialData]);
 
   const handleCancel = () => {
-    resetState();
     onCancel();
   };
 
@@ -52,10 +54,11 @@ const NoticeModal = ({ open, onCancel, onSubmit }) => {
       await onSubmit({
         title: title.trim(),
         content: content.trim(),
-        images: imageFiles,       // 이미지 여러 개
-        attachments: fileList,    // 첨부파일 여러 개
+        images: imageFiles,
+        attachments: fileList,
+        id: initialData?.id, // 수정용 id 전달 (필요하면)
       });
-      message.success("공지사항이 작성되었습니다.");
+      message.success(mode === "edit" ? "공지사항이 수정되었습니다." : "공지사항이 작성되었습니다.");
       handleCancel();
     } catch (error) {
       message.error("작성 중 오류가 발생했습니다.");
@@ -73,11 +76,11 @@ const NoticeModal = ({ open, onCancel, onSubmit }) => {
       wrapClassName="passwordmodal_wrap"
     >
       <section className="passwordmodal_layout">
-        <h2 className="passwordmodal_title">공지사항 작성</h2>
+        <h2 className="passwordmodal_title">{mode === "edit" ? "공지사항 수정" : "공지사항 작성"}</h2>
 
         {/* 제목 */}
-        <div className="passwordmodal_input_group">
-          <p className="passwordmodal_input_label">제목</p>
+        <div className="noticemodal_input_group">
+          <p className="noticemodal_input_label">제목</p>
           <Input
             placeholder="제목"
             value={title}
@@ -87,20 +90,21 @@ const NoticeModal = ({ open, onCancel, onSubmit }) => {
         </div>
 
         {/* 내용 */}
-        <div className="passwordmodal_input_group" style={{ marginTop: 16 }}>
-          <p className="passwordmodal_input_label">내용</p>
+        <div className="noticemodal_input_group" style={{ marginTop: 16 }}>
+          <p className="noticemodal_input_label">내용</p>
           <Input.TextArea
             placeholder="내용"
             value={content}
             onChange={(e) => setContent(e.target.value)}
             rows={6}
             maxLength={1000}
+            autoSize={{ minRows: 1, maxRows: 30 }}
           />
         </div>
 
         {/* 이미지 업로드 */}
-        <div className="passwordmodal_input_group" style={{ marginTop: 16 }}>
-          <p className="passwordmodal_input_label">이미지 업로드</p>
+        <div className="noticemodal_input_group" style={{ marginTop: 16 }}>
+          <p className="noticemodal_input_label">이미지</p>
           <Upload
             className="noticemodal_img_upload"
             listType="picture-card"
@@ -113,15 +117,15 @@ const NoticeModal = ({ open, onCancel, onSubmit }) => {
             {imageFiles.length >= 8 ? null : (
               <div>
                 <PlusOutlined />
-                <div style={{ marginTop: 8 }}>Upload</div>
+                <div style={{ marginTop: 8 }}>이미지 선택</div>
               </div>
             )}
           </Upload>
         </div>
 
         {/* 첨부파일 업로드 */}
-        <div className="passwordmodal_input_group" style={{ marginTop: 16 }}>
-          <p className="passwordmodal_input_label">첨부파일</p>
+        <div className="noticemodal_input_group" style={{ marginTop: 16 }}>
+          <p className="noticemodal_input_label">첨부파일</p>
           <Upload
             className="noticemodal_file_upload"
             fileList={fileList}
@@ -129,7 +133,9 @@ const NoticeModal = ({ open, onCancel, onSubmit }) => {
             beforeUpload={() => false}
             multiple
           >
-            <Button icon={<UploadOutlined />}>파일 선택</Button>
+            <Button icon={<UploadOutlined />} className="noticemodal_file_upload_button">
+              파일 선택
+            </Button>
           </Upload>
         </div>
       </section>
