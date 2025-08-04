@@ -282,6 +282,19 @@ const Notice = () => {
     // 작성 후 리스트 리프레시 등 필요한 작업 추가
   };
 
+  // 카드 필터링 함수
+  const filteredNotices = noticedata.filter(post => {
+    const matchesKeyword =
+      keyword === "" ||
+      post.content.toLowerCase().includes(keyword.toLowerCase()) ||
+      post.title.toLowerCase().includes(keyword.toLowerCase());
+
+    const matchesFilter =
+      selectedTags.length === 0 || selectedTags.includes(post.name);
+
+    return matchesKeyword && matchesFilter;
+  });
+
 
   return (
     <main className="notice_layout">
@@ -328,49 +341,38 @@ const Notice = () => {
             </div>
             {(currentUser?.role === 2 || currentUser?.role === 3) && (
               <TbEdit
-                style={{
-                  marginLeft: "10px",
-                  fontSize: "30px",
-                  cursor: "pointer",
-                  color: "#78D900",
-                }}
+                className="notice_write_icon"
                 onClick={() => setIsModalOpen(true)} 
               />
             )}
         </div>
-        <Masonry
-          breakpointCols={{ default: 3, 1100: 2, 700: 1 }}
-          className="notice_post"
-          columnClassName="notice_post_column"
-        >
-          {noticedata
-            .filter(post => {
-              const matchesKeyword =
-                keyword === "" ||
-                post.content.toLowerCase().includes(keyword.toLowerCase()) ||
-                post.title.toLowerCase().includes(keyword.toLowerCase());
-
-              const matchesFilter =
-                selectedTags.length === 0 || selectedTags.includes(post.name); // ← 여기 name으로 체크
-
-              return matchesKeyword && matchesFilter;
-            })
-            .map(post => (
-              <NoticeCard
-                key={post.id}
-                title={post.title} 
-                profile={post.profile}
-                name={post.name}
-                date={post.date}
-                check={post.check}
-                images={post.imageUrls}
-                content={post.content}
-                bookmarked={post.bookmarked}
-                currentUserRole={currentUser?.role} 
-                onClick={() => handleCardClick(post.id)}
-              />
-          ))}
-        </Masonry>
+         {filteredNotices.length === 0 ? (
+            <div className="notice_empty">
+              공지사항이 존재하지 않습니다.
+            </div>
+          ) : (
+            <Masonry
+              breakpointCols={{ default: 3, 768: 2 }}
+              className="notice_post"
+              columnClassName="notice_post_column"
+            >
+              {filteredNotices.map(post => (
+                <NoticeCard
+                  key={post.id}
+                  title={post.title} 
+                  profile={post.profile}
+                  name={post.name}
+                  date={post.date}
+                  check={post.check}
+                  images={post.imageUrls}
+                  content={post.content}
+                  bookmarked={post.bookmarked}
+                  currentUserRole={currentUser?.role} 
+                  onClick={() => handleCardClick(post.id)}
+                />
+              ))}
+            </Masonry>
+          )}
       </section>
       {isModalOpen && (
         <NoticeModal

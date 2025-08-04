@@ -70,16 +70,16 @@ const NoticeCard = ({ id, profile, name, date,  title, content, images, bookmark
                   <p className="noticecard_date">{date}</p>
               </div>
           </div>
-         <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+         <div style={{ display: "flex", alignItems: "center", gap: "2px" }}>
             <div
               className="noticecard_icon"
               onClick={(e) => openModal(e, bookmarked ? "unsubscribe" : "subscribe")}
               style={{ cursor: "pointer" }}
             >
               {bookmarked ? (
-                <IoBookmark size={28} color="#78D900" />
+                <IoBookmark color="#78D900" />
               ) : (
-                <IoBookmarkOutline size={28} />
+                <IoBookmarkOutline />
               )}
             </div>
 
@@ -90,7 +90,7 @@ const NoticeCard = ({ id, profile, name, date,  title, content, images, bookmark
                   style={{ cursor: "pointer" }}
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <HiDotsVertical size={20} />
+                  <HiDotsVertical />
                 </div>
               </Dropdown>
             )}

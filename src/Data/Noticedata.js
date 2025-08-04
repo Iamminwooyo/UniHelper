@@ -50,7 +50,7 @@ export const noticedata = [
     id: 5,
     title: "강의시간표 및 강의실 안내",
     profile: "/image/profile.png",
-    name: "학사관리과",
+    name: "스포츠-웰니스연구센터",
     date: "2025-07-23",
     imageUrls: ["/image/notice1.jpg", "/image/notice2.jpg"],
     content: "이번 학기 강의시간표 안내입니다.",

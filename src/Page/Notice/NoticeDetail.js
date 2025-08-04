@@ -59,7 +59,7 @@ const NoticeDetail = () => {
                 </div>
               </div>
               <div className="notice_icon">
-                  {post.bookmarked ? <IoBookmark size={35}  color="#78D900"/> : <IoBookmarkOutline size={35} />}
+                  {post.bookmarked ? <IoBookmark  color="#78D900"/> : <IoBookmarkOutline />}
               </div>
             </div>
         </div>
@@ -88,8 +88,6 @@ const NoticeDetail = () => {
             <div className="notice_detail_img_group">
                 {images.length > 1 && (
                 <FaArrowLeft
-                    size={30}
-                    className="arrow_icon left"
                     onClick={prevImage}
                     style={{ cursor: "pointer" }}
                 />
@@ -101,8 +99,6 @@ const NoticeDetail = () => {
                 />
                 {images.length > 1 && (
                 <FaArrowRight
-                    size={30}
-                    className="arrow_icon right"
                     onClick={nextImage}
                     style={{ cursor: "pointer" }}
                 />

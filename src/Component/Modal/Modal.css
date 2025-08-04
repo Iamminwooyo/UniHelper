@@ -334,152 +334,336 @@
 }
   @media (min-width: 769px) and (max-width: 1240px) {
     .passwordmodal_wrap .ant-modal {
-  width: min(400px,50vw) !important;
-}
+    width: min(400px,50vw) !important;
+  }
 
 
-.passwordmodal_wrap .ant-modal-content {
-  background-color: #1B1B1B;
-  border-radius: 30px !important;
-  overflow: hidden;
-}
+  .passwordmodal_wrap .ant-modal-content {
+    background-color: #1B1B1B;
+    border-radius: 30px !important;
+    overflow: hidden;
+  }
 
-.passwordmodal_layout {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  align-items: center;
-  justify-content: center; 
-  height: 100%;
-
-}
-
-.passwordmodal_title {
-    margin: 20px 0 40px 20px;
-    font-size: min(23px, 2.5vw);
-    align-self: flex-start;
-    color: #ffffff;
-}
-
-.passwordmodal_input_group {
+  .passwordmodal_layout {
     display: flex;
     flex-direction: column;
-    width: 70%;
+    gap: 10px;
+    align-items: center;
+    justify-content: center; 
+    height: 100%;
+
   }
 
-  .passwordmodal_input_label {
-    display: flex;
-    justify-content: flex-start;
-
-    margin: 0 0 0.3vw 0;
-
-    color: #ffffff;
-    font-size: 14px;
+  .passwordmodal_title {
+      margin: 20px 0 40px 20px;
+      font-size: min(23px, 2.5vw);
+      align-self: flex-start;
+      color: #ffffff;
   }
 
-  .passwordmodal_input_group .ant-input,
-  .passwordmodal_input_group .ant-btn
-  .passwordmodal_input_group .ant-input-affix-wrapper {
-    height: min(35px,4.5vw) !important;
-    font-size: max(12px,0.9vw) !important; 
+  .passwordmodal_input_group {
+      display: flex;
+      flex-direction: column;
+      width: 70%;
+    }
 
-    padding: 0 12px !important;
-    background-color: #3a3a3a;
-    color: rgb(255, 255, 255);
+    .passwordmodal_input_label {
+      display: flex;
+      justify-content: flex-start;
 
-    border: none;
-    box-shadow: none;
-  }
+      margin: 0 0 0.3vw 0;
 
-  .passwordmodal_input_group .ant-input::placeholder {
-    color: #ffffff !important;  /* 원하는 색상으로 바꿔주세요 */
-    opacity: 0.3;
-  }
+      color: #ffffff;
+      font-size: 14px;
+    }
 
-  .passwordmodal_input_group .ant-input-password {
-    height: min(35px,4.5vw) !important;
-    font-size: max(12px,0.9vw) !important; 
-    padding: 0 12px 0 0 !important;
-    background-color: #3a3a3a;
-    color: rgb(255, 255, 255);
-    border: none;
-  }
+    .passwordmodal_input_group .ant-input,
+    .passwordmodal_input_group .ant-btn
+    .passwordmodal_input_group .ant-input-affix-wrapper {
+      height: min(35px,4.5vw) !important;
+      font-size: max(12px,0.9vw) !important; 
 
-  .passwordmodal_input_group .ant-input-password-icon {
-    color: #ffffff !important; /* 원하는 색상 */
-    opacity: 0.3;
-  }
+      padding: 0 12px !important;
+      background-color: #3a3a3a;
+      color: rgb(255, 255, 255);
 
-  .passwordmodal_input_button.ant-btn {
-    height: min(35px,4.5vw) !important;
-    font-size: max(12px,0.9vw) !important; 
-    padding: 0 16px;
+      border: none;
+      box-shadow: none;
+    }
 
-    background-color: #78D900;
-    border: none;
-    color: white;
-    border-radius: 8px;
-  }
+    .passwordmodal_input_group .ant-input::placeholder {
+      color: #ffffff !important;  /* 원하는 색상으로 바꿔주세요 */
+      opacity: 0.3;
+    }
 
-  .passwordmodal_input_button.ant-btn:hover {
-    background-color: #63b400;
-  }
+    .passwordmodal_input_group .ant-input-password {
+      height: min(35px,4.5vw) !important;
+      font-size: max(12px,0.9vw) !important; 
+      padding: 0 12px 0 0 !important;
+      background-color: #3a3a3a;
+      color: rgb(255, 255, 255);
+      border: none;
+    }
 
-  .passwordmodal_input_button:disabled,
-  .passwordmodal_input_button[disabled] {
-    cursor: not-allowed;
-  }
+    .passwordmodal_input_group .ant-input-password-icon {
+      color: #ffffff !important; /* 원하는 색상 */
+      opacity: 0.3;
+    }
 
-  .passwordmodal_button_ok.ant-btn {
-    margin-top: 38px;
-    height: min(35px,4.5vw) !important;
-    font-size: max(12px,0.9vw) !important; 
-    padding: 0 16px;
+    .passwordmodal_input_button.ant-btn {
+      height: min(35px,4.5vw) !important;
+      font-size: max(12px,0.9vw) !important; 
+      padding: 0 16px;
 
-    background-color: #78D900;
-    border: none;
-    color: white;
-    border-radius: 8px;
-  }
+      background-color: #78D900;
+      border: none;
+      color: white;
+      border-radius: 8px;
+    }
 
-  .passwordmodal_button_ok.ant-btn:hover {
-    background-color: #63b400 !important;
-    color: white !important;
-  }
+    .passwordmodal_input_button.ant-btn:hover {
+      background-color: #63b400;
+    }
 
-  .passwordmodal_button_cancle.ant-btn {
-    margin-top: 38px;
-    height: min(35px,4.5vw) !important;
-    font-size: max(12px,0.9vw) !important; 
-    padding: 0 16px;
+    .passwordmodal_input_button:disabled,
+    .passwordmodal_input_button[disabled] {
+      cursor: not-allowed;
+    }
 
-    background-color: #ffffff;
-    border: none;
-    color: rgb(0, 0, 0);
-    border-radius: 8px;
-  }
+    .passwordmodal_button_ok.ant-btn {
+      margin-top: 38px;
+      height: min(35px,4.5vw) !important;
+      font-size: max(12px,0.9vw) !important; 
+      padding: 0 16px;
 
-  .passwordmodal_button_cancle.ant-btn:hover {
-    background-color: #3a3a3a !important;
-    color: rgb(255, 255, 255) !important;
-    border: none;
-  }
+      background-color: #78D900;
+      border: none;
+      color: white;
+      border-radius: 8px;
+    }
 
-  .passwordmodal_input_message {
-    min-height: 1.5em; /* 메시지 높이 고정 */
-    font-size: 0.7rem;
-    margin: 0;
-    color: #78D900; /* 기본 성공 색 */
-  }
+    .passwordmodal_button_ok.ant-btn:hover {
+      background-color: #63b400 !important;
+      color: white !important;
+    }
 
-  .passwordmodal_input_message.error {
-    color: red;
-  }
+    .passwordmodal_button_cancle.ant-btn {
+      margin-top: 38px;
+      height: min(35px,4.5vw) !important;
+      font-size: max(12px,0.9vw) !important; 
+      padding: 0 16px;
 
-  .passwordmodal_input_message.hidden {
-    visibility: hidden;
-    color: transparent; 
-  }
+      background-color: #ffffff;
+      border: none;
+      color: rgb(0, 0, 0);
+      border-radius: 8px;
+    }
+
+    .passwordmodal_button_cancle.ant-btn:hover {
+      background-color: #3a3a3a !important;
+      color: rgb(255, 255, 255) !important;
+      border: none;
+    }
+
+    .passwordmodal_input_message {
+      min-height: 1.5em; /* 메시지 높이 고정 */
+      font-size: 0.7rem;
+      margin: 0;
+      color: #78D900; /* 기본 성공 색 */
+    }
+
+    .passwordmodal_input_message.error {
+      color: red;
+    }
+
+    .passwordmodal_input_message.hidden {
+      visibility: hidden;
+      color: transparent; 
+    }
+
+    .textmodal_wrap .ant-modal {
+      width: 400px !important;
+    }
+
+
+    .textmodal_wrap .ant-modal-content {
+      background-color: #1B1B1B;
+      border-radius: 30px !important;
+      overflow: hidden;
+    }
+
+    .textmodal_layout {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: flex-start;
+      justify-content: center; 
+
+      height: 100%;
+    }
+
+    .textmodal_title {
+      margin: 20px 0 20px 20px;
+
+      color: #ffffff;
+      font-size: 25px;
+      align-self: flex-start;
+    }
+
+    .textmodal_text {
+      margin: 0 0 0 25px;
+
+      color: #ffffff;
+    }
+
+    .textmodal_button_ok.ant-btn {
+      height: 38px;
+      margin-top: 20px;
+      padding: 0 16px;
+
+      color: white;
+      font-size: 13px;
+
+      background-color: #78D900;
+      border: none;
+      border-radius: 8px;
+    }
+
+    .textmodal_button_ok.ant-btn:hover {
+      color: white !important;
+
+      background-color: #63b400 !important;
+    }
+
+    .textmodal_button_cancle.ant-btn {
+      height: 38px;
+      margin-top: 20px;
+      padding: 0 16px;
+
+      color: rgb(0, 0, 0);
+      font-size: 13px;
+
+      background-color: #ffffff;
+      border: none;
+      border-radius: 8px;
+    }
+
+    .textmodal_button_cancle.ant-btn:hover {
+      color: #fff !important;
+
+      background-color: #3a3a3a !important;
+      border: none;
+    }
+
+    .noticemodal_input_group {
+      display: flex;
+      flex-direction: column;
+      width: 70%;
+    }
+
+    .noticemodal_input_label {
+      display: flex;
+      justify-content: flex-start;
+
+      margin: 0 0 0.3vw 0;
+
+      color: #ffffff;
+      font-size: 14px;
+    }
+
+    .noticemodal_input_group .ant-input:not(textarea),
+    .noticemodal_input_group .ant-btn
+    .noticemodal_input_group .ant-input-affix-wrapper {
+      height: 42px !important;
+      font-size: 13px;
+
+      padding: 0 12px !important;
+      background-color: #3a3a3a;
+      color: rgb(255, 255, 255);
+
+      border: none;
+      box-shadow: none;
+    }
+
+    .noticemodal_input_group textarea.ant-input {
+      min-height: 42px !important;
+      font-size: 13px;
+      padding: 12px;
+      background-color: #3a3a3a !important;
+      color: white !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+
+    .noticemodal_input_group .ant-input::placeholder {
+      color: #ffffff !important;  /* 원하는 색상으로 바꿔주세요 */
+      opacity: 0.3;
+    }
+
+    .noticemodal_img_upload .ant-upload.ant-upload-select {
+      color: #fff;
+
+      background-color: #3a3a3a !important;
+    }
+
+    .noticemodal_img_upload .ant-upload:hover,
+    .noticemodal_img_upload .ant-upload:focus,
+    .noticemodal_img_upload .ant-upload:active {
+      border-color: #78D900 !important;
+
+      box-shadow: none !important; 
+      outline: none;
+    }
+
+    .noticemodal_img_upload .ant-upload > div > div,
+    .noticemodal_img_upload .anticon {
+      color: white;
+
+      opacity: 0.3;
+    }
+
+    .noticemodal_file_upload {    
+      width: 100%;
+
+      background-color: #3a3a3a;
+      border-radius: 8px;
+    }
+
+    .noticemodal_file_upload_button {
+      flex: 1;
+      display: flex;
+      justify-content: flex-start;
+
+      width: 100%;
+      height: 38px;
+
+      color: white !important;
+      
+      background-color: #3a3a3a !important;
+      border: none;
+ 
+      opacity: 0.3;
+    }
+
+    .noticemodal_file_upload .ant-upload-select {         
+      width: 100% !important;
+      
+      cursor: pointer;
+    }
+
+    .noticemodal_file_upload .ant-upload-list-item-name {
+      color: white !important;
+    }
+
+    .noticemodal_file_upload .ant-upload-list-item {
+      padding: 0 0 15px 13px;
+    }
+
+    .noticemodal_file_upload .ant-upload-list-item-icon,
+    .noticemodal_file_upload .ant-upload-list-item .anticon {
+      color: white !important;
+      opacity: 0.3;
+    }
 }
 @media (min-width: 1px) and (max-width: 768px) {
   .passwordmodal_wrap .ant-modal {
@@ -628,5 +812,189 @@
     .passwordmodal_input_message.hidden {
       visibility: hidden;
       color: transparent; 
+    }
+
+    .textmodal_wrap .ant-modal {
+      width: 400px !important;
+    }
+
+
+    .textmodal_wrap .ant-modal-content {
+      background-color: #1B1B1B;
+      border-radius: 30px !important;
+      overflow: hidden;
+    }
+
+    .textmodal_layout {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: flex-start;
+      justify-content: center; 
+
+      height: 100%;
+    }
+
+    .textmodal_title {
+      margin: 20px 0 20px 20px;
+
+      color: #ffffff;
+      font-size: 25px;
+      align-self: flex-start;
+    }
+
+    .textmodal_text {
+      margin: 0 0 0 25px;
+
+      color: #ffffff;
+    }
+
+    .textmodal_button_ok.ant-btn {
+      height: 38px;
+      margin-top: 20px;
+      padding: 0 16px;
+
+      color: white;
+      font-size: 13px;
+
+      background-color: #78D900;
+      border: none;
+      border-radius: 8px;
+    }
+
+    .textmodal_button_ok.ant-btn:hover {
+      color: white !important;
+
+      background-color: #63b400 !important;
+    }
+
+    .textmodal_button_cancle.ant-btn {
+      height: 38px;
+      margin-top: 20px;
+      padding: 0 16px;
+
+      color: rgb(0, 0, 0);
+      font-size: 13px;
+
+      background-color: #ffffff;
+      border: none;
+      border-radius: 8px;
+    }
+
+    .textmodal_button_cancle.ant-btn:hover {
+      color: #fff !important;
+
+      background-color: #3a3a3a !important;
+      border: none;
+    }
+
+    .noticemodal_input_group {
+      display: flex;
+      flex-direction: column;
+      width: 70%;
+    }
+
+    .noticemodal_input_label {
+      display: flex;
+      justify-content: flex-start;
+
+      margin: 0 0 0.3vw 0;
+
+      color: #ffffff;
+      font-size: 14px;
+    }
+
+    .noticemodal_input_group .ant-input:not(textarea),
+    .noticemodal_input_group .ant-btn
+    .noticemodal_input_group .ant-input-affix-wrapper {
+      height: 42px !important;
+      font-size: 13px;
+
+      padding: 0 12px !important;
+      background-color: #3a3a3a;
+      color: rgb(255, 255, 255);
+
+      border: none;
+      box-shadow: none;
+    }
+
+    .noticemodal_input_group textarea.ant-input {
+      min-height: 42px !important;
+      font-size: 13px;
+      padding: 12px;
+      background-color: #3a3a3a !important;
+      color: white !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+
+    .noticemodal_input_group .ant-input::placeholder {
+      color: #ffffff !important;  /* 원하는 색상으로 바꿔주세요 */
+      opacity: 0.3;
+    }
+
+    .noticemodal_img_upload .ant-upload.ant-upload-select {
+      color: #fff;
+
+      background-color: #3a3a3a !important;
+    }
+
+    .noticemodal_img_upload .ant-upload:hover,
+    .noticemodal_img_upload .ant-upload:focus,
+    .noticemodal_img_upload .ant-upload:active {
+      border-color: #78D900 !important;
+
+      box-shadow: none !important; 
+      outline: none;
+    }
+
+    .noticemodal_img_upload .ant-upload > div > div,
+    .noticemodal_img_upload .anticon {
+      color: white;
+
+      opacity: 0.3;
+    }
+
+    .noticemodal_file_upload {    
+      width: 100%;
+
+      background-color: #3a3a3a;
+      border-radius: 8px;
+    }
+
+    .noticemodal_file_upload_button {
+      flex: 1;
+      display: flex;
+      justify-content: flex-start;
+
+      width: 100%;
+      height: 38px;
+
+      color: white !important;
+      
+      background-color: #3a3a3a !important;
+      border: none;
+ 
+      opacity: 0.3;
+    }
+
+    .noticemodal_file_upload .ant-upload-select {         
+      width: 100% !important;
+      
+      cursor: pointer;
+    }
+
+    .noticemodal_file_upload .ant-upload-list-item-name {
+      color: white !important;
+    }
+
+    .noticemodal_file_upload .ant-upload-list-item {
+      padding: 0 0 15px 13px;
+    }
+
+    .noticemodal_file_upload .ant-upload-list-item-icon,
+    .noticemodal_file_upload .ant-upload-list-item .anticon {
+      color: white !important;
+      opacity: 0.3;
     }
   }

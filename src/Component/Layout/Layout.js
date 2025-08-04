@@ -71,7 +71,7 @@ const Layout = () => {
                     <Route path="/notice/:id" element={<NoticeDetail />} />
                     <Route path="/notice/write" element={<NoticeWrite />} />
                     <Route path="/notice/subscribe" element={<NoticeSub />} />
-                    {/* 추가 라우트 필요하면 여기에 작성 */}
+                  
                     <Route path="*" element={<Main />} />
                 </Routes>
             </div>

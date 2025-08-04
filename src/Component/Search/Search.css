@@ -1,23 +1,81 @@
-.searchbar_layout {
-  display: flex;
-  align-items: center;
-  
-  min-width: 400px;
-  height: 80%;
-  
-  background-color: white;
-  border-radius: 10px;
+@media (min-width: 1241px) {
+  .searchbar_layout {
+    display: flex;
+    align-items: center;
+    
+    width: 30%;
+    height: 2.8vw;
+    
+    background-color: white;
+    border-radius: 0.5vw;
+  }
+
+  .searchbar_icon {
+    font-size: min(20px, 1vw);
+    color: #888;
+    margin: 0 10px;
+  }
+
+  .searchbar_input {
+    flex: 1;
+    border: none;
+    outline: none;
+
+    max-width: 70%;
+    font-size: min(20px, 1vw);
+  }
 }
+@media (min-width: 769px) and (max-width: 1240px) {
+  .searchbar_layout {
+    display: flex;
+    align-items: center;
+    
+    width: 30%;
+    height: 2.8vw;
+    
+    background-color: white;
+    border-radius: 0.5vw;
+  }
 
-.searchbar_icon {
-  font-size: 16px;
-  color: #888;
-  margin: 0 10px;
+  .searchbar_icon {
+    font-size: min(20px, 1.5vw);
+    color: #888;
+    margin: 0 10px;
+  }
+
+  .searchbar_input {
+    flex: 1;
+    border: none;
+    outline: none;
+
+    max-width: 70%;
+    font-size: min(20px, 1.5vw);
+  }
 }
+@media (min-width: 1px) and (max-width: 768px) {
+   .searchbar_layout {
+    display: flex;
+    align-items: center;
+    
+    width: 30%;
+    height: 4vw;
+    
+    background-color: white;
+    border-radius: 0.5vw;
+  }
 
-.searchbar_input {
-  border: none;
-  outline: none;
+  .searchbar_icon {
+    font-size: min(20px, 1.7vw);
+    color: #888;
+    margin: 0 10px;
+  }
 
-  font-size: 16px;
+  .searchbar_input {
+    flex: 1;
+    border: none;
+    outline: none;
+
+    max-width: 70%;
+    font-size: min(20px, 1.7vw);
+  }
 }

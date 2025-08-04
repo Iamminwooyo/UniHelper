@@ -88,23 +88,6 @@ const NoticeSub = () => {
                 <p className="subscribe_name">{org.name}</p>
               </div>
               <div className="subscribe_icon">
-                {org.notify ? (
-                  <FiBell
-                    style={{ cursor: "pointer", marginRight: 10 }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      openModal(org.name, "unnotify"); 
-                    }}
-                  />
-                ) : (
-                  <FiBellOff
-                    style={{ cursor: "pointer", marginRight: 10 }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      openModal(org.name, "notify"); 
-                    }}
-                  />
-                )}
                 <IoBookmark
                   color="#78D900"
                   style={{ cursor: "pointer" }}
@@ -118,7 +101,7 @@ const NoticeSub = () => {
           ))}
         </div>
         <Masonry
-          breakpointCols={{ default: 3, 1100: 2, 700: 1 }}
+          breakpointCols={{ default: 3, 1241: 2 }}
           className="subscribe_post"
           columnClassName="subscribe_post_column"
         >
@@ -126,7 +109,7 @@ const NoticeSub = () => {
             .filter(post =>
                 (keyword === "" ||
                 post.content.toLowerCase().includes(keyword.toLowerCase()) ||
-                post.title.toLowerCase().includes(keyword.toLowerCase()) // 제목 추가
+                post.title.toLowerCase().includes(keyword.toLowerCase())
                 ) &&
                 (selectedOrg === null || post.name === selectedOrg)
             )
@@ -151,7 +134,7 @@ const NoticeSub = () => {
         onCancel={closeModal}
         mode={modalMode}
         name={modalName}
-        onOk={handleModalOk} // 모달 확인 시 상태 변경 함수 전달
+        onOk={handleModalOk}
       />
     </main>
   );

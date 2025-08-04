@@ -84,7 +84,7 @@ const NoticeWrite = () => {
 
       <section className="notice_body">
         <Masonry
-          breakpointCols={{ default: 3, 1100: 2, 700: 1 }}
+          breakpointCols={{ default: 3, 768: 2 }}
           className="notice_post"
           columnClassName="notice_post_column"
         >
