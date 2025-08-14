@@ -2,7 +2,9 @@ import "./Login.css";
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
+import { useSetRecoilState } from "recoil";
 import axios from "axios";
+import { userBriefState } from "../../Recoil/Atom";
 import PasswordModal from "../../Component/Modal/PasswordModal";
 import { Input, Button, message } from "antd";
 
@@ -11,6 +13,8 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
+  const setUserBrief = useSetRecoilState(userBriefState);
+
 
   const isMobile = useMediaQuery({ maxWidth: 768 })
 
@@ -45,9 +49,19 @@ const Login = () => {
         sessionStorage.setItem("accessToken", res.data.accessToken);
         sessionStorage.setItem("refreshToken", res.data.refreshToken);
 
+        const accessToken = res.data.accessToken;
+
+        const briefRes = await axios.get("/mypage/brief", {
+          headers: { Authorization: `Bearer ${accessToken}` }
+        });
+
+        console.log("📌 /mypage/brief 응답:", briefRes.data);
+        
+        setUserBrief(briefRes.data)
+
         message.success("로그인 성공!");
         
-        navigate("/");  // 로그인 후 이동할 페이지 경로 수정 가능
+        navigate("/");
       } else {
         message.error(res.data.message || "로그인에 실패했습니다.");
       }

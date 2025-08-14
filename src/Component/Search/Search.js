@@ -1,7 +1,16 @@
 import "./Search.css";
 import { FaSearch } from "react-icons/fa";
+import { useState } from "react";
 
 const SearchBar = ({ onSearchChange }) => {
+  const [inputValue, setInputValue] = useState("");
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      onSearchChange?.(inputValue.trim());
+    }
+  };
+
   return (
     <div className="searchbar_layout">
       <FaSearch className="searchbar_icon" />
@@ -9,7 +18,9 @@ const SearchBar = ({ onSearchChange }) => {
         type="text"
         placeholder="검색"
         className="searchbar_input"
-        onChange={(e) => onSearchChange?.(e.target.value)}
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+        onKeyDown={handleKeyDown}
       />
     </div>
   );

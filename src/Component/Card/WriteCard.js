@@ -2,7 +2,7 @@ import "./Card.css";
 import { HiDotsVertical } from "react-icons/hi";
 import { Dropdown, Menu } from "antd";
 
-const WriteCard = ({ id, profile, name, date, title, content, images, onClick, onEdit, onDelete }) => {
+const WriteCard = ({ id, profile, name, updatedAt, createdAt, title, content, images, onClick, onEdit, onDelete }) => {
   const firstImage = images && images.length > 0 ? images[0] : null;
 
   const truncateText = (text, maxLength) => {
@@ -18,6 +18,11 @@ const WriteCard = ({ id, profile, name, date, title, content, images, onClick, o
     } else if (info.key === "delete") {
       onDelete?.(id);
     }
+  };
+
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    return dateString.slice(0, 10);
   };
 
   const menu = (
@@ -39,10 +44,14 @@ const WriteCard = ({ id, profile, name, date, title, content, images, onClick, o
 
       <div className="noticecard_info">
         <div className="noticecard_profile">
-          <img src={profile} alt="profile" className="noticecard_profile_img" />
+          <img src="/image/profile.png" alt="profile" className="noticecard_profile_img" />
           <div className="noticecard_text">
             <p className="noticecard_name">{name}</p>
-            <p className="noticecard_date">{date}</p>
+            <p className="noticecard_date">
+              {updatedAt
+                ? `${formatDate(updatedAt)} (수정됨)`
+                : formatDate(createdAt)}
+            </p>
           </div>
         </div>
 

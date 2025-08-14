@@ -1,8 +1,9 @@
 import "./Layout.css";
 import { Link, useLocation } from "react-router-dom";
-import { useSetRecoilState } from "recoil"
+import { useSetRecoilState, useRecoilValue } from "recoil"
+import { useMediaQuery } from "react-responsive";
 import { MenuState } from "../../Recoil/Atom";
-import { usersdata } from "../../Data/Userdata";
+import { userBriefState } from "../../Recoil/Atom";
 
 const Side = () => {
   const location = useLocation();
@@ -10,8 +11,10 @@ const Side = () => {
 
   const setMenu = useSetRecoilState(MenuState);
 
-  const user = usersdata[0];
+  const user = useRecoilValue(userBriefState);
 
+  const isMobile = useMediaQuery({ maxWidth: 768 });
+  
   const menusByPath = [
     {
       match: (p) => p.startsWith("/user"),
@@ -31,13 +34,13 @@ const Side = () => {
       match: (p) => p.startsWith("/tip"),
       items: [
         { name: "Tip 목록", link: "/tip/" },
-        { name: "저장 목록", link: "/tip/like" },
+        { name: "저장 목록", link: "/tip/subscribe" },
         { name: "작성 목록", link: "/tip/write" },
       ],
     },
     {
       match: (p) => p.startsWith("/notice"),
-      items: (user.role === 2 || user.role === 3) 
+      items: (user.roleType === "MANAGER") 
       ? [
           { name: "공지사항", link: "/notice" },
           { name: "작성 목록", link: "/notice/write" },
@@ -64,33 +67,49 @@ const Side = () => {
 
   return (
     <side className="side_layout">
-      <section className="side_profile">
-        <img
-          src={user.profileimg ? user.profileimg : "/image/profile.png"}
-          alt="profile"
-          className="side_profile_img" 
-        />
-        <span className="side_info_text">{user.name}</span>
-        <div className="side_info">
-          <p className="side_info_text">{user.department}</p>
-          <p className="side_info_text">{user.studentId}</p>
-        </div>
-      </section>
+      {!isMobile && (
+        <section className="side_profile">
+          <img
+            src={user.profileImageUrl ? user.profileImageUrl : "/image/profile.png"}
+            alt="profile"
+            className="side_profile_img" 
+          />
+          <span className="side_info_text">{user.username}</span>
+          <div className="side_info">
+            <p className="side_info_text">{user.department}</p>
+            <p className="side_info_text">{user.student_number}</p>
+          </div>
+        </section>
+      )}
+      {!isMobile && ( <div className="side_separator" />)}
 
-      <div className="side_separator" />
-
-      <section className="side_menu">
-        {currentMenu.map((item, index) => (
-          <Link
-            to={item.link}
-            key={index}
-            className={`side_menu_text ${isActiveMenu(path, item.link) ? "active" : ""}`}
-            onClick={() => handleClick(item.link)}
-          >
-            {item.name}
-          </Link>
-        ))}
-      </section>
+      {!isMobile ? (
+        <section className="side_menu">
+          {currentMenu.map((item, index) => (
+            <Link
+              to={item.link}
+              key={index}
+              className={`side_menu_text ${isActiveMenu(path, item.link) ? "active" : ""}`}
+              onClick={() => handleClick(item.link)}
+            >
+              {item.name}
+            </Link>
+          ))}
+        </section>
+      ):(
+        <section className="side_menu">
+          {currentMenu.map((item, index) => (
+            <Link
+              to={item.link}
+              key={index}
+              className={`side_menu_text ${isActiveMenu(path, item.link) ? "active" : ""}`}
+              onClick={() => handleClick(item.link)}
+            >
+              {item.name}
+            </Link>
+          ))}
+        </section>
+      )}
     </side>
   );
 };

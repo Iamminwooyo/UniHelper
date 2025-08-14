@@ -2,19 +2,17 @@ import "./Modal.css";
 import { Modal,  Button, message } from "antd";
 
 const modalConfig = {
-  subscribe: {
-    title: "구독 확인",
+  noticesubscribe: {
+    title: "공지사항 구독",
     content: (name) => `${name}를 구독하시겠습니까?`,
     onOk: (name, onCancel) => {
-      message.success(`${name}를 구독했습니다.`);
       onCancel();
     },
   },
-  unsubscribe: {
+  noticeunsubscribe: {
     title: "구독 취소",
     content: (name) => `${name} 구독을 취소하시겠습니까?`,
     onOk: (name, onCancel) => {
-      message.success(`${name} 구독을 취소했습니다.`);
       onCancel();
     },
   },
@@ -38,20 +36,58 @@ const modalConfig = {
     title: "공지사항 삭제",
     content: () => `해당 공지사항을 삭제하시겠습니까?`,
     onOk: (name, onCancel) => {
-      onCancel(); // 삭제 실제 로직은 부모 컴포넌트에서 처리
+      onCancel();
+    },
+  },
+  tipsubscribe: {
+    title: "Tip 저장",
+    content: (title) => `"${title}" Tip을 저장하시겠습니까?`,
+    onOk: (title, onCancel) => {
+      onCancel();
+    },
+  },
+  tipunsubscribe: {
+    title: "저장 취소",
+    content: (title) => `"${title}" Tip 저장을 취소하시겠습니까?`,
+    onOk: (title, onCancel) => {
+      onCancel();
+    },
+  },
+  tipdelete: {
+    title: "Tip 삭제",
+    content: () => `해당 Tip을 삭제하시겠습니까?`,
+    onOk: (name, onCancel) => {
+      onCancel();
+    },
+  },
+  commentdelete: {
+    title: "댓글 삭제",
+    content: () => `해당 댓글을 삭제하시겠습니까?`,
+    onOk: (name, onCancel) => {
+      onCancel();
     },
   },
 };
 
-const TextModal = ({ open, onCancel, mode, name }) => {
+const TextModal = ({ open, onCancel, mode, name, title, onConfirm }) => {
   const config = modalConfig[mode] || {};
 
+  const getContentParam = () => {
+    if (mode.startsWith("tip")) return title;
+    return name;
+  };
+
   const handleSubmit = () => {
+    if (onConfirm) {
+      onConfirm();  
+    }
+
     if (config.onOk) {
-      config.onOk(name, onCancel);
+      config.onOk(name, onCancel); 
     } else {
       onCancel();
     }
+
   };
 
   return (
@@ -61,23 +97,23 @@ const TextModal = ({ open, onCancel, mode, name }) => {
       footer={null}
       centered
       closable={false}
-      wrapClassName="textmodal_wrap"
+      wrapClassName="custommodal_wrap"
     >
-      <section className="textmodal_layout">
-        <h2 className="textmodal_title">{config.title || ""}</h2>
-        <div className="textmodal_text">{config.content ? config.content(name) : ""}</div>
+      <section className="custommodal_layout">
+        <h2 className="custommodal_title">{config.title || ""}</h2>
+        <div className="custommodal_text">{config.content ? config.content(getContentParam()) : ""}</div>
       </section>
 
       <section style={{ marginTop: 10, marginBottom: 10, textAlign: "right" }}>
         <Button
           type="primary"
-          className="textmodal_button_ok"
+          className="custommodal_button_ok"
           onClick={handleSubmit}
           style={{ marginRight: 20 }}
         >
           확인
         </Button>
-        <Button className="textmodal_button_cancle" onClick={onCancel}>
+        <Button className="custommodal_button_cancle" onClick={onCancel}>
           취소
         </Button>
       </section>

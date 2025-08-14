@@ -76,4 +76,16 @@ export const noticedata = [
     bookmarked: false,
     files: []
   },
+
+  {
+    id: 7,
+    title: "강의시간표 안내",
+    profile: "/image/profile.png",
+    name: "학사관리과",
+    date: "2025-07-23",
+    imageUrls: [],
+    content: "이번 학기 강의시간표 안내입니다.",
+    bookmarked: true,
+    files: []
+  },
 ];

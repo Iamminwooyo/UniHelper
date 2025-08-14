@@ -26,13 +26,13 @@ const Header = () => {
 
   // 로그인 여부 확인
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
+    const token = sessionStorage.getItem("accessToken");
     setIsLoggedIn(!!token);
   }, []);
 
   // 로그아웃 처리
   const handleLogout = () => {
-    localStorage.removeItem("accessToken");
+    sessionStorage.removeItem("accessToken");
     setIsLoggedIn(false);
     navigate("/login");
   };

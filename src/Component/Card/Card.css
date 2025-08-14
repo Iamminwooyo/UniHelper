@@ -231,6 +231,249 @@
     }
 
 
+     .tipcard_layout {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        width: 90%;
+        height: auto;
+        padding: 5px 0;
+
+        background-color: #242424;
+        border: 1px solid #2a2a2a;
+        border-radius: 15px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    }
+
+    .tipcard_header {
+        display: flex;
+        justify-content: space-between;
+
+        width: 90%;
+        padding: 10px 0;
+    }
+
+    .tipcard_title {
+        display: flex;
+        justify-content: flex-start;
+
+        width: 90%;
+
+        font-size: 20px;
+
+        cursor: pointer;
+    }
+
+    .tipcard_icon {
+        display: flex;
+        align-items: center;
+        gap: 0.5vw;
+        font-size: max(15px, 1.3vw);
+    }
+
+    .tipcard_divider {
+        width: 90%;
+        margin: 0 0;
+        
+        border: none;
+        border-top: 1px solid #ffffff; /* 연한 회색 선 */
+        opacity: 0.5;
+
+        cursor: pointer;
+    }
+
+    .tipcard_info {
+        display: flex;
+        
+        width: 90%;
+        padding: 10px 0;
+
+        cursor: pointer;
+    }
+
+    .tipcard_profile {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        width: 80%;
+    }
+
+    .tipcard_profile_img {
+        width: 2vw;
+        height: 2vw;
+
+        border-radius: 50%;
+
+        object-fit: cover;
+    }
+
+    .tipcard_text {
+        font-size: min(11px, 0.8vw);
+    }
+
+    .tipcard_name {
+        display: flex;
+        align-items: flex-end;
+
+        margin: 0;
+    }
+
+    .tipcard_date {
+        display: flex;
+        align-items: flex-end;
+
+        margin: 0;
+    }
+
+    .tipcard_tag {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .tipcard_bookmark {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .tipcard_box {
+        display: flex;
+
+        width: 90%;
+        min-height: 100px;
+        margin: 0 0;
+
+        font-size: min(11px, 0.8vw);
+        white-space: pre-line;
+        text-align: left; 
+
+        background-color: #2e2e2e;
+        border: 1px solid #2a2a2a;
+        border-radius: 8px;
+
+        padding: 12px;
+        box-sizing: border-box;
+
+        cursor: pointer;
+    }
+
+    .tipcard_content {
+        flex: 1;
+    }
+
+    .tipcard_img {
+        flex: 1;
+    }
+
+    .tipcard_reaction {
+        display: flex;
+
+        width: 90%;
+        padding: 10px 0;
+
+        align-items: flex-start;
+        justify-content: flex-start;
+        text-align: start;
+
+        gap: 20px;
+    }
+
+    .tipcard_reaction_item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+
+        font-size: max(13px, 0.8vw);
+    }
+
+    .commentcard_layout {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        width: 90%;
+        height: auto;
+        padding: 10px 0;
+
+        background-color: #2e2e2e;
+        border: 1px solid #2a2a2a;
+        border-radius: 10px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    }
+
+    .commentcard_info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        width: 90%;
+    }
+
+    .commentcard_profile {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .commentcard_profile_img {
+        width: 1.5vw;
+        height: 1.5vw;
+
+        border-radius: 50%;
+
+        object-fit: cover;
+    }
+
+    .commentcard_text {
+        font-size: min(9px, 0.8vw);
+    }
+
+    .commentcard_name {
+        display: flex;
+        align-items: flex-end;
+
+        margin: 0;
+    }
+
+    .commentcard_date {
+        display: flex;
+        align-items: flex-start;
+
+        margin: 0;
+    }
+
+    .commentcard_icon {
+        font-size: min(18px, 1.8vw);
+
+        cursor: pointer;
+    }
+
+    .commentcard_divider {
+        width: 90%;                
+        background-color: #ccc;     
+        opacity: 0.3;
+    }
+
+    .commentcard_content {
+        display: flex;
+
+        width: 90%;
+        margin: 0 0;
+
+        padding: 5px 0;
+        box-sizing: border-box;
+
+        font-size: min(10px, 0.8vw);
+        white-space: pre-line;
+        text-align: left; 
+    }
 }
 @media (min-width: 769px) and (max-width: 1240px) {
     .noticecard_layout {
@@ -463,6 +706,247 @@
 
         margin: 0;
     }
+
+    
+     .tipcard_layout {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        width: 90%;
+        height: auto;
+        padding: 5px 0;
+
+        background-color: #242424;
+        border: 1px solid #2a2a2a;
+        border-radius: 15px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    }
+
+    .tipcard_header {
+        display: flex;
+        justify-content: space-between;
+
+        width: 90%;
+        padding: 10px 0;
+    }
+
+    .tipcard_title {
+        display: flex;
+        justify-content: flex-start;
+
+        width: 90%;
+
+        font-size: min(20px, 1.5vw);
+
+        cursor: pointer;
+    }
+
+    .tipcard_icon {
+        display: flex;
+        align-items: center;
+        gap: 0.5vw;
+        font-size: max(15px, 1.5vw);
+    }
+
+    .tipcard_divider {
+        width: 90%;
+        margin: 0 0;
+        
+        border: none;
+        border-top: 1px solid #ffffff; /* 연한 회색 선 */
+        opacity: 0.5;
+
+        cursor: pointer;
+    }
+
+    .tipcard_info {
+        display: flex;
+        
+        width: 90%;
+        padding: 10px 0;
+
+        cursor: pointer;
+    }
+
+    .tipcard_profile {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 1vw;
+
+        width: 80%;
+    }
+
+    .tipcard_profile_img {
+        width: 3vw;
+        height: 3vw;
+
+        border-radius: 50%;
+
+        object-fit: cover;
+    }
+
+    .tipcard_text {
+        font-size: min(13px, 1vw);
+    }
+
+    .tipcard_name {
+        display: flex;
+        align-items: flex-end;
+
+        margin: 0;
+    }
+
+    .tipcard_date {
+        display: flex;
+        align-items: flex-end;
+
+        margin: 0;
+    }
+
+    .tipcard_tag {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .tipcard_tag_item {
+        font-size: min(13px, 1vw);
+    }
+
+    .tipcard_bookmark {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .tipcard_content {
+        display: flex;
+
+        width: 90%;
+        min-height: 80px;
+        margin: 0 0;
+
+        font-size: min(11px, 0.8vw);
+        white-space: pre-line;
+        text-align: left; 
+
+        background-color: #2e2e2e;
+        border: 1px solid #2a2a2a;
+        border-radius: 8px;
+
+        padding: 12px;
+        box-sizing: border-box;
+
+        cursor: pointer;
+    }
+
+    .tipcard_reaction {
+        display: flex;
+
+        width: 90%;
+        padding: 10px 0;
+
+        align-items: flex-start;
+        justify-content: flex-start;
+        text-align: start;
+
+        gap: 20px;
+    }
+
+    .tipcard_reaction_item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+
+        font-size: min(15px, 1.3vw);
+    }
+
+    .commentcard_layout {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        width: 90%;
+        height: auto;
+        padding: 10px 0;
+
+        background-color: #2e2e2e;
+        border: 1px solid #2a2a2a;
+        border-radius: 10px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    }
+
+    .commentcard_info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        width: 90%;
+    }
+
+    .commentcard_profile {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 0.8vw;
+    }
+
+    .commentcard_profile_img {
+        width: 2.3vw;
+        height: 2.3vw;
+
+        border-radius: 50%;
+
+        object-fit: cover;
+    }
+
+    .commentcard_text {
+        font-size: min(12px, 0.8vw);
+    }
+
+    .commentcard_name {
+        display: flex;
+        align-items: flex-end;
+
+        margin: 0;
+    }
+
+    .commentcard_date {
+        display: flex;
+        align-items: flex-start;
+
+        margin: 0;
+    }
+
+    .commentcard_icon {
+        font-size: min(13px, 2vw);
+
+        cursor: pointer;
+    }
+
+    .commentcard_divider {
+        width: 90%;                
+        background-color: #ccc;     
+        opacity: 0.3;
+    }
+
+    .commentcard_content {
+        display: flex;
+
+        width: 90%;
+        margin: 0 0;
+
+        padding: 5px 0;
+        box-sizing: border-box;
+
+        font-size: min(12px, 0.9vw);
+        white-space: pre-line;
+        text-align: left; 
+    }
 }
 @media (min-width: 1px) and (max-width: 768px) {
     .noticecard_layout {
@@ -694,5 +1178,245 @@
         align-items: flex-end;
 
         margin: 0;
+    }
+
+    .tipcard_layout {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        width: 90%;
+        height: auto;
+        padding: 5px 0;
+
+        background-color: #242424;
+        border: 1px solid #2a2a2a;
+        border-radius: 15px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    }
+
+    .tipcard_header {
+        display: flex;
+        justify-content: space-between;
+
+        width: 90%;
+        padding: 10px 0;
+    }
+
+    .tipcard_title {
+        display: flex;
+        justify-content: flex-start;
+
+        width: 90%;
+
+        font-size: max(13px, 2vw);
+
+        cursor: pointer;
+    }
+
+    .tipcard_icon {
+        display: flex;
+        align-items: center;
+        gap: 0.5vw;
+        font-size: max(17px, 1.5vw);
+    }
+
+    .tipcard_divider {
+        width: 90%;
+        margin: 0 0;
+        
+        border: none;
+        border-top: 1px solid #ffffff; /* 연한 회색 선 */
+        opacity: 0.5;
+
+        cursor: pointer;
+    }
+
+    .tipcard_info {
+        display: flex;
+        
+        width: 90%;
+        padding: 1.7vw 0;
+
+        cursor: pointer;
+    }
+
+    .tipcard_profile {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 1vw;
+
+        width: 80%;
+    }
+
+    .tipcard_profile_img {
+        width: 4.5vw;
+        height: 4.5vw;
+
+        border-radius: 50%;
+
+        object-fit: cover;
+    }
+
+    .tipcard_text {
+        font-size: min(13px, 1.7vw);
+    }
+
+    .tipcard_name {
+        display: flex;
+        align-items: flex-end;
+
+        margin: 0;
+    }
+
+    .tipcard_date {
+        display: flex;
+        align-items: flex-end;
+
+        margin: 0;
+    }
+
+    .tipcard_tag {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .tipcard_tag_item {
+        font-size: min(13px, 1.7vw);
+    }
+
+    .tipcard_bookmark {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .tipcard_content {
+        display: flex;
+
+        width: 90%;
+        min-height: 80px;
+        margin: 0 0;
+
+        font-size: min(12px, 1.7vw);
+        white-space: pre-line;
+        text-align: left; 
+
+        background-color: #2e2e2e;
+        border: 1px solid #2a2a2a;
+        border-radius: 8px;
+
+        padding: 12px;
+        box-sizing: border-box;
+
+        cursor: pointer;
+    }
+
+    .tipcard_reaction {
+        display: flex;
+
+        width: 90%;
+        padding: 10px 0;
+
+        align-items: flex-start;
+        justify-content: flex-start;
+        text-align: start;
+
+        gap: 20px;
+    }
+
+    .tipcard_reaction_item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+
+        font-size: max(12px, 1.7vw);
+    }
+
+    .commentcard_layout {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        width: 90%;
+        height: auto;
+        padding: 10px 0;
+
+        background-color: #2e2e2e;
+        border: 1px solid #2a2a2a;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    }
+
+    .commentcard_info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        width: 90%;
+    }
+
+    .commentcard_profile {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 1vw;
+    }
+
+    .commentcard_profile_img {
+        width: 3.5vw;
+        height: 3.5vw;
+
+        border-radius: 50%;
+
+        object-fit: cover;
+    }
+
+    .commentcard_text {
+        font-size: min(13px, 1.4vw);
+    }
+
+    .commentcard_name {
+        display: flex;
+        align-items: flex-end;
+
+        margin: 0;
+    }
+
+    .commentcard_date {
+        display: flex;
+        align-items: flex-start;
+
+        margin: 0;
+    }
+
+    .commentcard_icon {
+        font-size: min(13px, 2vw);
+
+        cursor: pointer;
+    }
+
+    .commentcard_divider {
+        width: 90%;                
+        background-color: #ccc;     
+        opacity: 0.3;
+    }
+
+    .commentcard_content {
+        display: flex;
+
+        width: 90%;
+        margin: 0 0;
+
+        padding: 5px 0;
+        box-sizing: border-box;
+
+        font-size: min(13px, 1.5vw);
+        white-space: pre-line;
+        text-align: left; 
     }
 }
