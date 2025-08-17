@@ -1,192 +1,242 @@
 import "./Notice.css";
 import Masonry from "react-masonry-css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { message } from "antd";
+import { useRecoilValue } from "recoil"
 import SearchBar from "../../Component/Search/Search";
-import SubscribeCard from "../../Component/Card/SubscribeCard";
+import NoticeCard from "../../Component/Card/NoticeCard";
 import TextModal from "../../Component/Modal/TextModal";
+import { userBriefState } from "../../Recoil/Atom";
+import { fetchSubscribedAuthors, fetchSubscribedNotices, fetchAuthorNotices, fetchNoticeImagePreview, unsubscribeAuthor } from "../../API/NoticeAPI";
+import { message } from "antd";
 import { IoBookmark } from "react-icons/io5";
 
-const itemsPerPage = 6;
-
 const NoticeSub = () => {
-  const [subs, setSubs] = useState([]);
-  const [posts, setPosts] = useState([]);
-  const [loadingSubs, setLoadingSubs] = useState(false);
-  const [loadingPosts, setLoadingPosts] = useState(false);
-  const [loadingAuthorPosts, setLoadingAuthorPosts] = useState(false);
-  const [unsubmitting, setUnsubmitting] = useState(false);
-
   const [keyword, setKeyword] = useState("");
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 6;
+  const [totalPages, setTotalPages] = useState(0);
+
+  const [SubListes, setSubListes] = useState([]);   
+  const [SubNotices, setSubNotices] = useState([]);
+
+  const fetchingListesRef = useRef(false);
+  const [isFetchingListes, setisFetchingListes] = useState(false);
+  const fetchingNoticesRef = useRef(false);
+  const [isFetchingNotices, setisFetchingNotices] = useState(false);
+  const fetchingAuthorRef = useRef(false);
+  const [isFetchingAuthor, setisFetchingAuthor] = useState(false);
+  const [bookmarkLoading, setBookmarkLoading] = useState(false);
+
   const [selectedOrg, setSelectedOrg] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedAuthorId, setSelectedAuthorId] = useState(null);
   const [selectedAuthorName, setSelectedAuthorName] = useState("");
-  
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
+
+  const user = useRecoilValue(userBriefState);
+
+  const imageCacheRef = useRef(new Map());
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetchSubscribed();
+  // 이미지 함수
+  const withPreviewUrls = useCallback(async (list) => {
+    return Promise.all(
+      (list || []).map(async (item) => {
+        const filename = item?.images?.[0]?.url;
+        if (!filename) return { ...item, previewUrl: null };
+
+        if (imageCacheRef.current.has(filename)) {
+          return { ...item, previewUrl: imageCacheRef.current.get(filename) };
+        }
+
+        try {
+          const blob = await fetchNoticeImagePreview(filename);
+          const url = URL.createObjectURL(blob);
+          imageCacheRef.current.set(filename, url);
+          return { ...item, previewUrl: url };
+        } catch {
+          return { ...item, previewUrl: null };
+        }
+      })
+    );
   }, []);
 
+  // 구독 목록 함수
+  const loadSubscribedListes = useCallback(async () => {
+    if (fetchingListesRef.current) return;
+    fetchingListesRef.current = true;
+    setisFetchingListes(true);
+    try {
+      const data = await fetchSubscribedAuthors();
+      setSubListes(data || []);
+    } catch (e) {
+      console.error("구독 목록 불러오기 실패:", e);
+      message.error("구독 목록을 불러오지 못했습니다.");
+    } finally {
+      setisFetchingListes(false);
+      fetchingListesRef.current = false;
+    }
+  }, []);
+
+  // 구독한 공지사항 조회 함수
+  const loadSubscribedNotices = useCallback(async () => {
+    if (fetchingNoticesRef.current) return;
+    fetchingNoticesRef.current = true;
+    setisFetchingNotices(true);
+    try {
+      const res = await fetchSubscribedNotices({
+        page: currentPage,
+        size: pageSize,
+        keyword,
+      });
+      const list = res?.content || [];
+      const decorated = await withPreviewUrls(list);
+      setSubNotices(decorated);
+      setTotalPages(res?.totalPages || 0);
+    } catch (e) {
+      console.error("구독 공지사항 불러오기 실패:", e);
+      message.error("구독 공지사항을 불러오지 못했습니다.");
+    } finally {
+      setisFetchingNotices(false);
+      fetchingNoticesRef.current = false;
+    }
+  }, [currentPage, keyword, withPreviewUrls]);
+
+  // 구독한 특정 공지사항 조회 함수
+  const loadAuthorNotices = useCallback(async () => {
+    if (!selectedAuthorId) return;
+    if (fetchingAuthorRef.current) return;
+    fetchingAuthorRef.current = true;
+    setisFetchingAuthor(true);
+    try {
+      const res = await fetchAuthorNotices({
+        authorId: selectedAuthorId,
+        page: currentPage,
+        size: pageSize,
+        keyword,
+      });
+      const list = res?.content || [];
+      const decorated = await withPreviewUrls(list);
+      setSubNotices(decorated);
+      setTotalPages(res?.totalPages || 0);
+    } catch (e) {
+      console.error("특정 작성자 공지사항 불러오기 실패:", e);
+      message.error("작성자 공지사항을 불러오지 못했습니다.");
+    } finally {
+      setisFetchingAuthor(false);
+      fetchingAuthorRef.current = false;
+    }
+  }, [selectedAuthorId, currentPage, keyword, withPreviewUrls]);
+
+  // 구독 취소 함수
+  const handleUnsubscribe = async () => {
+    if (bookmarkLoading || !selectedAuthorId) return;
+    setBookmarkLoading(true);
+    try {
+      await unsubscribeAuthor(selectedAuthorId);
+      message.success(`${selectedAuthorName} 구독을 취소했습니다.`);
+
+      await loadSubscribedListes();
+
+      setSelectedOrg(null);
+      setSelectedAuthorId(null);
+      setSelectedAuthorName("");
+      setCurrentPage(1);
+      await loadSubscribedNotices();
+
+      closeModal();
+    } catch (e) {
+      message.error("구독 취소 중 오류가 발생했습니다.");
+    } finally {
+      setBookmarkLoading(false);
+    }
+  };
+
+  // 렌더링 함수
   useEffect(() => {
-    fetchPosts();
-  }, [keyword, selectedOrg, currentPage]);
+    loadSubscribedListes();
+  }, [loadSubscribedListes]);
 
-  // 구독 목록 조회 API
-  const fetchSubscribed = async () => {
-    if (loadingSubs) return;
-    setLoadingSubs(true);
+  // 키워드/작성자/페이지 변경 시 공지 목록 로딩
+  useEffect(() => {
+    if (selectedAuthorId) {
+      loadAuthorNotices();
+    } else {
+      loadSubscribedNotices();
+    }
+  }, [selectedAuthorId, currentPage, keyword, loadAuthorNotices, loadSubscribedNotices]);
 
-    try {
-      const token = sessionStorage.getItem("accessToken");
-      const res = await axios.get("/bookmarks/authors", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      console.log("구독자 받은 데이터:", res.data);  // 받은 데이터 콘솔 출력
-      setSubs(res.data);
-    } catch (error) {
-      console.error("구독 목록 불러오기 실패:", error);
-    } finally {
-      setLoadingSubs(false);
+  // 이미지 메모리 정리 함수
+  useEffect(() => {
+    return () => {
+      for (const url of imageCacheRef.current.values()) {
+        try { URL.revokeObjectURL(url); } catch {}
+      }
+      imageCacheRef.current.clear();
+    };
+  }, []);
+
+  // 공지사항 클릭 함수
+  const navigateToDetail = (id) => navigate(`/notice/${id}`);
+
+  // 검색어 함수
+  const handleSearchChange = (newKeyword) => {
+    const next = newKeyword.trim();
+    if (next === keyword) return;
+    setKeyword(next);
+    setCurrentPage(1);
+  };
+
+  // 특정 작성자 클릭 함수
+  const handleOrgClick = (authorName, authorId) => {
+    if (selectedAuthorId === authorId) {
+      setSelectedOrg(null);
+      setSelectedAuthorId(null);
+      setSelectedAuthorName("");
+      setCurrentPage(1);
+    } else {
+      setSelectedOrg(authorName);
+      setSelectedAuthorId(authorId);
+      setSelectedAuthorName(authorName);
+      setCurrentPage(1);
     }
   };
 
-  // 구독 글 조회 API
-  const fetchPosts = async () => {
-    if (loadingPosts) return;
-    setLoadingPosts(true);
-
-    try {
-      const token = sessionStorage.getItem("accessToken");
-      const params = {
-        page: currentPage - 1,
-        size: itemsPerPage,
-        keyword: keyword.trim() === "" ? null : keyword.trim(),
-        departments: selectedOrg ? [selectedOrg] : null,
-      };
-      const res = await axios.get("/notices/subscribed", {
-        headers: { Authorization: `Bearer ${token}` },
-        params,
-      });
-      setPosts(res.data.content || []);
-      setTotalPages(res.data.totalPages || 0);
-    } catch (error) {
-      console.error("구독 공지사항 불러오기 실패:", error);
-    }  finally {
-      setLoadingPosts(false);
-    }
-  };
-
-  // 특정 구독 글 조회 API
-  const fetchPostsByAuthor = async (authorId, page = 0, size = itemsPerPage) => {
-    if (loadingAuthorPosts) return null; // 이미 호출 중이면 무시
-    setLoadingAuthorPosts(true);
-
-    console.log("fetchPostsByAuthor 호출, authorId:", authorId);
-    try {
-      const token = sessionStorage.getItem("accessToken");
-      const res = await axios.get(`/notices/author/${authorId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-        params: { page, size },
-      });
-      console.log("받은 데이터:", res.data); 
-      return res.data;
-    } catch (error) {
-      console.error("특정 작성자 공지사항 불러오기 실패:", error);
-      return null;
-    } finally {
-      setLoadingAuthorPosts(false);
-    }
-  };
-
+  // 구독 모달 열기 함수
   const openModal = (authorId, name) => {
     setSelectedAuthorId(authorId);
     setSelectedAuthorName(name);
     setIsModalOpen(true);
   };
 
+  // 구독 모달 닫기 함수
   const closeModal = () => {
     setIsModalOpen(false);
-  };
-
-  // 구독 취소 API
-  const handleUnsubscribe = async () => {
-    if (unsubmitting) return;
-    setUnsubmitting(true);
-
-    try {
-      const token = sessionStorage.getItem("accessToken");
-
-      await axios.delete(`/bookmarks/${selectedAuthorId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      message.success(`${selectedAuthorName} 구독을 취소했습니다.`);
-
-      await fetchSubscribed(); // 구독 목록 갱신
-      await fetchPosts(); // 하단 게시글 목록 갱신
-
-      closeModal();
-    } catch (error) {
-      message.error("구독 취소 중 오류가 발생했습니다.");
-    } finally {
-      setUnsubmitting(false);
-    }
-  };
-  
-  const handleOrgClick = async (authorName, authorId) => {
-    if (selectedOrg === authorName) {
-      // 선택 해제 시 전체 구독 공지 불러오기
-      setSelectedOrg(null);
-      setSelectedAuthorId(null);
-      setCurrentPage(1);
-      await fetchPosts();  // 기존 구독 글 목록 조회
-    } else {
-      // 특정 작성자 글 불러오기
-      setSelectedOrg(authorName);
-      setSelectedAuthorId(authorId);
-      setCurrentPage(1);
-      const data = await fetchPostsByAuthor(authorId, 0, itemsPerPage);
-      if (data) {
-        setPosts(data.content || []);
-        setTotalPages(data.totalPages || 0);
-      }
-    }
-  };
-
-  const handleCardClick = (id) => {
-    navigate(`/notice/${id}`);
-  };
-
-  const onPageChange = (pageNum) => {
-    setCurrentPage(pageNum);
-  };
+  }  
 
   return (
     <main className="subscribe_layout">
       <section className="subscribe_header">
         <h2 className="subscribe_header_title">구독 관리</h2>
-        <SearchBar onSearchChange={setKeyword} />
+        <SearchBar onSearchChange={handleSearchChange} />
       </section>
 
       <section className="subscribe_body">
         <div className="subscribe_text">
           <p className="subscribe_title">구독 목록</p>
-          {subs.length > 0 ? (
-            subs.map((org) => (
+          {isFetchingListes ? (
+            <p className="subscribe_empty">불러오는 중...</p>
+          ) : SubListes.length > 0 ? (
+            SubListes.map((org) => (
               <div
                 className={`subscribe_list ${selectedOrg === org.authorName ? "active" : ""}`}
-                key={org.authorId}                        
-                onClick={() => handleOrgClick(org.authorName, org.authorId)} 
+                key={org.authorId}
+                onClick={() => handleOrgClick(org.authorName, org.authorId)}
               >
                 <div className="subscribe_profile">
-                  <img src="/image/profile.png" alt={org.name} className="subscribe_profile_img" />
+                  <img src="/image/profile.png" alt={org.authorName} className="subscribe_profile_img" />
                   <p className="subscribe_name">{org.authorName}</p>
                 </div>
                 <div className="subscribe_icon">
@@ -207,15 +257,17 @@ const NoticeSub = () => {
         </div>
 
         <div className="subscribe_posts_wrapper">
-          {posts.length > 0 ? (
+          {isFetchingNotices || isFetchingAuthor ? (
+            <div className="notice_empty">불러오는 중...</div>
+          ) : SubNotices.length > 0 ? (
             <>
               <Masonry
                 breakpointCols={{ default: 3, 1241: 2 }}
                 className="subscribe_post"
                 columnClassName="subscribe_post_column"
               >
-                {posts.map((post) => (
-                  <SubscribeCard
+                {SubNotices.map((post) => (
+                  <NoticeCard
                     key={post.id}
                     id={post.id}
                     authorid={post.authorId}
@@ -224,10 +276,13 @@ const NoticeSub = () => {
                     name={post.authorName}
                     createdAt={post.createdAt}
                     updatedAt={post.updatedAt}
-                    images={post.thumbnailUrl}
+                    images={post.previewUrl ?? null} 
                     content={post.text}
                     bookmarked={post.bookmarked}
-                    onClick={() => handleCardClick(post.id)}
+                    Type="bookmark"
+                    isOwner={user.userId === post.authorId}
+                    role={user.roleType} 
+                    onClick={() => navigateToDetail(post.id)}
                   />
                 ))}
               </Masonry>
@@ -235,28 +290,25 @@ const NoticeSub = () => {
               {totalPages > 1 && (
                 <div className="notice_page_wrap" style={{ textAlign: "center" }}>
                   <button
-                    onClick={() => onPageChange(Math.max(currentPage - 1, 1))}
+                    onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
                     disabled={currentPage === 1}
                     className="notice_page_button"
                   >
                     &lt;
                   </button>
 
-                  {[...Array(totalPages)].map((_, i) => {
-                    const pageNum = i + 1;
-                    return (
-                      <button
-                        key={pageNum}
-                        onClick={() => onPageChange(pageNum)}
-                        className={`notice_page_button ${currentPage === pageNum ? "active" : ""}`}
-                      >
-                        {pageNum}
-                      </button>
-                    );
-                  })}
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+                    <button
+                      key={pageNum}
+                      onClick={() => setCurrentPage(pageNum)}
+                      className={`notice_page_button ${currentPage === pageNum ? "active" : ""}`}
+                    >
+                      {pageNum}
+                    </button>
+                  ))}
 
                   <button
-                    onClick={() => onPageChange(Math.min(currentPage + 1, totalPages))}
+                    onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
                     disabled={currentPage === totalPages}
                     className="notice_page_button"
                   >
@@ -274,10 +326,11 @@ const NoticeSub = () => {
       {isModalOpen && (
         <TextModal
           open={isModalOpen}
-          onCancel={closeModal}
-          mode="unsubscribe"
+          onCancel={() => setIsModalOpen(false)}
+          mode="noticeunsubscribe"
           name={selectedAuthorName}
           onConfirm={handleUnsubscribe}
+          loading={bookmarkLoading}
         />
       )}
     </main>

@@ -1,5 +1,5 @@
 import "./Card.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import TextModal from "../Modal/TextModal";
 import { useRecoilValue } from "recoil";
@@ -11,6 +11,7 @@ import { MdDeleteOutline } from "react-icons/md";
 import { HiDotsVertical } from "react-icons/hi";
 import { Tag, Dropdown, Menu, message } from "antd";
 import { useMemo } from "react";
+import { getImageUrl } from "../../Data/ImageUrl";
 
 // 무작위 색상 pool
 const tagColorsPool = [
@@ -55,8 +56,11 @@ const TipCard = ({
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState("tipsubscribe");
+  const [imgUrl, setImgUrl] = useState(null);
 
   const userBrief = useRecoilValue(userBriefState);
+
+  console.log("이미지 URL:", getImageUrl(images[0]));
 
   // 태그별 고정 랜덤 색상 맵 (컴포넌트 단위에서 유지됨)
   const tagColorMap = useMemo(() => {
@@ -87,6 +91,35 @@ const TipCard = ({
   const closeModal = () => {
     setIsModalOpen(false);
   };
+
+  // 이미지 미리보기 API
+   useEffect(() => {
+    if (!images || images.length === 0) return;
+    let url;
+
+    const fetchImage = async () => {
+      try {
+        const token = sessionStorage.getItem("accessToken");
+        const safeFilename = images[0].replace(/^\/files\//, "").split(" ").join("%20");
+
+        const res = await axios.get(`/notices/image-preview?filename=${safeFilename}`, {
+          responseType: "blob",
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        url = URL.createObjectURL(res.data);
+        setImgUrl(url);
+      } catch (err) {
+        setImgUrl(null); // 실패 시 기본이미지 쓰게 fallback
+      }
+    };
+
+    fetchImage();
+
+    return () => {
+      if (url) URL.revokeObjectURL(url);
+    };
+  }, [images]);
 
   // Tip 저장 / 취소 API
   const handleConfirm = async () => {
@@ -140,6 +173,16 @@ const TipCard = ({
     } catch (error) {
       message.error("반응 처리 중 오류가 발생했습니다.");
     }
+  };
+
+  // 이미지 처리 API
+  const fetchImage = async (url) => {
+    const token = sessionStorage.getItem("accessToken");
+    const res = await axios.get(url, {
+      responseType: "blob",
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    return URL.createObjectURL(res.data);
   };
 
   const menu = (
@@ -203,7 +246,7 @@ const TipCard = ({
 
       <div className="tipcard_info" onClick={onClick}>
         <div className="tipcard_profile">
-          <img src={profile} alt="profile" className="tipcard_profile_img" />
+          <img src="/image/profile.png" alt="profile" className="tipcard_profile_img" />
           <div className="tipcard_text">
             <p className="tipcard_name">{name}</p>
             <p className="tipcard_date">{date}</p>
@@ -221,9 +264,9 @@ const TipCard = ({
 
       <div className="tipcard_box" onClick={onClick}>
         <div className="tipcard_content">{content}</div>
-          {images && images.length > 0 && (
-            <img src={images[0]} alt={title} className="tipcard_img"/>
-          )}
+        {imgUrl && (
+          <img src={imgUrl} alt={title} className="tipcard_img" />
+        )}
       </div>
 
       <div className="tipcard_reaction">

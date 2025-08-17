@@ -1,131 +1,187 @@
 import "./Modal.css";
-import { useState, useEffect } from "react";
-import axios from "axios";
-import { Modal, Input, Button, Upload, message } from "antd";
+import { useState, useEffect, useRef } from "react";
 import { useRecoilValue } from "recoil";
 import { userBriefState } from "../../Recoil/Atom";
+import { createNotice, updateNotice, fetchNoticeImagePreview  } from "../../API/NoticeAPI";
+import { Modal, Input, Button, Upload, message } from "antd";
 import { UploadOutlined, PlusOutlined } from "@ant-design/icons";
 
-const NoticeModal = ({ open, onCancel, onSubmit, initialData = null, mode = "create", onSuccess }) => {
+const NoticeModal = ({ open, onCancel, initialData = null, mode = "create", onSuccess }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [imageFiles, setImageFiles] = useState([]);
-  const [fileList, setFileList] = useState([]);
-  const [submitting, setSubmitting] = useState(false);
+  const [attachmentFiles, setAttachmentFiles] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const userBrief = useRecoilValue(userBriefState);
 
-  // 모달 열릴 때마다 initialData로 초기화
+  const createdObjectUrlsRef = useRef([]);
+
+  // 렌더링 함수
   useEffect(() => {
-    if (open) {
-      setTitle(initialData?.title || "");
-      setContent(initialData?.text || "");
-      setImageFiles(initialData?.images || []);
-      setFileList(initialData?.attachments || []);
-      setSubmitting(false);
-    }
-  }, [open, initialData]);
+    if (!open) return;
 
-  const handleCancel = () => {
-    onCancel();
-  };
+    setTitle(initialData?.title || "");
+    setContent(initialData?.text || "");
 
-  // 이미지 업로드 (여러 개)
-  const handleImageChange = ({ fileList }) => {
-    setImageFiles(fileList);
-  };
+    const initialAttachments =
+      (initialData?.attachments || []).map((att) => ({
+        uid: `existing-file-${att.id}`,
+        id: att.id,   
+        name: att.url.split("/").pop(),
+        status: "done",
+        url: att.url,
+      })) ?? [];
+    setAttachmentFiles(initialAttachments);
 
-   const beforeImageUpload = (file) => {
-    const isImage = file.type.startsWith("image/");
-    const isLt2M = file.size / 1024 / 1024 < 2;
-    if (!isImage) message.error("이미지 파일만 업로드 가능합니다.");
-    if (!isLt2M) message.error("이미지는 2MB 이하만 가능합니다.");
-    return false; // ← 반드시 false
-  };
+    let cancelled = false;
 
-  // 첨부파일 업로드
-  const handleFileUploadChange = ({ fileList }) => {
-    setFileList(fileList);
-  };
+    const loadExistingImages = async () => {
+      for (const u of createdObjectUrlsRef.current) {
+        try { URL.revokeObjectURL(u); } catch {}
+      }
+      createdObjectUrlsRef.current = [];
 
-  // 공지사항 작성, 수정 API
-  const handleSubmit = async () => {
-    if (submitting) return; 
-
-    if (!title.trim()) return message.error("제목을 입력해주세요.");
-    if (!content.trim()) return message.error("내용을 입력해주세요.");
-
-    setSubmitting(true);
-
-    try {
-      const formData = new FormData();
-
-      formData.append(
-        "notice",
-        JSON.stringify({
-          title: title.trim(),
-          text: content.trim(),
-          department: userBrief.department, 
-        })
-      );
-
-      imageFiles.forEach((file) => {
-        if (file.originFileObj) {
-          // 신규 업로드 파일만 originFileObj가 있음
-          formData.append("images", file.originFileObj);
-        }
-      });
-
-      fileList.forEach((file) => {
-        if (file.originFileObj) {
-          formData.append("attachments", file.originFileObj);
-        }
-      });
-
-      const token = sessionStorage.getItem("accessToken");
-      if (!token) {
-        message.error("로그인이 필요합니다.");
-        setSubmitting(false);
+      const imgs = initialData?.images || [];
+      if (!imgs.length) {
+        setImageFiles([]);
         return;
       }
 
+      try {
+        const files = [];
+        for (let i = 0; i < imgs.length; i++) {
+          const original = imgs[i];
+          try {
+            const blob = await fetchNoticeImagePreview(original.url);
+            if (cancelled) return;
+            const objUrl = URL.createObjectURL(blob);
+            createdObjectUrlsRef.current.push(objUrl);
+
+            files.push({
+              uid: `existing-img-${i}`,
+              id: original.id,  
+              name: original.url.split("/").pop(),
+              status: "done",
+              thumbUrl: objUrl,
+            });
+          } catch {
+            // 개별 이미지 실패 시 무시
+          }
+        }
+        if (!cancelled) setImageFiles(files);
+      } catch (e) {
+        if (!cancelled) setImageFiles([]);
+      }
+    };
+
+    loadExistingImages();
+
+    return () => {
+      cancelled = true;
+      for (const u of createdObjectUrlsRef.current) {
+        try { URL.revokeObjectURL(u); } catch {}
+      }
+      createdObjectUrlsRef.current = [];
+    };
+  }, [open, initialData]);
+
+  // 공지사항 생성 / 수정 API
+  const handleSubmit = async () => {
+    if (isSubmitting) return;
+    if (!title.trim()) return message.error("제목을 입력해주세요.");
+    if (!content.trim()) return message.error("내용을 입력해주세요.");
+
+    setIsSubmitting(true);
+    try {
+      const formData = new FormData();
+
       if (mode === "edit" && initialData?.id) {
-        await axios.patch(`/notices/${initialData.id}`, formData, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
+        // 남아있는 기존 이미지/파일 id 추출
+        const keptImageIds = imageFiles.filter(f => !f.originFileObj).map(f => f.id);
+        const removeImageIds = (initialData?.images || [])
+          .filter(img => !keptImageIds.includes(img.id))
+          .map(img => img.id);
+
+        const keptAttachmentIds = attachmentFiles.filter(f => !f.originFileObj).map(f => f.id);
+        const removeAttachmentIds = (initialData?.attachments || [])
+          .filter(att => !keptAttachmentIds.includes(att.id))
+          .map(att => att.id);
+
+        const noticeDto = {
+          title: title.trim(),
+          text: content.trim(),
+          department: userBrief?.department,
+          removeImageIds,    
+          removeAttachmentIds, 
+        };
+        formData.append("notice", JSON.stringify(noticeDto));
+
+        // 신규 업로드만 추가
+        imageFiles.forEach(f => {
+          if (f.originFileObj) formData.append("images", f.originFileObj);
         });
+        attachmentFiles.forEach(f => {
+          if (f.originFileObj) formData.append("attachments", f.originFileObj);
+        });
+
+        await updateNotice(initialData.id, formData);
         message.success("공지사항이 수정되었습니다.");
       } else {
-        await axios.post("/notices", formData, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
+        const noticeDto = {
+          title: title.trim(),
+          text: content.trim(),
+          department: userBrief?.department,
+        };
+        formData.append("notice", JSON.stringify(noticeDto));
+
+        // 신규 업로드만
+        imageFiles.forEach(f => {
+          if (f.originFileObj) formData.append("images", f.originFileObj);
         });
+        attachmentFiles.forEach(f => {
+          if (f.originFileObj) formData.append("attachments", f.originFileObj);
+        });
+
+        await createNotice(formData);
         message.success("공지사항이 작성되었습니다.");
       }
 
-      if (onSuccess) onSuccess();
-
-      handleCancel();
-    } catch (error) {
-      console.error(error);
-      if (error.response?.status === 403) {
-        message.error("권한이 없습니다. 로그인 상태를 확인해주세요.");
-      } else {
-        message.error("작성 중 오류가 발생했습니다.");
-      }
+      onSuccess?.();
+      handleClose();
+    } catch (err) {
+      console.error("submit error:", err);
+      message.error("작성 중 오류가 발생했습니다.");
     } finally {
-      setSubmitting(false);
+      setIsSubmitting(false);
     }
   };
+
+
+  // 이미지 업로드 함수
+  const beforeImageUpload = (file) => {
+    const isImage = file.type?.startsWith("image/");
+    const isLt50M = file.size / 1024 / 1024 < 50;
+    if (!isImage) message.error("이미지 파일만 업로드 가능합니다.");
+    if (!isLt50M) message.error("이미지는 50MB 이하만 가능합니다.");
+    // 업로드는 수동(FormData로 직접 append) 처리 → false 리턴
+    return false;
+  };
+
+  // 이미지 저장 함수
+  const handleImageChange = ({ fileList }) => setImageFiles(fileList);
+
+  // 파일 저장 함수
+  const handleAttachmentChange = ({ fileList }) => setAttachmentFiles(fileList);
+
+  // 닫기 함수
+  const handleClose = () => onCancel?.();
 
 
   return (
     <Modal
       open={open}
-      onCancel={handleCancel}
+      onCancel={handleClose}
       footer={null}
       centered
       closable={false}
@@ -134,7 +190,6 @@ const NoticeModal = ({ open, onCancel, onSubmit, initialData = null, mode = "cre
       <section className="custommodal_layout">
         <h2 className="custommodal_title">{mode === "edit" ? "공지사항 수정" : "공지사항 작성"}</h2>
 
-        {/* 제목 */}
         <div className="custommodal_input_group">
           <p className="custommodal_input_label">제목</p>
           <Input
@@ -145,7 +200,6 @@ const NoticeModal = ({ open, onCancel, onSubmit, initialData = null, mode = "cre
           />
         </div>
 
-        {/* 내용 */}
         <div className="custommodal_input_group" style={{ marginTop: 16 }}>
           <p className="custommodal_input_label">내용</p>
           <Input.TextArea
@@ -157,7 +211,6 @@ const NoticeModal = ({ open, onCancel, onSubmit, initialData = null, mode = "cre
           />
         </div>
 
-        {/* 이미지 업로드 */}
         <div className="custommodal_input_group" style={{ marginTop: 16 }}>
           <p className="custommodal_input_label">이미지</p>
           <Upload
@@ -178,24 +231,25 @@ const NoticeModal = ({ open, onCancel, onSubmit, initialData = null, mode = "cre
           </Upload>
         </div>
 
-        {/* 첨부파일 업로드 */}
         <div className="custommodal_input_group" style={{ marginTop: 16 }}>
           <p className="custommodal_input_label">첨부파일</p>
           <Upload
             className="custommodal_file_upload"
-            fileList={fileList}
-            onChange={handleFileUploadChange}
+            fileList={attachmentFiles}
+            onChange={handleAttachmentChange}
             beforeUpload={() => false}
             multiple
           >
-            <Button icon={<UploadOutlined />} className="custommodal_file_upload_button">
+            <Button
+              icon={<UploadOutlined />}
+              className="custommodal_file_upload_button"
+            >
               파일 선택
             </Button>
           </Upload>
         </div>
       </section>
 
-      {/* 확인 / 취소 */}
       <section style={{ marginTop: 10, marginBottom: 10, textAlign: "right" }}>
         <Button
           type="primary"
@@ -205,7 +259,7 @@ const NoticeModal = ({ open, onCancel, onSubmit, initialData = null, mode = "cre
         >
           확인
         </Button>
-        <Button className="custommodal_button_cancle" onClick={handleCancel}>
+        <Button className="custommodal_button_cancle" onClick={handleClose}>
           취소
         </Button>
       </section>

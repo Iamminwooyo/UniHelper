@@ -1,11 +1,8 @@
 import "./Notice.css";
 import Masonry from "react-masonry-css";
-import { useState, useEffect } from "react";
-import { useSetRecoilState, useRecoilValue } from "recoil"
-import axios from "axios";
+import { useState, useEffect, useCallback, useRef  } from "react";
+import { useRecoilValue } from "recoil"
 import { useNavigate } from "react-router-dom";
-import { Cascader, Tag, message } from "antd";
-import qs from 'qs';
 import SearchBar from "../../Component/Search/Search";
 import NoticeCard from "../../Component/Card/NoticeCard";
 import NoticeModal from "../../Component/Modal/NoticeModal";
@@ -13,9 +10,12 @@ import TextModal from "../../Component/Modal/TextModal";
 import { noticeOptions } from "../../Data/NoticeOption";
 import { tagColorsPool } from "../../Data/TagColor";
 import { userBriefState } from "../../Recoil/Atom";
+import { fetchNotices, deleteNotice, fetchNoticeImagePreview } from "../../API/NoticeAPI";
+import { Cascader, Tag, message } from "antd";
 import { TbEdit } from "react-icons/tb";
 import { IoClose } from "react-icons/io5";
 
+// 태그 랜덤 색상 함수
 const getRandomColor = () => {
   const randomIndex = Math.floor(Math.random() * tagColorsPool.length);
   return tagColorsPool[randomIndex];
@@ -27,13 +27,15 @@ const Notice = () => {
   const [tagColors, setTagColors] = useState({});
   const [cascaderValue, setCascaderValue] = useState([]);
 
-  const [notices, setNotices] = useState([]); 
-  const [loading, setLoading] = useState(false);
-  const [deleting, setDeleting] = useState(false);
-  const [error, setError] = useState(null);
-  
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6;
+  const pageSize = 6;
+  const [totalPages, setTotalPages] = useState(0);
+
+  const [Notices, setNotices] = useState([]); 
+
+  const isFetchingRef = useRef(false);
+  const [isFetchingNotices, setIsFetchingNotices] = useState(false);
+  const [isDeletingNotices, setIsDeletingNotices] = useState(false);
 
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
@@ -43,165 +45,176 @@ const Notice = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deleteNoticeId, setDeleteNoticeId] = useState(null);
 
-  const [totalPages, setTotalPages] = useState(0);
-
   const user = useRecoilValue(userBriefState);
+
+  const imageCacheRef = useRef(new Map());
 
   const navigate = useNavigate();
 
-  // 공지사항 조회 API
-  const fetchNotices = async () => {
-    if (loading) return;
-
-    setLoading(true);
-    setError(null);
+  // 공지사항 조회 함수
+  const loadNotices = useCallback(async () => {
+    if (isFetchingRef.current) return;
+    isFetchingRef.current = true;
+    setIsFetchingNotices(true);
 
     try {
-      const token = sessionStorage.getItem("accessToken");
-      if (!token) {
-        setError("로그인이 필요합니다.");
-        setLoading(false);
-        return;
-      }
-
-      const params = {
-        page: currentPage - 1,
-        size: itemsPerPage,
-        keyword: keyword.trim() === "" ? null : keyword.trim(),
-        departments: selectedTags.length === 0 ? null : selectedTags,
-      };
-
-      console.log("요청 params:", params);
-
-      Object.keys(params).forEach(
-        (key) => params[key] === null && delete params[key]
-      );
-
-      const response = await axios.get("/notices", {
-        params,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        paramsSerializer: params => qs.stringify(params, { arrayFormat: 'repeat' })
+      const data = await fetchNotices({
+        page: currentPage,
+        size: pageSize,
+        keyword,
+        departments: selectedTags,
       });
 
-      console.log("API로 받은 데이터:", response.data);
+      const list = data.content || [];
 
-      setNotices(response.data.content || []);
-      setTotalPages(response.data.totalPages || 0);
-    } catch (e) {
-      console.error("fetchNotices 오류:", e);
-      setError("공지사항을 불러오는데 실패했습니다.");
+      const withPreview = await Promise.all(
+        list.map(async (item) => {
+          const filename = item?.images?.[0]?.url;
+          if (!filename) return { ...item, previewUrl: null };
+
+          if (imageCacheRef.current.has(filename)) {
+            return { ...item, previewUrl: imageCacheRef.current.get(filename) };
+          }
+
+          try {
+            const blob = await fetchNoticeImagePreview(filename);
+            const url = URL.createObjectURL(blob);
+            imageCacheRef.current.set(filename, url);
+            return { ...item, previewUrl: url };
+          } catch {
+            return { ...item, previewUrl: null };
+          }
+        })
+      );
+
+      setNotices(withPreview);
+      setTotalPages(data.totalPages || 0);
+    } catch (error) {
+      console.error("fetchNotices 오류:", error);
+      message.error("공지사항을 불러오는데 실패했습니다.");
     } finally {
-      setLoading(false);
+      setIsFetchingNotices(false);
+      isFetchingRef.current = false;
+    }
+  }, [currentPage, pageSize, keyword, selectedTags]);
+
+   // 공지사항 삭제 함수
+  const handleDeleteConfirm = async () => {
+    if (isDeletingNotices) return;
+    setIsDeletingNotices(true);
+
+    try {
+      await deleteNotice(deleteNoticeId);
+      message.success("공지사항이 삭제되었습니다.");
+
+      setIsDeleteModalOpen(false);
+      setDeleteNoticeId(null);
+
+      if (Notices.length === 1 && currentPage > 1) {
+        setCurrentPage((p) => p - 1);
+      } else {
+        loadNotices();
+      } 
+    } catch (error) {
+      console.error("handleDeleteConfirm 오류:", error);
+      message.error("공지사항 삭제에 실패했습니다.");
+    } finally {
+      setIsDeletingNotices(false);
     }
   };
 
+  // 렌더링 함수
   useEffect(() => {
-    fetchNotices();
-  }, [keyword, selectedTags, currentPage]);
+    loadNotices();
+  }, [loadNotices]);
 
-  // 구독 상태 변환 함수
-  const handleBookmarkToggle = () => {
-    fetchNotices();
-  };
+  // 이미지 메모리 정리 함수
+  useEffect(() => {
+    return () => {
+      for (const url of imageCacheRef.current.values()) {
+        try { URL.revokeObjectURL(url); } catch {}
+      }
+      imageCacheRef.current.clear();
+    };
+  }, []);
 
-  // 검색어 바뀔 때 페이지 1로 초기화
-  const handleSearchChange = (newKeyword) => {
-    setKeyword(newKeyword);
-    setCurrentPage(1);
-  };
-
-  // 태그 추가 시 페이지 1로 초기화
-  const onFilterChange = (value) => {
-    const tagStr = value[value.length - 1];
-    if (!selectedTags.includes(tagStr)) {
-      setSelectedTags((prev) => [...prev, tagStr]);
-      setTagColors((prev) => ({
-        ...prev,
-        [tagStr]: getRandomColor(),
-      }));
-      setCurrentPage(1);
-    }
-    setCascaderValue([]);
-  };
-
-  // 태그 삭제 시 페이지 1로 초기화
-  const handleTagClose = (removedTag) => {
-    setSelectedTags((prev) => {
-      const newTags = prev.filter((tag) => tag !== removedTag);
-      setCurrentPage(1);
-      return newTags;
-    });
-    setTagColors((prev) => {
-      const newColors = { ...prev };
-      delete newColors[removedTag];
-      return newColors;
-    });
-  };
-
+  // 공지사항 클릭 함수
   const handleCardClick = (id) => {
     navigate(`/notice/${id}`);
   };
 
-  // 모달 닫기 함수들
-  const handleCreateModalCancel = () => setIsCreateModalOpen(false);
-  const handleEditModalCancel = () => {
-    setIsEditModalOpen(false);
-    setEditNoticeData(null);
-  };
-  const handleDeleteModalCancel = () => {
-    setIsDeleteModalOpen(false);
-    setDeleteNoticeId(null);
+  // 구독 상태 변환 함수
+  const handleBookmarkToggle = () => {
+    loadNotices();
   };
 
-  // 공지사항 삭제 API
-  const handleDeleteConfirm = async () => {
+  // 검색어 함수
+  const handleSearchChange = (newKeyword) => {
+    const next = newKeyword.trim();
+    if (next === keyword) return;
+    setKeyword(next);
+    setCurrentPage(1);
+  };
 
-  if (deleting) return; 
-  setDeleting(true);
-
-  try {
-    const token = sessionStorage.getItem("accessToken");
-    if (!token) {
-      message.error("로그인이 필요합니다.");
+  // 태그 추가 함수
+  const onFilterChange = (value) => {
+    if (!value?.length) return;         
+    const tagStr = value[value.length - 1];
+    if (!tagStr || selectedTags.includes(tagStr)) {
+      setCascaderValue([]);             
       return;
     }
-
-    await axios.delete(`/notices/${deleteNoticeId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    message.success("공지사항이 삭제되었습니다.");
-
-    setIsDeleteModalOpen(false);
-    setDeleteNoticeId(null);
+    setSelectedTags((prev) => [...prev, tagStr]);
+    setTagColors((prev) => ({ ...prev, [tagStr]: getRandomColor() }));
     setCurrentPage(1);
-    fetchNotices();
+    setCascaderValue([]);
+  };
 
-  } catch (error) {
-    console.error("삭제 오류:", error);
-    message.error("공지사항 삭제에 실패했습니다.");
-  } finally {
-    setDeleting(false);
-  }
-};
+  // 태그 삭제 함수
+  const handleTagClose = (removedTag) => {
+    setSelectedTags((prev) => {
+      const next = prev.filter((tag) => tag !== removedTag);
+      if (next.length === prev.length) return prev; 
+      setCurrentPage(1);
+      return next;
+    });
+    setTagColors((prev) => {
+      const next = { ...prev };
+      delete next[removedTag];
+      return next;
+    });
+  };
 
-  // 카드 내 수정 버튼 클릭 시 호출할 함수 (NoticeCard에서 props로 전달)
+  // 공지사항 수정 클릭 함수
   const handleEditClick = (noticeId) => {
-    const notice = notices.find((n) => n.id === noticeId);
+    const notice = Notices.find((n) => n.id === noticeId);
     if (notice) {
       setEditNoticeData(notice);
       setIsEditModalOpen(true);
     }
   };
 
-  // 카드 내 삭제 버튼 클릭 시 호출할 함수 (NoticeCard에서 props로 전달)
+  // 공지사항 삭제 클릭 함수
   const handleDeleteClick = (noticeId) => {
     setDeleteNoticeId(noticeId);
     setIsDeleteModalOpen(true);
+  };
+
+  // 작성 모달 닫기 함수
+  const handleCreateModalCancel = () => {
+    setIsCreateModalOpen(false);
+  }  
+
+  // 수정 모달 닫기 함수
+  const handleEditModalCancel = () => {
+    setIsEditModalOpen(false);
+    setEditNoticeData(null);
+  };
+
+  // 삭제 모달 닫기 함수
+  const handleDeleteModalCancel = () => {
+    setIsDeleteModalOpen(false);
+    setDeleteNoticeId(null); 
   };
 
   return (
@@ -248,7 +261,7 @@ const Notice = () => {
             ))}
           </div>
 
-          {(user.roleType === "MANAGER") && (
+          {(user.roleType !== "STUDENT") && (
             <TbEdit
               className="notice_write_icon"
               onClick={() => setIsCreateModalOpen(true)}
@@ -256,7 +269,9 @@ const Notice = () => {
           )}
         </div>
 
-        {notices.length === 0 ? (
+        {isFetchingNotices ? (
+          <div className="notice_empty">불러오는 중...</div>
+        ) : Notices.length === 0 ? (
           <div className="notice_empty">공지사항이 존재하지 않습니다.</div>
         ) : (
           <>
@@ -265,7 +280,7 @@ const Notice = () => {
               className="notice_post"
               columnClassName="notice_post_column"
             >
-              {notices.map((post) => (
+              {Notices.map((post) => (
                 <NoticeCard
                   key={post.id}
                   id={post.id}
@@ -274,11 +289,13 @@ const Notice = () => {
                   name={post.authorName}
                   createdAt={post.createdAt}
                   updatedAt={post.updatedAt}
-                  images={post.thumbnailUrl}
+                  images={post.previewUrl ?? null}
                   content={post.text}
                   bookmarked={post.bookmarked}
                   onBookmarkToggle={handleBookmarkToggle}
-                  currentUserRole={user.roleType} 
+                  Type="notice"
+                  isOwner={user.userId === post.authorId}
+                  role={user.roleType} 
                   onClick={() => handleCardClick(post.id)}
                   onEdit={handleEditClick}
                   onDelete={handleDeleteClick}
@@ -319,35 +336,25 @@ const Notice = () => {
         )}
       </section>
 
-      {/* 작성용 NoticeModal */}
       {isCreateModalOpen && (
         <NoticeModal
           open={isCreateModalOpen}
           onCancel={handleCreateModalCancel}
           mode="create"
-          onSuccess={() => {
-            fetchNotices();
-            setIsCreateModalOpen(false);
-          }}
+          onSuccess={loadNotices} 
         />
       )}
 
-      {/* 수정용 NoticeModal */}
       {isEditModalOpen && editNoticeData && (
         <NoticeModal
           open={isEditModalOpen}
           onCancel={handleEditModalCancel}
           mode="edit"
           initialData={editNoticeData}
-          onSuccess={() => {
-            fetchNotices();
-            setIsEditModalOpen(false);
-            setEditNoticeData(null);
-          }}
+          onSuccess={loadNotices} 
         />
       )}
 
-      {/* 삭제용 TextModal */}
       {isDeleteModalOpen && (
         <TextModal
           open={isDeleteModalOpen}

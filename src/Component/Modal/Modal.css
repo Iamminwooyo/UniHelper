@@ -227,11 +227,22 @@
       outline: none;
     }
 
-    .custommodal_img_upload .ant-upload > div > div,
-    .custommodal_img_upload .anticon {
-      color: white;
+    .custommodal_img_upload .ant-upload-list-item-action {
+      background: none !important;  
+      border: none !important;      
+      box-shadow: none !important; 
+    }
 
+    .custommodal_img_upload .ant-upload > div > div,
+    .custommodal_img_upload .ant-upload-select .anticon {
+      color: white;
       opacity: 0.3;
+    }
+
+    .custommodal_img_upload .ant-upload-list-item-action .anticon-eye,
+    .custommodal_img_upload .ant-upload-list-item-action .anticon-delete {
+      color: #fff !important;
+      opacity: 0.8 !important;
     }
 
     .custommodal_file_upload {    
@@ -514,11 +525,22 @@
       outline: none;
     }
 
-    .custommodal_img_upload .ant-upload > div > div,
-    .custommodal_img_upload .anticon {
-      color: white;
+    .custommodal_img_upload .ant-upload-list-item-action {
+      background: none !important;  
+      border: none !important;      
+      box-shadow: none !important; 
+    }
 
+     .custommodal_img_upload .ant-upload > div > div,
+    .custommodal_img_upload .ant-upload-select .anticon {
+      color: white;
       opacity: 0.3;
+    }
+
+    .custommodal_img_upload .ant-upload-list-item-action .anticon-eye,
+    .custommodal_img_upload .ant-upload-list-item-action .anticon-delete {
+      color: #fff !important;
+      opacity: 0.8 !important;
     }
 
     .custommodal_file_upload {    
@@ -802,11 +824,22 @@
       outline: none;
     }
 
-    .custommodal_img_upload .ant-upload > div > div,
-    .custommodal_img_upload .anticon {
-      color: white;
+    .custommodal_img_upload .ant-upload-list-item-action {
+      background: none !important;  
+      border: none !important;      
+      box-shadow: none !important; 
+    }
 
+     .custommodal_img_upload .ant-upload > div > div,
+    .custommodal_img_upload .ant-upload-select .anticon {
+      color: white;
       opacity: 0.3;
+    }
+
+    .custommodal_img_upload .ant-upload-list-item-action .anticon-eye,
+    .custommodal_img_upload .ant-upload-list-item-action .anticon-delete {
+      color: #fff !important;
+      opacity: 0.8 !important;
     }
 
     .custommodal_file_upload {    
