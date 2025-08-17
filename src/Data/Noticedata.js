@@ -50,7 +50,7 @@ export const noticedata = [
     id: 5,
     title: "강의시간표 및 강의실 안내",
     profile: "/image/profile.png",
-    name: "학사관리과",
+    name: "스포츠-웰니스연구센터",
     date: "2025-07-23",
     imageUrls: ["/image/notice1.jpg", "/image/notice2.jpg"],
     content: "이번 학기 강의시간표 안내입니다.",
@@ -74,6 +74,18 @@ export const noticedata = [
       "③ 인턴십 기간('25. 9. 1. ~ 12. 31) 동안 인턴십을 정상적으로 수행하고 그에 대한 학점 이수가 가능하여야 함\n" +
       "④ 졸업유예, 초과학기, 수료 등 특수 학적 상태의 경우 반드시 소속 대학에 참여 가능 여부를 사전 확인",
     bookmarked: false,
+    files: []
+  },
+
+  {
+    id: 7,
+    title: "강의시간표 안내",
+    profile: "/image/profile.png",
+    name: "학사관리과",
+    date: "2025-07-23",
+    imageUrls: [],
+    content: "이번 학기 강의시간표 안내입니다.",
+    bookmarked: true,
     files: []
   },
 ];

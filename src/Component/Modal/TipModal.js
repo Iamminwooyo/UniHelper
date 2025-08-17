@@ -1,16 +1,20 @@
 import "./Modal.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Modal, Input, Button, Upload, message } from "antd";
+import { Modal, Input, Button, Upload, Select, message } from "antd";
 import { useRecoilValue } from "recoil";
 import { userBriefState } from "../../Recoil/Atom";
 import { UploadOutlined, PlusOutlined } from "@ant-design/icons";
 
-const NoticeModal = ({ open, onCancel, onSubmit, initialData = null, mode = "create", onSuccess }) => {
+const { Option } = Select;
+
+const allTags = ["전공", "학식", "배달", "동아리", "위치", "대회", "성적"];
+
+const TipModal = ({ open, onCancel, onSubmit, initialData = null, mode = "create", onSuccess }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [imageFiles, setImageFiles] = useState([]);
-  const [fileList, setFileList] = useState([]);
+  const [tags, setTags] = useState([]);
   const [submitting, setSubmitting] = useState(false);
   const userBrief = useRecoilValue(userBriefState);
 
@@ -20,7 +24,7 @@ const NoticeModal = ({ open, onCancel, onSubmit, initialData = null, mode = "cre
       setTitle(initialData?.title || "");
       setContent(initialData?.text || "");
       setImageFiles(initialData?.images || []);
-      setFileList(initialData?.attachments || []);
+      setTags(initialData?.tags || []);
       setSubmitting(false);
     }
   }, [open, initialData]);
@@ -34,7 +38,7 @@ const NoticeModal = ({ open, onCancel, onSubmit, initialData = null, mode = "cre
     setImageFiles(fileList);
   };
 
-   const beforeImageUpload = (file) => {
+  const beforeImageUpload = (file) => {
     const isImage = file.type.startsWith("image/");
     const isLt2M = file.size / 1024 / 1024 < 2;
     if (!isImage) message.error("이미지 파일만 업로드 가능합니다.");
@@ -42,15 +46,19 @@ const NoticeModal = ({ open, onCancel, onSubmit, initialData = null, mode = "cre
     return false; // ← 반드시 false
   };
 
-  // 첨부파일 업로드
-  const handleFileUploadChange = ({ fileList }) => {
-    setFileList(fileList);
+   // 태그 선택 변경 핸들러
+  const handleTagsChange = (value) => {
+     if (value.length > 3) {
+        message.warning("태그는 최대 3개까지 선택 가능합니다.");
+        return;
+      }
+      setTags(value);
   };
 
-  // 공지사항 작성, 수정 API
+  // Tip 작성, 수정 API
   const handleSubmit = async () => {
-    if (submitting) return; 
-
+    if (submitting) return;
+    
     if (!title.trim()) return message.error("제목을 입력해주세요.");
     if (!content.trim()) return message.error("내용을 입력해주세요.");
 
@@ -58,28 +66,19 @@ const NoticeModal = ({ open, onCancel, onSubmit, initialData = null, mode = "cre
 
     try {
       const formData = new FormData();
-
-      formData.append(
-        "notice",
-        JSON.stringify({
-          title: title.trim(),
-          text: content.trim(),
-          department: userBrief.department, 
-        })
-      );
+      formData.append("title", title.trim());
+      formData.append("text", content.trim());
+      formData.append("tags", tags.join(","));
 
       imageFiles.forEach((file) => {
         if (file.originFileObj) {
-          // 신규 업로드 파일만 originFileObj가 있음
           formData.append("images", file.originFileObj);
         }
       });
 
-      fileList.forEach((file) => {
-        if (file.originFileObj) {
-          formData.append("attachments", file.originFileObj);
-        }
-      });
+      for (let [key, value] of formData.entries()) {
+        console.log(key, value);
+      }
 
       const token = sessionStorage.getItem("accessToken");
       if (!token) {
@@ -89,25 +88,24 @@ const NoticeModal = ({ open, onCancel, onSubmit, initialData = null, mode = "cre
       }
 
       if (mode === "edit" && initialData?.id) {
-        await axios.patch(`/notices/${initialData.id}`, formData, {
+        await axios.patch(`/community/${initialData.id}`, formData, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data",
           },
         });
-        message.success("공지사항이 수정되었습니다.");
+        message.success("Tip이 수정되었습니다.");
       } else {
-        await axios.post("/notices", formData, {
+        await axios.post("/community", formData, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data",
           },
         });
-        message.success("공지사항이 작성되었습니다.");
+        message.success("Tip이 작성되었습니다.");
       }
 
       if (onSuccess) onSuccess();
-
       handleCancel();
     } catch (error) {
       console.error(error);
@@ -132,7 +130,7 @@ const NoticeModal = ({ open, onCancel, onSubmit, initialData = null, mode = "cre
       wrapClassName="custommodal_wrap"
     >
       <section className="custommodal_layout">
-        <h2 className="custommodal_title">{mode === "edit" ? "공지사항 수정" : "공지사항 작성"}</h2>
+        <h2 className="custommodal_title">{mode === "edit" ? "Tip 수정" : "Tip 작성"}</h2>
 
         {/* 제목 */}
         <div className="custommodal_input_group">
@@ -178,20 +176,22 @@ const NoticeModal = ({ open, onCancel, onSubmit, initialData = null, mode = "cre
           </Upload>
         </div>
 
-        {/* 첨부파일 업로드 */}
         <div className="custommodal_input_group" style={{ marginTop: 16 }}>
-          <p className="custommodal_input_label">첨부파일</p>
-          <Upload
-            className="custommodal_file_upload"
-            fileList={fileList}
-            onChange={handleFileUploadChange}
-            beforeUpload={() => false}
-            multiple
+          <p className="custommodal_input_label">태그</p>
+          <Select
+            mode="multiple"
+            allowClear
+            placeholder="태그"
+            value={tags}
+            onChange={handleTagsChange}
+            style={{ width: "100%" }}
           >
-            <Button icon={<UploadOutlined />} className="custommodal_file_upload_button">
-              파일 선택
-            </Button>
-          </Upload>
+            {allTags.map((tag) => (
+              <Select.Option key={tag} value={tag}>
+                {tag}
+              </Select.Option>
+            ))}
+          </Select>
         </div>
       </section>
 
@@ -213,4 +213,4 @@ const NoticeModal = ({ open, onCancel, onSubmit, initialData = null, mode = "cre
   );
 };
 
-export default NoticeModal;
+export default TipModal;

@@ -1,229 +1,1422 @@
-.noticecard_layout {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+@media (min-width: 1241px) {
+    .noticecard_layout {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
 
-    width: 300px;
-    height: auto;
+        width: 17vw;
+        height: auto;
 
-    background-color: #242424;
-    border: 1px solid #2a2a2a;
-    border-radius: 15px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+        background-color: #242424;
+        border: 1px solid #2a2a2a;
+        border-radius: 15px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    }
+
+    .noticecard_title {
+        width: 80%;
+        margin: 0 0 0 0;
+        padding: 20px 0;
+
+        font-size: min(15px, 1.2vw);
+        text-align: left;
+    }
+
+    .noticecard_image {
+        width: 80%;
+        margin: 0 0;
+
+        border: 1px solid #2a2a2a;
+        border-radius: 8px;
+
+        object-fit: cover;
+
+        cursor: pointer;
+    }
+
+    .noticecard_content {
+        display: flex;
+
+        width: 80%;
+        min-height: 100px;
+        margin: 0 0;
+
+        font-size: min(11px, 0.8vw);
+        white-space: pre-line;
+        text-align: left; 
+
+        background-color: #2e2e2e;
+        border: 1px solid #2a2a2a;
+        border-radius: 8px;
+
+        padding: 12px;
+        box-sizing: border-box;
+
+        cursor: pointer;
+    }
+
+    .noticecard_info {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        width: 80%;
+        padding: 15px 0;
+    }
+
+    .noticecard_profile {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        width: 80%;
+    }
+
+    .noticecard_profile_img {
+        width: 2vw;
+        height: 2vw;
+
+        border-radius: 50%;
+
+        object-fit: cover;
+    }
+
+    .noticecard_text {
+        font-size: min(11px, 0.8vw);
+    }
+
+    .noticecard_name {
+        display: flex;
+        align-items: flex-end;
+
+        margin: 0;
+    }
+
+    .noticecard_date {
+        display: flex;
+        align-items: flex-end;
+
+        margin: 0;
+    }
+
+    .noticecard_icon {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        font-size: max(15px, 1.3vw);
+    }
+
+    .custom-dropdown-menu {
+        background-color: #2e2e2e !important;
+        border: 1px solid #d9d9d9;
+        padding: 4px 0;
+        border-radius: 10px;
+    }
+
+    .custom-dropdown-item {
+        color: #ffffff !important;
+        font-weight: 500;
+        padding: 8px 20px;
+        transition: all 0.2s ease;
+        font-size: max(10px, 0.8vw) !important;
+    }
+
+    .custom-dropdown-item:hover {
+        background-color: #585858 !important;
+        color: #78D900 !important;
+    }
+
+    .subscribecard_layout {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        width: 13vw;
+        height: auto;
+
+        background-color: #242424;
+        border: 1px solid #2a2a2a;
+        border-radius: 15px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    }
+
+    .subscribecard_title {
+        width: 80%;
+        margin: 0 0 0 0;
+        padding: 20px 0;
+
+        font-size: min(14px, 1.2vw);
+        text-align: left;
+    }
+
+    .subscribecard_image {
+        width: 80%;
+        margin: 0 0;
+
+        border: 1px solid #2a2a2a;
+        border-radius: 8px;
+
+        object-fit: cover;
+
+        cursor: pointer;
+    }
+
+    .subscribecard_content {
+        display: flex;
+
+        width: 80%;
+        min-height: 100px;
+        margin: 0 0;
+
+        font-size: min(10px, 0.8vw);
+        white-space: pre-line;
+        text-align: left; 
+
+        background-color: #2e2e2e;
+        border: 1px solid #2a2a2a;
+        border-radius: 8px;
+
+        padding: 12px;
+        box-sizing: border-box;
+
+        cursor: pointer;
+    }
+
+    .subscribecard_info {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        width: 80%;
+        padding: 15px 0;
+    }
+
+    .subscribecard_profile {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        width: 80%;
+    }
+
+    .subscribecard_profile_img {
+        width: 2vw;
+        height: 2vw;
+
+        border-radius: 50%;
+
+        object-fit: cover;
+    }
+
+    .subscribecard_text {
+        font-size: min(11px, 0.8vw);
+    }
+
+    .subscribecard_name {
+        display: flex;
+        align-items: flex-end;
+
+        margin: 0;
+    }
+
+    .subscribecard_date {
+        display: flex;
+        align-items: flex-end;
+
+        margin: 0;
+    }
+
+
+     .tipcard_layout {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        width: 90%;
+        height: auto;
+        padding: 5px 0;
+
+        background-color: #242424;
+        border: 1px solid #2a2a2a;
+        border-radius: 15px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    }
+
+    .tipcard_header {
+        display: flex;
+        justify-content: space-between;
+
+        width: 90%;
+        padding: 10px 0;
+    }
+
+    .tipcard_title {
+        display: flex;
+        justify-content: flex-start;
+
+        width: 90%;
+
+        font-size: 20px;
+
+        cursor: pointer;
+    }
+
+    .tipcard_icon {
+        display: flex;
+        align-items: center;
+        gap: 0.5vw;
+        font-size: max(15px, 1.3vw);
+    }
+
+    .tipcard_divider {
+        width: 90%;
+        margin: 0 0;
+        
+        border: none;
+        border-top: 1px solid #ffffff; /* 연한 회색 선 */
+        opacity: 0.5;
+
+        cursor: pointer;
+    }
+
+    .tipcard_info {
+        display: flex;
+        
+        width: 90%;
+        padding: 10px 0;
+
+        cursor: pointer;
+    }
+
+    .tipcard_profile {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        width: 80%;
+    }
+
+    .tipcard_profile_img {
+        width: 2vw;
+        height: 2vw;
+
+        border-radius: 50%;
+
+        object-fit: cover;
+    }
+
+    .tipcard_text {
+        font-size: min(11px, 0.8vw);
+    }
+
+    .tipcard_name {
+        display: flex;
+        align-items: flex-end;
+
+        margin: 0;
+    }
+
+    .tipcard_date {
+        display: flex;
+        align-items: flex-end;
+
+        margin: 0;
+    }
+
+    .tipcard_tag {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .tipcard_bookmark {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .tipcard_box {
+        display: flex;
+
+        width: 90%;
+        min-height: 100px;
+        margin: 0 0;
+
+        font-size: min(11px, 0.8vw);
+        white-space: pre-line;
+        text-align: left; 
+
+        background-color: #2e2e2e;
+        border: 1px solid #2a2a2a;
+        border-radius: 8px;
+
+        padding: 12px;
+        box-sizing: border-box;
+
+        cursor: pointer;
+    }
+
+    .tipcard_content {
+        flex: 1;
+    }
+
+    .tipcard_img {
+        flex: 1;
+    }
+
+    .tipcard_reaction {
+        display: flex;
+
+        width: 90%;
+        padding: 10px 0;
+
+        align-items: flex-start;
+        justify-content: flex-start;
+        text-align: start;
+
+        gap: 20px;
+    }
+
+    .tipcard_reaction_item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+
+        font-size: max(13px, 0.8vw);
+    }
+
+    .commentcard_layout {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        width: 90%;
+        height: auto;
+        padding: 10px 0;
+
+        background-color: #2e2e2e;
+        border: 1px solid #2a2a2a;
+        border-radius: 10px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    }
+
+    .commentcard_info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        width: 90%;
+    }
+
+    .commentcard_profile {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .commentcard_profile_img {
+        width: 1.5vw;
+        height: 1.5vw;
+
+        border-radius: 50%;
+
+        object-fit: cover;
+    }
+
+    .commentcard_text {
+        font-size: min(9px, 0.8vw);
+    }
+
+    .commentcard_name {
+        display: flex;
+        align-items: flex-end;
+
+        margin: 0;
+    }
+
+    .commentcard_date {
+        display: flex;
+        align-items: flex-start;
+
+        margin: 0;
+    }
+
+    .commentcard_icon {
+        font-size: min(18px, 1.8vw);
+
+        cursor: pointer;
+    }
+
+    .commentcard_divider {
+        width: 90%;                
+        background-color: #ccc;     
+        opacity: 0.3;
+    }
+
+    .commentcard_content {
+        display: flex;
+
+        width: 90%;
+        margin: 0 0;
+
+        padding: 5px 0;
+        box-sizing: border-box;
+
+        font-size: min(10px, 0.8vw);
+        white-space: pre-line;
+        text-align: left; 
+    }
 }
+@media (min-width: 769px) and (max-width: 1240px) {
+    .noticecard_layout {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
 
-.noticecard_title {
-    width: 80%;
-    margin: 0 0 0 0;
-    padding: 20px 0;
+        width: 19vw;
+        height: auto;
 
-    text-align: left;
+        background-color: #242424;
+        border: 1px solid #2a2a2a;
+        border-radius: 15px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    }
+
+    .noticecard_title {
+        width: 80%;
+        margin: 0 0 0 0;
+        padding: 20px 0;
+
+        font-size: min(18px, 1.3vw);
+        text-align: left;
+    }
+
+    .noticecard_image {
+        width: 80%;
+        margin: 0 0;
+
+        border: 1px solid #2a2a2a;
+        border-radius: 8px;
+
+        object-fit: cover;
+
+        cursor: pointer;
+    }
+
+    .noticecard_content {
+        display: flex;
+
+        width: 80%;
+        min-height: 100px;
+        margin: 0 0;
+
+        font-size: min(11px, 0.8vw);
+        white-space: pre-line;
+        text-align: left; 
+
+        background-color: #2e2e2e;
+        border: 1px solid #2a2a2a;
+        border-radius: 8px;
+
+        padding: 12px;
+        box-sizing: border-box;
+
+        cursor: pointer;
+    }
+
+    .noticecard_info {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        width: 80%;
+        padding: 10px 0;
+    }
+
+    .noticecard_profile {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 1vw;
+
+        width: 80%;
+    }
+
+    .noticecard_profile_img {
+        width: 3vw;
+        height: 3vw;
+
+        border-radius: 50%;
+
+        object-fit: cover;
+    }
+
+    .noticecard_text {
+        font-size: min(13px, 1vw);
+    }
+
+    .noticecard_name {
+        display: flex;
+        align-items: flex-end;
+
+        margin: 0;
+    }
+
+    .noticecard_date {
+        display: flex;
+        align-items: flex-end;
+
+        margin: 0;
+    }
+
+    .noticecard_icon {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        font-size: max(15px, 1.3vw);
+    }
+
+    .custom-dropdown-menu {
+        background-color: #2e2e2e !important;
+        border: 1px solid #d9d9d9;
+        padding: 4px 0;
+        border-radius: 10px;
+    }
+
+    .custom-dropdown-item {
+        color: #ffffff !important;
+        font-weight: 500;
+        padding: 8px 20px;
+        transition: all 0.2s ease;
+        font-size: max(10px, 1vw) !important;
+    }
+
+    .custom-dropdown-item:hover {
+        background-color: #585858 !important;
+        color: #78D900 !important;
+    }
+
+     .subscribecard_layout {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        width: 21.5vw;
+        height: auto;
+
+        background-color: #242424;
+        border: 1px solid #2a2a2a;
+        border-radius: 15px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    }
+
+    .subscribecard_title {
+        width: 80%;
+        margin: 0 0 0 0;
+        padding: 20px 0;
+
+        font-size: min(14px, 1.5vw);
+        text-align: left;
+    }
+
+    .subscribecard_image {
+        width: 80%;
+        margin: 0 0;
+
+        border: 1px solid #2a2a2a;
+        border-radius: 8px;
+
+        object-fit: cover;
+
+        cursor: pointer;
+    }
+
+    .subscribecard_content {
+        display: flex;
+
+        width: 80%;
+        min-height: 100px;
+        margin: 0 0;
+
+        font-size: min(10px, 1vw);
+        white-space: pre-line;
+        text-align: left; 
+
+        background-color: #2e2e2e;
+        border: 1px solid #2a2a2a;
+        border-radius: 8px;
+
+        padding: 12px;
+        box-sizing: border-box;
+
+        cursor: pointer;
+    }
+
+    .subscribecard_info {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        width: 80%;
+        padding: 15px 0;
+    }
+
+    .subscribecard_profile {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 1vw;
+
+        width: 80%;
+    }
+
+    .subscribecard_profile_img {
+        width: 3vw;
+        height: 3vw;
+
+        border-radius: 50%;
+
+        object-fit: cover;
+    }
+
+    .subscribecard_text {
+        font-size: min(11px, 1.1vw);
+    }
+
+    .subscribecard_name {
+        display: flex;
+        align-items: flex-end;
+
+        margin: 0;
+    }
+
+    .subscribecard_date {
+        display: flex;
+        align-items: flex-end;
+
+        margin: 0;
+    }
+
+    
+     .tipcard_layout {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        width: 90%;
+        height: auto;
+        padding: 5px 0;
+
+        background-color: #242424;
+        border: 1px solid #2a2a2a;
+        border-radius: 15px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    }
+
+    .tipcard_header {
+        display: flex;
+        justify-content: space-between;
+
+        width: 90%;
+        padding: 10px 0;
+    }
+
+    .tipcard_title {
+        display: flex;
+        justify-content: flex-start;
+
+        width: 90%;
+
+        font-size: min(20px, 1.5vw);
+
+        cursor: pointer;
+    }
+
+    .tipcard_icon {
+        display: flex;
+        align-items: center;
+        gap: 0.5vw;
+        font-size: max(15px, 1.5vw);
+    }
+
+    .tipcard_divider {
+        width: 90%;
+        margin: 0 0;
+        
+        border: none;
+        border-top: 1px solid #ffffff; /* 연한 회색 선 */
+        opacity: 0.5;
+
+        cursor: pointer;
+    }
+
+    .tipcard_info {
+        display: flex;
+        
+        width: 90%;
+        padding: 10px 0;
+
+        cursor: pointer;
+    }
+
+    .tipcard_profile {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 1vw;
+
+        width: 80%;
+    }
+
+    .tipcard_profile_img {
+        width: 3vw;
+        height: 3vw;
+
+        border-radius: 50%;
+
+        object-fit: cover;
+    }
+
+    .tipcard_text {
+        font-size: min(13px, 1vw);
+    }
+
+    .tipcard_name {
+        display: flex;
+        align-items: flex-end;
+
+        margin: 0;
+    }
+
+    .tipcard_date {
+        display: flex;
+        align-items: flex-end;
+
+        margin: 0;
+    }
+
+    .tipcard_tag {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .tipcard_tag_item {
+        font-size: min(13px, 1vw);
+    }
+
+    .tipcard_bookmark {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .tipcard_content {
+        display: flex;
+
+        width: 90%;
+        min-height: 80px;
+        margin: 0 0;
+
+        font-size: min(11px, 0.8vw);
+        white-space: pre-line;
+        text-align: left; 
+
+        background-color: #2e2e2e;
+        border: 1px solid #2a2a2a;
+        border-radius: 8px;
+
+        padding: 12px;
+        box-sizing: border-box;
+
+        cursor: pointer;
+    }
+
+    .tipcard_reaction {
+        display: flex;
+
+        width: 90%;
+        padding: 10px 0;
+
+        align-items: flex-start;
+        justify-content: flex-start;
+        text-align: start;
+
+        gap: 20px;
+    }
+
+    .tipcard_reaction_item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+
+        font-size: min(15px, 1.3vw);
+    }
+
+    .commentcard_layout {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        width: 90%;
+        height: auto;
+        padding: 10px 0;
+
+        background-color: #2e2e2e;
+        border: 1px solid #2a2a2a;
+        border-radius: 10px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    }
+
+    .commentcard_info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        width: 90%;
+    }
+
+    .commentcard_profile {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 0.8vw;
+    }
+
+    .commentcard_profile_img {
+        width: 2.3vw;
+        height: 2.3vw;
+
+        border-radius: 50%;
+
+        object-fit: cover;
+    }
+
+    .commentcard_text {
+        font-size: min(12px, 0.8vw);
+    }
+
+    .commentcard_name {
+        display: flex;
+        align-items: flex-end;
+
+        margin: 0;
+    }
+
+    .commentcard_date {
+        display: flex;
+        align-items: flex-start;
+
+        margin: 0;
+    }
+
+    .commentcard_icon {
+        font-size: min(13px, 2vw);
+
+        cursor: pointer;
+    }
+
+    .commentcard_divider {
+        width: 90%;                
+        background-color: #ccc;     
+        opacity: 0.3;
+    }
+
+    .commentcard_content {
+        display: flex;
+
+        width: 90%;
+        margin: 0 0;
+
+        padding: 5px 0;
+        box-sizing: border-box;
+
+        font-size: min(12px, 0.9vw);
+        white-space: pre-line;
+        text-align: left; 
+    }
 }
+@media (min-width: 1px) and (max-width: 768px) {
+    .noticecard_layout {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
 
-.noticecard_image {
-    width: 80%;
-    margin: 0 0;
+        width: 38vw;
+        height: auto;
 
-    border: 1px solid #2a2a2a;
-    border-radius: 8px;
+        background-color: #242424;
+        border: 1px solid #2a2a2a;
+        border-radius: 15px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    }
 
-    object-fit: cover;
+    .noticecard_title {
+        width: 80%;
+        margin: 0 0 0 0;
+        padding: 20px 0;
 
-    cursor: pointer;
-}
+        font-size: min(18px, 2vw);
+        text-align: left;
+    }
 
-.noticecard_content {
-    display: flex;
+    .noticecard_image {
+        width: 80%;
+        margin: 0 0;
 
-    width: 80%;
-    min-height: 100px;
-    margin: 0 0;
+        border: 1px solid #2a2a2a;
+        border-radius: 8px;
 
-    font-size: 12px;
-    white-space: pre-line;
-    text-align: left; 
+        object-fit: cover;
 
-    background-color: #2e2e2e;
-    border: 1px solid #2a2a2a;
-    border-radius: 8px;
+        cursor: pointer;
+    }
 
-    padding: 12px;
-    box-sizing: border-box;
+    .noticecard_content {
+        display: flex;
 
-    cursor: pointer;
-}
+        width: 80%;
+        min-height: 100px;
+        margin: 0 0;
 
-.noticecard_info {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+        font-size: min(12px, 1.7vw);
+        white-space: pre-line;
+        text-align: left; 
 
-    width: 80%;
-    padding: 15px 0;
-}
+        background-color: #2e2e2e;
+        border: 1px solid #2a2a2a;
+        border-radius: 8px;
 
-.noticecard_profile {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+        padding: 12px;
+        box-sizing: border-box;
 
-    width: 80%;
-}
+        cursor: pointer;
+    }
 
-.noticecard_profile_img {
-    width: 30px;
-    height: 30px;
+    .noticecard_info {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
 
-    border-radius: 50%;
+        width: 80%;
+        padding: 1.7vw 0;
+    }
 
-    object-fit: cover;
-}
+    .noticecard_profile {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 1vw;
 
-.noticecard_text {
-    font-size: 12px;
-}
+        width: 80%;
+    }
 
-.noticecard_name {
-    display: flex;
-    align-items: flex-end;
+    .noticecard_profile_img {
+        width: 4.5vw;
+        height: 4.5vw;
 
-    margin: 0;
-}
+        border-radius: 50%;
 
-.noticecard_date {
-    display: flex;
-    align-items: flex-end;
+        object-fit: cover;
+    }
 
-    margin: 0;
-}
+    .noticecard_text {
+        font-size: min(13px, 1.7vw);
+    }
 
-.noticecard_icon {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-}
+    .noticecard_name {
+        display: flex;
+        align-items: flex-end;
 
+        margin: 0;
+    }
 
+    .noticecard_date {
+        display: flex;
+        align-items: flex-end;
 
-.subscribecard_layout {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+        margin: 0;
+    }
 
-    width: 250px;
-    height: auto;
+    .noticecard_icon {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        font-size: max(17px, 1.5vw);
+    }
 
-    background-color: #242424;
-    border: 1px solid #2a2a2a;
-    border-radius: 15px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
-}
+    .custom-dropdown-menu {
+        background-color: #2e2e2e !important;
+        border: 1px solid #d9d9d9;
+        padding: 4px 0;
+        border-radius: 10px;
+    }
 
-.subscribecard_title {
-    width: 80%;
-    margin: 0 0 0 0;
-    padding: 20px 0;
+    .custom-dropdown-item {
+        color: #ffffff !important;
+        font-weight: 500;
+        padding: 8px 20px;
+        transition: all 0.2s ease;
+        font-size: max(9px, 1.2vw) !important;
+    }
 
-    text-align: left;
-}
+    .custom-dropdown-item:hover {
+        background-color: #585858 !important;
+        color: #78D900 !important;
+    }
 
-.subscribecard_image {
-    width: 80%;
-    margin: 0 0;
+         .subscribecard_layout {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
 
-    border: 1px solid #2a2a2a;
-    border-radius: 8px;
+        width: 23vw;
+        height: auto;
 
-    object-fit: cover;
+        background-color: #242424;
+        border: 1px solid #2a2a2a;
+        border-radius: 15px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    }
 
-    cursor: pointer;
-}
+    .subscribecard_title {
+        width: 80%;
+        margin: 0 0 0 0;
+        padding: 20px 0;
 
-.subscribecard_content {
-    display: flex;
+        font-size: min(17px, 1.8vw);
+        text-align: left;
+    }
 
-    width: 80%;
-    min-height: 100px;
-    margin: 0 0;
+    .subscribecard_image {
+        width: 80%;
+        margin: 0 0;
 
-    font-size: 12px;
-    white-space: pre-line;
-    text-align: left; 
+        border: 1px solid #2a2a2a;
+        border-radius: 8px;
 
-    background-color: #2e2e2e;
-    border: 1px solid #2a2a2a;
-    border-radius: 8px;
+        object-fit: cover;
 
-    padding: 12px;
-    box-sizing: border-box;
+        cursor: pointer;
+    }
 
-    cursor: pointer;
-}
+    .subscribecard_content {
+        display: flex;
 
-.subscribecard_info {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+        width: 80%;
+        min-height: 100px;
+        margin: 0 0;
 
-    width: 80%;
-    padding: 15px 0;
-}
+        font-size: min(13px, 1.5vw);
+        white-space: pre-line;
+        text-align: left; 
 
-.subscribecard_profile {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+        background-color: #2e2e2e;
+        border: 1px solid #2a2a2a;
+        border-radius: 8px;
 
-    width: 80%;
-}
+        padding: 12px;
+        box-sizing: border-box;
 
-.subscribecard_profile_img {
-    width: 30px;
-    height: 30px;
+        cursor: pointer;
+    }
 
-    border-radius: 50%;
+    .subscribecard_info {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
 
-    object-fit: cover;
-}
+        width: 80%;
+        padding: 15px 0;
+    }
 
-.subscribecard_text {
-    font-size: 12px;
-}
+    .subscribecard_profile {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 1vw;
 
-.subscribecard_name {
-    display: flex;
-    align-items: flex-end;
+        width: 80%;
+    }
 
-    margin: 0;
-}
+    .subscribecard_profile_img {
+        width: 4vw;
+        height: 4vw;
 
-.subscribecard_date {
-    display: flex;
-    align-items: flex-end;
+        border-radius: 50%;
 
-    margin: 0;
-}
+        object-fit: cover;
+    }
 
-.custom-dropdown-menu {
-    background-color: #2e2e2e !important;
-    border: 1px solid #d9d9d9;
-    padding: 4px 0;
-    border-radius: 10px;
-}
+    .subscribecard_text {
+        font-size: min(15px, 1.5vw);
+    }
 
-.custom-dropdown-item {
-    color: #ffffff !important;
-    font-weight: 500;
-    padding: 8px 20px;
-    transition: all 0.2s ease;
-}
+    .subscribecard_name {
+        display: flex;
+        align-items: flex-end;
 
-.custom-dropdown-item:hover {
-    background-color: #585858 !important;
-    color: #78D900 !important;
+        margin: 0;
+    }
+
+    .subscribecard_date {
+        display: flex;
+        align-items: flex-end;
+
+        margin: 0;
+    }
+
+    .tipcard_layout {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        width: 90%;
+        height: auto;
+        padding: 5px 0;
+
+        background-color: #242424;
+        border: 1px solid #2a2a2a;
+        border-radius: 15px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    }
+
+    .tipcard_header {
+        display: flex;
+        justify-content: space-between;
+
+        width: 90%;
+        padding: 10px 0;
+    }
+
+    .tipcard_title {
+        display: flex;
+        justify-content: flex-start;
+
+        width: 90%;
+
+        font-size: max(13px, 2vw);
+
+        cursor: pointer;
+    }
+
+    .tipcard_icon {
+        display: flex;
+        align-items: center;
+        gap: 0.5vw;
+        font-size: max(17px, 1.5vw);
+    }
+
+    .tipcard_divider {
+        width: 90%;
+        margin: 0 0;
+        
+        border: none;
+        border-top: 1px solid #ffffff; /* 연한 회색 선 */
+        opacity: 0.5;
+
+        cursor: pointer;
+    }
+
+    .tipcard_info {
+        display: flex;
+        
+        width: 90%;
+        padding: 1.7vw 0;
+
+        cursor: pointer;
+    }
+
+    .tipcard_profile {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 1vw;
+
+        width: 80%;
+    }
+
+    .tipcard_profile_img {
+        width: 4.5vw;
+        height: 4.5vw;
+
+        border-radius: 50%;
+
+        object-fit: cover;
+    }
+
+    .tipcard_text {
+        font-size: min(13px, 1.7vw);
+    }
+
+    .tipcard_name {
+        display: flex;
+        align-items: flex-end;
+
+        margin: 0;
+    }
+
+    .tipcard_date {
+        display: flex;
+        align-items: flex-end;
+
+        margin: 0;
+    }
+
+    .tipcard_tag {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .tipcard_tag_item {
+        font-size: min(13px, 1.7vw);
+    }
+
+    .tipcard_bookmark {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .tipcard_content {
+        display: flex;
+
+        width: 90%;
+        min-height: 80px;
+        margin: 0 0;
+
+        font-size: min(12px, 1.7vw);
+        white-space: pre-line;
+        text-align: left; 
+
+        background-color: #2e2e2e;
+        border: 1px solid #2a2a2a;
+        border-radius: 8px;
+
+        padding: 12px;
+        box-sizing: border-box;
+
+        cursor: pointer;
+    }
+
+    .tipcard_reaction {
+        display: flex;
+
+        width: 90%;
+        padding: 10px 0;
+
+        align-items: flex-start;
+        justify-content: flex-start;
+        text-align: start;
+
+        gap: 20px;
+    }
+
+    .tipcard_reaction_item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+
+        font-size: max(12px, 1.7vw);
+    }
+
+    .commentcard_layout {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        width: 90%;
+        height: auto;
+        padding: 10px 0;
+
+        background-color: #2e2e2e;
+        border: 1px solid #2a2a2a;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    }
+
+    .commentcard_info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        width: 90%;
+    }
+
+    .commentcard_profile {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 1vw;
+    }
+
+    .commentcard_profile_img {
+        width: 3.5vw;
+        height: 3.5vw;
+
+        border-radius: 50%;
+
+        object-fit: cover;
+    }
+
+    .commentcard_text {
+        font-size: min(13px, 1.4vw);
+    }
+
+    .commentcard_name {
+        display: flex;
+        align-items: flex-end;
+
+        margin: 0;
+    }
+
+    .commentcard_date {
+        display: flex;
+        align-items: flex-start;
+
+        margin: 0;
+    }
+
+    .commentcard_icon {
+        font-size: min(13px, 2vw);
+
+        cursor: pointer;
+    }
+
+    .commentcard_divider {
+        width: 90%;                
+        background-color: #ccc;     
+        opacity: 0.3;
+    }
+
+    .commentcard_content {
+        display: flex;
+
+        width: 90%;
+        margin: 0 0;
+
+        padding: 5px 0;
+        box-sizing: border-box;
+
+        font-size: min(13px, 1.5vw);
+        white-space: pre-line;
+        text-align: left; 
+    }
 }

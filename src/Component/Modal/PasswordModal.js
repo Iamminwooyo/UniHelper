@@ -273,13 +273,13 @@ const PasswordModal = ({ open, onCancel }) => {
       footer={null}
       centered
       closable={false}
-      wrapClassName="passwordmodal_wrap"
+      wrapClassName="custommodal_wrap"
     >
-      <section className="passwordmodal_layout">
-        <h2 className="passwordmodal_title">비밀번호 변경</h2>
+      <section className="custommodal_layout">
+        <h2 className="custommodal_title">비밀번호 변경</h2>
 
-        <div className="passwordmodal_input_group">
-          <p className="passwordmodal_input_label">이메일</p>
+        <div className="custommodal_input_group">
+          <p className="custommodal_input_label">이메일</p>
           <div style={{ display: "flex", gap: "10px" }}>
             <Input
               type="email"
@@ -290,7 +290,7 @@ const PasswordModal = ({ open, onCancel }) => {
             {state.emailVerificationStatus !== "verified" && (
               <Button
                 type="button"
-                className="passwordmodal_input_button"
+                className="custommodal_input_button"
                 onClick={handleSendEmail}
                 disabled={["sending", "sent"].includes(state.emailVerificationStatus)}
               >
@@ -303,7 +303,7 @@ const PasswordModal = ({ open, onCancel }) => {
               </Button>
             )}
           </div>
-          <p className={`passwordmodal_input_message ${state.userError ? "error" : ""}`}>
+          <p className={`custommodal_input_message ${state.userError ? "error" : ""}`}>
             {state.emailVerificationMessage}
             {state.emailVerificationMessage && state.userError ? " - " : ""}
             {state.userError}
@@ -314,8 +314,8 @@ const PasswordModal = ({ open, onCancel }) => {
         </div>
 
         {["sent", "resend"].includes(state.emailVerificationStatus) && (
-          <div className="passwordmodal_input_group">
-            <p className="passwordmodal_input_label">인증번호</p>
+          <div className="custommodal_input_group">
+            <p className="custommodal_input_label">인증번호</p>
             <div style={{ display: "flex", gap: "10px" }}>
               <Input
                 type="text"
@@ -325,14 +325,14 @@ const PasswordModal = ({ open, onCancel }) => {
               />
               <Button
                 type="button"
-                className="passwordmodal_input_button"
+                className="custommodal_input_button"
                 onClick={handleVerifyCode}
               >
                 인증
               </Button>
             </div>
             <p
-              className={`passwordmodal_input_message ${
+              className={`custommodal_input_message ${
                 state.codeVerificationStatus === "error"
                   ? "error"
                   : state.codeVerificationStatus === "verified"
@@ -347,15 +347,15 @@ const PasswordModal = ({ open, onCancel }) => {
           </div>
         )}
         
-            <div className="passwordmodal_input_group">
-              <p className="passwordmodal_input_label">새 비밀번호</p>
+            <div className="custommodal_input_group">
+              <p className="custommodal_input_label">새 비밀번호</p>
               <Input.Password
                 value={state.newPassword}
                 onChange={handlePasswordChange}
                 placeholder="새 비밀번호"
               />
               <p
-                className={`passwordmodal_input_message ${
+                className={`custommodal_input_message ${
                   state.newPassword && !state.isPasswordValid ? "error" : ""
                 }`}
                 style={{ minHeight: "18px" }}
@@ -367,15 +367,15 @@ const PasswordModal = ({ open, onCancel }) => {
 
             </div>
 
-            <div className="passwordmodal_input_group">
-              <p className="passwordmodal_input_label">새 비밀번호 확인</p>
+            <div className="custommodal_input_group">
+              <p className="custommodal_input_label">새 비밀번호 확인</p>
               <Input.Password
                 value={state.confirmPassword}
                 onChange={handleConfirmPasswordChange}
                 placeholder="비밀번호 확인"
               />
               <p
-                className={`passwordmodal_input_message ${
+                className={`custommodal_input_message ${
                   state.passwordMatch === null
                     ? "hidden"
                     : state.passwordMatch
@@ -389,16 +389,16 @@ const PasswordModal = ({ open, onCancel }) => {
             </div>
       </section>
 
-      <section style={{ marginTop: "10px", marginBottom: "10px", textAlign: "right" }}>
+      <section style={{ marginTop: "10px", marginBottom: "10px", textAlign: "right"}}>
         <Button
           type="primary"
-          className="passwordmodal_button_ok"
+          className="custommodal_button_ok"
           onClick={handlePasswordUpdate}
           style={{ marginRight: "20px" }}
         >
           변경
         </Button>
-        <Button className="passwordmodal_button_cancle" onClick={handleCancel}>
+        <Button className="custommodal_button_cancle" onClick={handleCancel}>
           취소
         </Button>
       </section>

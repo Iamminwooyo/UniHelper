@@ -4,3 +4,15 @@ export const MenuState = atom({
   key: "currentMenuState",
   default: null,
 });
+
+export const userBriefState = atom({
+  key: "userBriefState",
+  default: {
+    userId:"",
+    username: "",
+    student_number: "",
+    department: "",
+    roleType:"",
+    profileImageUrl: "",
+  },
+});
