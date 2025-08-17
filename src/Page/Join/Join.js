@@ -300,7 +300,7 @@ const Join = () => {
         <section className="join_image_frame">
           <img className="join_image" src="/image/login.png" alt="로그인 이미지" />
           <div className="join_image_overlay">
-            <h1 className="join_logo_text">UniHelper</h1>
+            <h1 className="join_logo_text"   onClick={() => navigate("/")} >UniHelper</h1>
           </div>
         </section>
       )}

@@ -5,6 +5,15 @@ import { useState } from "react";
 const SearchBar = ({ onSearchChange }) => {
   const [inputValue, setInputValue] = useState("");
 
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setInputValue(value);
+
+    if (value.trim() === "") {
+      onSearchChange?.("");
+    }
+  };
+
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       onSearchChange?.(inputValue.trim());
@@ -19,7 +28,7 @@ const SearchBar = ({ onSearchChange }) => {
         placeholder="검색"
         className="searchbar_input"
         value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
+        onChange={handleChange}
         onKeyDown={handleKeyDown}
       />
     </div>

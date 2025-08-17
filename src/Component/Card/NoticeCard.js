@@ -1,7 +1,7 @@
 import "./Card.css"; 
-import { useState } from "react";
-import axios from "axios";
+import { useState, useEffect } from "react";
 import TextModal from "../Modal/TextModal";
+import { fetchNoticeImagePreview, subscribeAuthor, unsubscribeAuthor} from "../../API/NoticeAPI";
 import { Dropdown, Menu, message } from "antd";
 import { IoBookmark, IoBookmarkOutline } from "react-icons/io5";
 import { HiDotsVertical } from "react-icons/hi";
@@ -9,7 +9,6 @@ import { HiDotsVertical } from "react-icons/hi";
 const NoticeCard = ({
   id,
   authorid,
-  profile,
   name,
   updatedAt,
   createdAt,
@@ -18,155 +17,188 @@ const NoticeCard = ({
   images,
   bookmarked,
   onBookmarkToggle,
-  currentUserRole,
+  Type,
+  isOwner,
+  role,
+  onClick,
   onEdit,     
   onDelete,   
-  onClick,
 }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalMode, setModalMode] = useState("noticesubscribe"); 
+  const [imgUrl, setImgUrl] = useState(null);
   const [bookmarkLoading, setBookmarkLoading] = useState(false);
 
-  const openModal = (e, mode) => {
-    e.stopPropagation();
-    setModalMode(mode);      
-    setIsModalOpen(true);    
-  };
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMode, setModalMode] = useState("noticesubscribe"); 
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
+  // 이미지 함수
+  useEffect(() => {
+    let cancelled = false;
+    let objectUrl;
 
-  const firstImage = images && images.length > 0 ? images[0] : null;
+    if (!images) {
+      setImgUrl(null);
+      return;
+    }
 
-  const truncateText = (text, maxLength) => {
-    if (!text) return "";
-    return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
-  };
+    const isReadyUrl =
+      typeof images === "string" && /^(blob:|https?:|\/)/.test(images);
 
-  // 구독 API
+    if (isReadyUrl) {
+      setImgUrl(images);
+      return;
+    }
+
+    const run = async () => {
+      try {
+        const blob = await fetchNoticeImagePreview(images);
+        if (cancelled) return;
+        objectUrl = URL.createObjectURL(blob);
+        setImgUrl(objectUrl);
+      } catch (error) {
+        if (!cancelled) setImgUrl(null);
+      }
+    };
+
+    run();
+
+    return () => {
+      cancelled = true;
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+    };
+  }, [images]);
+
+  // 구독 함수
   const handleConfirm = async () => {
-    if (bookmarkLoading) return; 
+    if (bookmarkLoading) return;
     setBookmarkLoading(true);
 
     try {
-      const token = sessionStorage.getItem("accessToken");
-
       if (!bookmarked) {
-        await axios.post(`/bookmarks/${authorid}`, null, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        await subscribeAuthor(authorid);
         message.success(`${name}를 구독했습니다.`);
       } else {
-        await axios.delete(`/bookmarks/${authorid}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        await unsubscribeAuthor(authorid);
         message.success(`${name} 구독을 취소했습니다.`);
       }
-
-      if (onBookmarkToggle) {
-        onBookmarkToggle();
-      }
+      onBookmarkToggle?.();
       closeModal();
     } catch (error) {
-      message.error("북마크 처리 중 오류가 발생했습니다.");
+      console.error("handleConfirm 오류:", error);
+      message.error("구독 처리 중 오류가 발생했습니다.");
     } finally {
       setBookmarkLoading(false);
     }
   };
 
-  // 날짜 변환 함수
-  const formatDate = (dateString) => {
-    if (!dateString) return "";
-    return dateString.slice(0, 10);
-  };
+  // 글 자르기 함수
+  const truncateText = (text, maxLength) => text?.length > maxLength ? text.slice(0, maxLength) + "..." : text || "";
 
-  // 드롭다운 메뉴 클릭 핸들러
+  // 시간 변환 함수
+  const formatDate = (dateString) => dateString?.slice(0, 10) || "";
+
+  // 구독 모달 닫기 함수
+  const closeModal = () => {
+    setIsModalOpen(false);
+  }  
+
+  // 드롭다운 메뉴 함수
   const handleMenuClick = (info) => {
-    info.domEvent.stopPropagation(); // 클릭 이벤트 버블링 막기
-    if (info.key === "edit") {
-      onEdit?.(id);  // 부모의 수정 함수 호출
-    } else if (info.key === "delete") {
-      onDelete?.(id); // 부모의 삭제 함수 호출
-    }
+    info.domEvent.stopPropagation();
+    if (info.key === "edit") onEdit?.(id);
+    if (info.key === "delete") onDelete?.(id);
   };
 
-  // 메뉴 정의
+  // 드롭다운 메뉴
   const menu = (
     <Menu onClick={handleMenuClick} className="custom-dropdown-menu">
-      <Menu.Item key="edit" className="custom-dropdown-item">
-        수정
-      </Menu.Item>
-      <Menu.Item key="delete" className="custom-dropdown-item delete">
-        삭제
-      </Menu.Item>
+      <Menu.Item key="edit" className="custom-dropdown-item">수정</Menu.Item>
+      <Menu.Item key="delete" className="custom-dropdown-item">삭제</Menu.Item>
     </Menu>
   );
 
+  const isBookmark = Type === "bookmark";
+  const isNotice = Type === "notice";
+  const isWrite = Type === "write";
+
   return (
-    <>
-      <section className="noticecard_layout">
-        <h4 className="noticecard_title">{truncateText(title, 20)}</h4>
-
-        {firstImage ? (
-          <img
+      <>
+        <section className={isBookmark ? "subscribecard_layout" : "noticecard_layout"}>
+          <h4
+            className={isBookmark ? "subscribecard_title" : "noticecard_title"}
             onClick={onClick}
-            src={firstImage}
-            alt="공지 이미지"
-            className="noticecard_image"
-          />
-        ) : (
-          <div onClick={onClick} className="noticecard_content">
-            {" "}
-            {truncateText(content, 100)}
-          </div>
-        )}
+          >
+            {truncateText(title, isBookmark ? 10 : 20)}
+          </h4>
 
-        <div className="noticecard_info">
-          <div className="noticecard_profile">
-            <img src="./image/profile.png" alt="profile" className="noticecard_profile_img" />
-            <div className="noticecard_text">
-              <p className="noticecard_name">{name}</p>
-              <p className="noticecard_date">
-                {updatedAt
-                  ? `${formatDate(updatedAt)} (수정됨)`
-                  : formatDate(createdAt)}
-              </p>
-            </div>
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: "2px" }}>
+          {imgUrl ? (
+            <img
+              src={imgUrl}
+              alt="공지 이미지"
+              className={isBookmark ? "subscribecard_image" : "noticecard_image"}
+              onClick={onClick}
+            />
+          ) : (
             <div
-              className="noticecard_icon"
-              onClick={(e) => openModal(e, bookmarked ? "noticeunsubscribe" : "noticesubscribe")}
-              style={{ cursor: "pointer" }}
+              className={isBookmark ? "subscribecard_content" : "noticecard_content"}
+              onClick={onClick}
             >
-              {bookmarked ? <IoBookmark color="#78D900" /> : <IoBookmarkOutline />}
+              {truncateText(content, 100)}
+            </div>
+          )}
+
+          <div className={isBookmark ? "subscribecard_info" : "noticecard_info"}>
+            <div className={isBookmark ? "subscribecard_profile" : "noticecard_profile"}>
+              <img
+                src="/image/profile.png"
+                alt="profile"
+                className={isBookmark ? "subscribecard_profile_img" : "noticecard_profile_img"}
+              />
+              <div className={isBookmark ? "subscribecard_text" : "noticecard_text"}>
+                <p className={isBookmark ? "subscribecard_name" : "noticecard_name"}>{name}</p>
+                <p className={isBookmark ? "subscribecard_date" : "noticecard_date"}>
+                  {updatedAt ? `${formatDate(updatedAt)} (수정됨)` : formatDate(createdAt)}
+                </p>
+              </div>
             </div>
 
-            {currentUserRole === "MANAGER" && (
-              <Dropdown overlay={menu} trigger={["click"]}>
-                <div
-                  className="noticecard_icon"
-                  style={{ cursor: "pointer" }}
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <HiDotsVertical />
-                </div>
-              </Dropdown>
+            {(isNotice || isWrite) && (
+              <div style={{ display: "flex", alignItems: "center", gap: "2px" }}>
+                {isNotice && (
+                  <div
+                    className="noticecard_icon"
+                    onClick={() => {
+                      setModalMode(bookmarked ? "noticeunsubscribe" : "noticesubscribe");
+                      setIsModalOpen(true);
+                    }}
+                    style={{ cursor: "pointer" }}
+                  >
+                    {bookmarked ? <IoBookmark color="#78D900" /> : <IoBookmarkOutline />}
+                  </div>
+                )}
+
+                {(isWrite || (isNotice && (isOwner || role === "MANAGER"))) && (
+                  <Dropdown overlay={menu} trigger={["click"]}>
+                    <div className="noticecard_icon" style={{ cursor: "pointer" }}>
+                      <HiDotsVertical />
+                    </div>
+                  </Dropdown>
+                )}
+              </div>
             )}
           </div>
-        </div>
-      </section>
+        </section>
 
-      {isModalOpen && (
-        <TextModal open={isModalOpen} onCancel={closeModal} mode={modalMode} name={name} onConfirm={handleConfirm} />
-      )}
-    </>
-  );
+        {isModalOpen && (
+          <TextModal
+            open={isModalOpen}
+            onCancel={() => setIsModalOpen(false)}
+            mode={modalMode}
+            name={name}
+            onConfirm={handleConfirm}
+          />
+        )}
+      </>
+    );
 };
 
 export default NoticeCard;

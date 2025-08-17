@@ -28,10 +28,10 @@ const TipDetail = () => {
 
   // 상태
   const [tip, setTip] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [commentData, setCommentData] = useState([]);
   const [comment, setComment] = useState("");
+  const [imgUrls, setImgUrls] = useState([]);
 
   const [commentPage, setCommentPage] = useState(0);
   const [commentTotalPages, setCommentTotalPages] = useState(0);
@@ -80,7 +80,6 @@ const TipDetail = () => {
       console.error("Tip 상세 조회 실패:", error);
     } finally {
       setIsFetchingDetail(false);
-      setLoading(false);
     }
   };
 
@@ -315,6 +314,40 @@ const TipDetail = () => {
     }
   };
 
+  // 이미지 미리보기 API
+  useEffect(() => {
+    if (!tip?.imageUrls || tip.imageUrls.length === 0) return;
+    let objectUrls = [];
+
+    const fetchImages = async () => {
+      try {
+        const token = sessionStorage.getItem("accessToken");
+        const urls = await Promise.all(
+          tip.imageUrls.map(async (filename) => {
+            const safeFilename = filename.replace(/^\/files\//, "").split(" ").join("%20");
+            const res = await axios.get(`/notices/image-preview?filename=${safeFilename}`, {
+              responseType: "blob",
+              headers: { Authorization: `Bearer ${token}` },
+            });
+            const url = URL.createObjectURL(res.data);
+            objectUrls.push(url);
+            return url;
+          })
+        );
+        setImgUrls(urls);
+      } catch (err) {
+        console.error("이미지 미리보기 실패:", err);
+        setImgUrls([]);
+      }
+    };
+
+    fetchImages();
+
+    return () => {
+      objectUrls.forEach(url => URL.revokeObjectURL(url));
+    };
+  }, [tip?.imageUrls]);
+
   const tagColorMap = useMemo(() => {
     const map = {};
     (tip?.tags || []).forEach(tag => {
@@ -342,9 +375,6 @@ const TipDetail = () => {
     fetchComments();
   }, [id]);
 
-  if (loading) return <main className="tip_layout">Loading...</main>;
-  if (!tip) return <main className="tip_layout">Tip을 불러올 수 없습니다.</main>;
-
   return (
     <main className="tip_layout">
       <section className="tip_header">
@@ -356,73 +386,84 @@ const TipDetail = () => {
         </div>
         <div style={{ display: "flex", width: "90%", gap: "20px" }}>
           <div className="tip_content_container">
-            <div className="tip_info">
-              <div className="tip_info_header">
-                <p className="tip_title">{tip.title}</p>
-                 {(tip.authorId === userBrief.userId) && (
-                    <Dropdown overlay={menu} trigger={["click"]}>
-                      <div
-                        onClick={e => e.stopPropagation()}
-                        className="tip_info_icon"
-                        style={{ cursor: "pointer" }}
-                      >
-                        <HiDotsVertical />
-                      </div>
-                    </Dropdown>
-                  )}
-
-                  {/* 2. Owner 아니고 tip 타입이면서 Manager면 삭제 아이콘만 */}
-                  {tip.authorId !== userBrief.userId && userBrief.roleType === "MANAGER" && (
-                    <MdDeleteOutline
-                      className="tip_info_icon"
-                      style={{ cursor: "pointer" }}
-                      onClick={() => setIsDeleteModalOpen(true)}
-                    />
-                  )}
+            {isFetchingDetail ? (
+              <div className="tip_loading" style={{ textAlign: "center", padding: "50px 0" }}>
+                불러오는 중...
               </div>
-              <hr className="tip_divider" />
-              <div className="tip_profile_block">
-                <div className="tip_profile">
-                  <img src="/image/profile.png" alt="profile" className="tip_profile_img" />
-                  <div className="tip_text">
-                    <p className="tip_name">{tip.authorName}</p>
-                    <p className="tip_date">
-                      {tip.updatedAt ? `${formatDate(tip.updatedAt)} (수정됨)` : formatDate(tip.createdAt)}
-                    </p>
+            ) : tip ? (
+              <>
+                <div className="tip_info">
+                  <div className="tip_info_header">
+                    <p className="tip_title">{tip.title}</p>
+                    {(tip.authorId === userBrief.userId) && (
+                        <Dropdown overlay={menu} trigger={["click"]}>
+                          <div
+                            onClick={e => e.stopPropagation()}
+                            className="tip_info_icon"
+                          >
+                            <HiDotsVertical />
+                          </div>
+                        </Dropdown>
+                      )}
+
+                      {/* 2. Owner 아니고 tip 타입이면서 Manager면 삭제 아이콘만 */}
+                      {tip.authorId !== userBrief.userId && userBrief.roleType === "MANAGER" && (
+                        <MdDeleteOutline
+                          className="tip_info_icon"
+                          style={{ cursor: "pointer" }}
+                          onClick={() => setIsDeleteModalOpen(true)}
+                        />
+                      )}
+                  </div>
+                  <hr className="tip_divider" />
+                  <div className="tip_profile_block">
+                    <div className="tip_profile">
+                      <img src="/image/profile.png" alt="profile" className="tip_profile_img" />
+                      <div className="tip_text">
+                        <p className="tip_name">{tip.authorName}</p>
+                        <p className="tip_date">
+                          {tip.updatedAt ? `${formatDate(tip.updatedAt)} (수정됨)` : formatDate(tip.createdAt)}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="tip_tag">
+                      {(tip.tags || []).map(tag => (
+                        <Tag key={tag} color={tagColorMap[tag]} className="tip_tag_item">{tag}</Tag>
+                      ))}
+                    </div>
                   </div>
                 </div>
-                <div className="tip_tag">
-                  {(tip.tags || []).map(tag => (
-                    <Tag key={tag} color={tagColorMap[tag]} className="tip_tag_item">{tag}</Tag>
-                  ))}
-                </div>
-              </div>
-            </div>
 
-            <div className="tip_detail">
-              {images.length > 0 && (
-                <div className="tip_img_group">
-                  {images.length > 1 && <FaArrowLeft onClick={prevImage} style={{ cursor: "pointer" }} />}
-                  <img src={images[currentIndex]} alt={`공지 이미지 ${currentIndex + 1}`} className="tip_img" />
-                  {images.length > 1 && <FaArrowRight onClick={nextImage} style={{ cursor: "pointer" }} />}
+                <div className="tip_detail">
+                  {imgUrls.length > 0 && (
+                    <div className="tip_img_group">
+                      {imgUrls.length > 1 && <FaArrowLeft onClick={prevImage} style={{ cursor: "pointer" }} />}
+                      <img src={imgUrls[currentIndex]} alt={`공지 이미지 ${currentIndex + 1}`} className="tip_img" />
+                      {imgUrls.length > 1 && <FaArrowRight onClick={nextImage} style={{ cursor: "pointer" }} />}
+                    </div>
+                  )}
+                  {tip.text && <div className="tip_content">{tip.text}</div>}
                 </div>
-              )}
-              {tip.text && <div className="tip_content">{tip.text}</div>}
-            </div>
 
-            <div className="tip_reaction">
-              <div className="tip_reaction_item" onClick={() => handleReaction("LIKE")}>
-                {tip.myReaction === "LIKE" ? <AiFillLike color="#78D900" style={{cursor:"pointer"}}/> : <AiOutlineLike style={{cursor:"pointer"}}/>}
-                <span>{tip.likeCount}</span>
+                <div className="tip_reaction">
+                  <div className="tip_reaction_item" onClick={() => handleReaction("LIKE")}>
+                    {tip.myReaction === "LIKE" ? <AiFillLike color="#78D900" style={{cursor:"pointer"}}/> : <AiOutlineLike style={{cursor:"pointer"}}/>}
+                    <span>{tip.likeCount}</span>
+                  </div>
+                  <div className="tip_reaction_item" onClick={() => handleReaction("DISLIKE")}>
+                    {tip.myReaction === "DISLIKE" ? <AiFillDislike color="#FF0000" style={{cursor:"pointer"}}/> : <AiOutlineDislike style={{cursor:"pointer"}}/>}
+                    <span>{tip.dislikeCount}</span>
+                  </div>
+                  <div className="tip_reaction_item" style={{cursor:"pointer"}} onClick={handleBookmarkClick}>
+                    {tip.bookmarked ? <IoBookmark color="#78D900"/> : <IoBookmarkOutline/>}
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div className="tip_empty" style={{ textAlign: "center", padding: "50px 0" }}>
+                Tip을 불러올 수 없습니다.
               </div>
-              <div className="tip_reaction_item" onClick={() => handleReaction("DISLIKE")}>
-                {tip.myReaction === "DISLIKE" ? <AiFillDislike color="#FF0000" style={{cursor:"pointer"}}/> : <AiOutlineDislike style={{cursor:"pointer"}}/>}
-                <span>{tip.dislikeCount}</span>
-              </div>
-              <div className="tip_reaction_item" style={{cursor:"pointer"}} onClick={handleBookmarkClick}>
-                {tip.bookmarked ? <IoBookmark color="#78D900"/> : <IoBookmarkOutline/>}
-              </div>
-            </div>
+            )}
           </div>
 
           <div className="tip_comment_container">
@@ -455,7 +496,11 @@ const TipDetail = () => {
             </div>
             <hr className="tip_comment_divider" />
            <div className="tip_commnet">
-            {commentData.length === 0 ? (
+            {isFetchingComment ? (
+              <div className="tip_loading" style={{ textAlign: "center", padding: "20px 0" }}>
+                불러오는 중...
+              </div>
+            ) : commentData.length === 0 ? (
               <div className="tip_empty_comment">댓글이 없습니다.</div>
             ) : (
               commentData.map(comment => (

@@ -21,6 +21,8 @@
 
         font-size: min(15px, 1.2vw);
         text-align: left;
+
+        cursor: pointer;
     }
 
     .noticecard_image {
@@ -335,6 +337,10 @@
         align-items: center;
     }
 
+     .tipcard_tag_item {
+        font-size: min(15px, 1.5vw);
+    }
+
     .tipcard_bookmark {
         display: flex;
         justify-content: center;
@@ -367,7 +373,10 @@
     }
 
     .tipcard_img {
-        flex: 1;
+        width: 5vw;      
+        height: 5vw;     
+        object-fit: cover;
+        border-radius: 6px;
     }
 
     .tipcard_reaction {
@@ -498,6 +507,8 @@
 
         font-size: min(18px, 1.3vw);
         text-align: left;
+
+        cursor: pointer;
     }
 
     .noticecard_image {
@@ -822,7 +833,7 @@
         align-items: center;
     }
 
-    .tipcard_content {
+    .tipcard_box {
         display: flex;
 
         width: 90%;
@@ -841,6 +852,17 @@
         box-sizing: border-box;
 
         cursor: pointer;
+    }
+
+    .tipcard_content {
+        flex: 1;
+    }
+
+    .tipcard_img {
+        width: 7vw;      
+        height: 7vw;     
+        object-fit: cover;
+        border-radius: 6px;
     }
 
     .tipcard_reaction {
@@ -971,6 +993,8 @@
 
         font-size: min(18px, 2vw);
         text-align: left;
+
+        cursor: pointer;
     }
 
     .noticecard_image {
@@ -1294,7 +1318,7 @@
         align-items: center;
     }
 
-    .tipcard_content {
+    .tipcard_box {
         display: flex;
 
         width: 90%;
@@ -1313,6 +1337,17 @@
         box-sizing: border-box;
 
         cursor: pointer;
+    }
+
+    .tipcard_content {
+        flex: 1;
+    }
+
+    .tipcard_img {
+        width: 10vw;      
+        height: 10vw;     
+        object-fit: cover;
+        border-radius: 6px;
     }
 
     .tipcard_reaction {

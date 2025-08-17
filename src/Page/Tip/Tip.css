@@ -318,6 +318,15 @@
         font-size: min(20px, 1.2vw);
     }
 
+    .tip_loading_comment {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        color: #78D900;
+        font-size: min(18px, 1.2vw);
+    }
+
     .tip_empty {
         flex: 1;
         display: flex;
@@ -326,6 +335,16 @@
 
         color: #666;
         font-size: min(20px, 1.2vw);
+    }
+
+    .tip_empty_comment {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        color: #666;
+        font-size: min(18px, 1.2vw);
     }
 
     .tip_page_wrap {
@@ -393,7 +412,7 @@
         box-shadow: none !important;
         color: #ffffff !important;
 
-        font-size: min(11px, 0.8vw);
+        font-size: min(12px, 1.5vw);
     }
 
     .tip_comment_input:focus {
@@ -457,10 +476,11 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-start;
         gap: 20px;
 
         width: 90%;
+        height: 100%;
     }
 }
 @media (min-width: 769px) and (max-width: 1240px) {
@@ -782,6 +802,15 @@
         font-size: min(20px, 1.5vw);
     }
 
+    .tip_loading_comment {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        color: #78D900;
+        font-size: min(18px, 1.5vw);
+    }
+
     .tip_empty {
         flex: 1;
         display: flex;
@@ -790,6 +819,16 @@
 
         color: #666;
         font-size: min(20px, 1.5vw);
+    }
+
+     .tip_empty_comment {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        color: #666;
+        font-size: min(18px, 1.5vw);
     }
 
     .tip_page_wrap {
@@ -922,10 +961,11 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-start;
         gap: 1vw;
 
         width: 90%;
+        height: 100%;
     }
 }
 @media (min-width: 1px) and (max-width: 768px) {
@@ -1247,6 +1287,15 @@
         font-size: min(20px, 2vw);
     }
     
+    .tip_loading_comment {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        color: #78D900;
+        font-size: min(18px, 2vw);
+    }
+
     .tip_empty {
         flex: 1;
         display: flex;
@@ -1255,6 +1304,16 @@
 
         color: #666;
         font-size: min(20px, 2vw);
+    }
+
+    .tip_empty_comment {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        color: #666;
+        font-size: min(18px, 2vw);
     }
 
     .tip_page_wrap {
@@ -1387,9 +1446,10 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-start;
         gap: 1vw;
 
         width: 90%;
+        height: 100%;
     }
 }

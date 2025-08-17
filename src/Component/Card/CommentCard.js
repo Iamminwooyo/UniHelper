@@ -42,7 +42,7 @@ const CommentCard = ({
     <section className="commentcard_layout">
       <div className="commentcard_info">
         <div className="commentcard_profile">
-          <img src={profile} alt="profile" className="commentcard_profile_img" />
+          <img src="/image/profile.png" alt="profile" className="commentcard_profile_img" />
           <div className="commentcard_text">
             <p className="commentcard_name">{department}</p>
             <p className="commentcard_date">{date}</p>

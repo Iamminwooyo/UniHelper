@@ -75,10 +75,12 @@ const Side = () => {
             className="side_profile_img" 
           />
           <span className="side_info_text">{user.username}</span>
-          <div className="side_info">
-            <p className="side_info_text">{user.department}</p>
-            <p className="side_info_text">{user.student_number}</p>
-          </div>
+          {user.roleType === "STUDENT" && (
+            <div className="side_info">
+              <p className="side_info_text">{user.department}</p>
+              <p className="side_info_text">{user.student_number}</p>
+            </div>
+          )}
         </section>
       )}
       {!isMobile && ( <div className="side_separator" />)}

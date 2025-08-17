@@ -20,7 +20,7 @@ function App() {
       } catch (err) {
         console.error("주기적 토큰 갱신 실패", err);
       }
-    }, 9 * 60 * 1000);
+    }, 50 * 60 * 1000);
 
     return () => clearInterval(interval);
   }, []);
