@@ -87,6 +87,8 @@ const Notice = () => {
         })
       );
 
+      console.log("📷 withPreview 결과:", withPreview);
+      
       setNotices(withPreview);
       setTotalPages(data.totalPages || 0);
     } catch (error) {
@@ -284,6 +286,7 @@ const Notice = () => {
                 <NoticeCard
                   key={post.id}
                   id={post.id}
+                  profile={post.profile}
                   authorid={post.authorId}
                   title={post.title}
                   name={post.authorName}

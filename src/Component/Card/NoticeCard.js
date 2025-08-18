@@ -8,6 +8,7 @@ import { HiDotsVertical } from "react-icons/hi";
 
 const NoticeCard = ({
   id,
+  profile,
   authorid,
   name,
   updatedAt,
@@ -149,7 +150,7 @@ const NoticeCard = ({
           <div className={isBookmark ? "subscribecard_info" : "noticecard_info"}>
             <div className={isBookmark ? "subscribecard_profile" : "noticecard_profile"}>
               <img
-                src="/image/profile.png"
+                src={profile || "/image/profile.png"}
                 alt="profile"
                 className={isBookmark ? "subscribecard_profile_img" : "noticecard_profile_img"}
               />

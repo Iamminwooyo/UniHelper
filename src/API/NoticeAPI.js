@@ -146,6 +146,28 @@ export const deleteNotice = async (noticeId) => {
   return response.data;
 };
 
+// 공지사항 구독 API
+export const subscribeAuthor = async (authorId) => {
+  const token = sessionStorage.getItem("accessToken");
+  if (!token) throw new Error("로그인이 필요합니다.");
+
+  const response = await axios.post(`/bookmarks/${authorId}`, null, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data;
+};
+
+// 공지사항 구독 취소 API
+export const unsubscribeAuthor = async (authorId) => {
+  const token = sessionStorage.getItem("accessToken");
+  if (!token) throw new Error("로그인이 필요합니다.");
+
+  const response = await axios.delete(`/bookmarks/${authorId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data;
+};
+
 // 공지사항 이미지 API
 export const fetchNoticeImagePreview = async (filename) => {
   const token = sessionStorage.getItem("accessToken");
@@ -170,27 +192,5 @@ export const downloadNoticeFile = async (filename) => {
     responseType: "blob",
   });
 
-  return response.data;
-};
-
-// 공지사항 구독 API
-export const subscribeAuthor = async (authorId) => {
-  const token = sessionStorage.getItem("accessToken");
-  if (!token) throw new Error("로그인이 필요합니다.");
-
-  const response = await axios.post(`/bookmarks/${authorId}`, null, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  return response.data;
-};
-
-// 공지사항 구독 취소 API
-export const unsubscribeAuthor = async (authorId) => {
-  const token = sessionStorage.getItem("accessToken");
-  if (!token) throw new Error("로그인이 필요합니다.");
-
-  const response = await axios.delete(`/bookmarks/${authorId}`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
   return response.data;
 };

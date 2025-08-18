@@ -1,49 +1,150 @@
 import "./Modal.css";
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { useState, useEffect, useRef } from "react";
+import { createTip, updateTip, fetchTipImagePreview } from "../../API/TipAPI";
 import { Modal, Input, Button, Upload, Select, message } from "antd";
-import { useRecoilValue } from "recoil";
-import { userBriefState } from "../../Recoil/Atom";
-import { UploadOutlined, PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
 
 const { Option } = Select;
 
 const allTags = ["전공", "학식", "배달", "동아리", "위치", "대회", "성적"];
 
-const TipModal = ({ open, onCancel, onSubmit, initialData = null, mode = "create", onSuccess }) => {
+const TipModal = ({ open, onCancel, initialData = null, mode = "create", onSuccess }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [imageFiles, setImageFiles] = useState([]);
   const [tags, setTags] = useState([]);
-  const [submitting, setSubmitting] = useState(false);
-  const userBrief = useRecoilValue(userBriefState);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // 모달 열릴 때마다 initialData로 초기화
+  const createdObjectUrlsRef = useRef([]);
+
+  // 렌더링 함수
   useEffect(() => {
-    if (open) {
-      setTitle(initialData?.title || "");
-      setContent(initialData?.text || "");
-      setImageFiles(initialData?.images || []);
-      setTags(initialData?.tags || []);
-      setSubmitting(false);
-    }
+    if (!open) return;
+
+    setTitle(initialData?.title || "");
+    setContent(initialData?.text || "");
+    setTags(initialData?.tags || []);
+
+    let cancelled = false;
+
+    const loadExistingImages = async () => {
+      const imgs = initialData?.images || [];
+      if (!imgs.length) {
+        setImageFiles([]);
+        return;
+      }
+
+      try {
+        const files = [];
+        for (let i = 0; i < imgs.length; i++) {
+          const original = imgs[i];
+          try {
+            const blob = await fetchTipImagePreview(original.url); // ← Notice처럼 preview API 호출
+            if (cancelled) return;
+            const objUrl = URL.createObjectURL(blob);
+            createdObjectUrlsRef.current.push(objUrl);
+
+            files.push({
+              uid: `existing-img-${i}`,
+              id: original.id,
+              name: original.url.split("/").pop(),
+              status: "done",
+              thumbUrl: objUrl,
+            });
+          } catch {}
+        }
+        if (!cancelled) setImageFiles(files);
+      } catch {
+        if (!cancelled) setImageFiles([]);
+      }
+    };
+
+    loadExistingImages();
+
+    return () => {
+      cancelled = true;
+      for (const u of createdObjectUrlsRef.current) {
+        try { URL.revokeObjectURL(u); } catch {}
+      }
+      createdObjectUrlsRef.current = [];
+    };
   }, [open, initialData]);
 
-  const handleCancel = () => {
-    onCancel();
+   // Tip 생성, 수정 함수
+  const handleSubmit = async () => {
+    if (isSubmitting) return;
+    if (!title.trim()) return message.error("제목을 입력해주세요.");
+    if (!content.trim()) return message.error("내용을 입력해주세요.");
+
+    setIsSubmitting(true);
+    try {
+      const formData = new FormData();
+
+      if (mode === "edit" && initialData?.id) {
+        const keptImageIds = imageFiles.filter(f => !f.originFileObj).map(f => f.id);
+        const removeImageIds = (initialData?.images || [])
+          .filter(img => !keptImageIds.includes(img.id))
+          .map(img => img.id);
+
+        const payload = {
+          title: title.trim(),
+          text: content.trim(),
+          tags,
+          removeImageIds
+        };
+
+        const formData = new FormData();
+        formData.append(
+          "payload",
+          new Blob([JSON.stringify(payload)], { type: "application/json" })
+        );
+
+        imageFiles.forEach(f => {
+          if (f.originFileObj) {
+            formData.append("images", f.originFileObj);
+          }
+        });
+
+        await updateTip(initialData.id, formData);
+        message.success("Tip이 수정되었습니다.");
+      } else {
+        const formData = new FormData();
+        formData.append("title", title.trim());
+        formData.append("text", content.trim());
+        tags.forEach(tag => formData.append("tags", tag));
+
+        imageFiles.forEach(f => {
+          if (f.originFileObj) {
+            formData.append("images", f.originFileObj);
+          }
+        });
+
+        await createTip(formData);
+        message.success("Tip이 작성되었습니다.");
+      }
+
+      onSuccess?.();
+      handleCancel();
+    } catch (err) {
+      console.error("submit error:", err);
+      message.error("작성 중 오류가 발생했습니다.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  // 이미지 업로드 (여러 개)
-  const handleImageChange = ({ fileList }) => {
-    setImageFiles(fileList);
-  };
-
+  // 이미지 업로드 함수
   const beforeImageUpload = (file) => {
     const isImage = file.type.startsWith("image/");
-    const isLt2M = file.size / 1024 / 1024 < 2;
+    const isLt2M = file.size / 1024 / 1024 < 25;
     if (!isImage) message.error("이미지 파일만 업로드 가능합니다.");
-    if (!isLt2M) message.error("이미지는 2MB 이하만 가능합니다.");
+    if (!isLt2M) message.error("이미지는 25MB 이하만 가능합니다.");
     return false; // ← 반드시 false
+  };
+
+  // 이미지 저장 함수
+  const handleImageChange = ({ fileList }) => {
+    setImageFiles(fileList);
   };
 
    // 태그 선택 변경 핸들러
@@ -55,68 +156,9 @@ const TipModal = ({ open, onCancel, onSubmit, initialData = null, mode = "create
       setTags(value);
   };
 
-  // Tip 작성, 수정 API
-  const handleSubmit = async () => {
-    if (submitting) return;
-    
-    if (!title.trim()) return message.error("제목을 입력해주세요.");
-    if (!content.trim()) return message.error("내용을 입력해주세요.");
-
-    setSubmitting(true);
-
-    try {
-      const formData = new FormData();
-      formData.append("title", title.trim());
-      formData.append("text", content.trim());
-      formData.append("tags", tags.join(","));
-
-      imageFiles.forEach((file) => {
-        if (file.originFileObj) {
-          formData.append("images", file.originFileObj);
-        }
-      });
-
-      for (let [key, value] of formData.entries()) {
-        console.log(key, value);
-      }
-
-      const token = sessionStorage.getItem("accessToken");
-      if (!token) {
-        message.error("로그인이 필요합니다.");
-        setSubmitting(false);
-        return;
-      }
-
-      if (mode === "edit" && initialData?.id) {
-        await axios.patch(`/community/${initialData.id}`, formData, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
-        });
-        message.success("Tip이 수정되었습니다.");
-      } else {
-        await axios.post("/community", formData, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
-        });
-        message.success("Tip이 작성되었습니다.");
-      }
-
-      if (onSuccess) onSuccess();
-      handleCancel();
-    } catch (error) {
-      console.error(error);
-      if (error.response?.status === 403) {
-        message.error("권한이 없습니다. 로그인 상태를 확인해주세요.");
-      } else {
-        message.error("작성 중 오류가 발생했습니다.");
-      }
-    } finally {
-      setSubmitting(false);
-    }
+  // 닫기 함수
+  const handleCancel = () => {
+    onCancel();
   };
 
 
@@ -132,7 +174,6 @@ const TipModal = ({ open, onCancel, onSubmit, initialData = null, mode = "create
       <section className="custommodal_layout">
         <h2 className="custommodal_title">{mode === "edit" ? "Tip 수정" : "Tip 작성"}</h2>
 
-        {/* 제목 */}
         <div className="custommodal_input_group">
           <p className="custommodal_input_label">제목</p>
           <Input
@@ -143,7 +184,6 @@ const TipModal = ({ open, onCancel, onSubmit, initialData = null, mode = "create
           />
         </div>
 
-        {/* 내용 */}
         <div className="custommodal_input_group" style={{ marginTop: 16 }}>
           <p className="custommodal_input_label">내용</p>
           <Input.TextArea
@@ -155,7 +195,6 @@ const TipModal = ({ open, onCancel, onSubmit, initialData = null, mode = "create
           />
         </div>
 
-        {/* 이미지 업로드 */}
         <div className="custommodal_input_group" style={{ marginTop: 16 }}>
           <p className="custommodal_input_label">이미지</p>
           <Upload
@@ -195,7 +234,6 @@ const TipModal = ({ open, onCancel, onSubmit, initialData = null, mode = "create
         </div>
       </section>
 
-      {/* 확인 / 취소 */}
       <section style={{ marginTop: 10, marginBottom: 10, textAlign: "right" }}>
         <Button
           type="primary"

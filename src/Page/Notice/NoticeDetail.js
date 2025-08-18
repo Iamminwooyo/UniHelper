@@ -19,10 +19,7 @@ const NoticeDetail = () => {
   const isFetchingRef = useRef(false);
   const [isFetchingDetail, setIsFetchingDetail] = useState(false);
   const [bookmarkLoading, setBookmarkLoading] = useState(false);
-  const boundUrlsRef = useRef([]);
 
-  const [imgUrls, setImgUrls] = useState([]);
-  const [imagesReady, setImagesReady] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -37,11 +34,13 @@ const NoticeDetail = () => {
   const userBrief = useRecoilValue(userBriefState);
   const currentUserRole = userBrief?.roleType
 
+  const boundUrlsRef = useRef([]);
+  
   const imageCacheRef = useRef(new Map());
 
   const navigate = useNavigate();
 
-   const cleanupBoundUrls = useCallback(() => {
+  const cleanupBoundUrls = useCallback(() => {
     try {
       boundUrlsRef.current.forEach((u) => {
         try { URL.revokeObjectURL(u); } catch {}
@@ -79,7 +78,6 @@ const NoticeDetail = () => {
         return { ...img, previewUrl: found?.previewUrl || img.url };
       });
 
-      // 🔑 이미지 개수 줄었을 때 currentIndex 보정
       let newIndex = currentIndex;
       if (newIndex >= enrichedImages.length) {
         newIndex = Math.max(0, enrichedImages.length - 1);
@@ -218,7 +216,7 @@ const NoticeDetail = () => {
     setIsDeleteModalOpen(false);
   };
 
-  // 시간 변환 함수
+  // 날짜 변환 함수
   const formatDate = (s) => (s ? s.slice(0, 10) : "");
 
   // 드롭다운 메뉴 함수
@@ -266,7 +264,7 @@ const NoticeDetail = () => {
 
               <div className="notice_info_block">
                 <div className="notice_profile">
-                  <img src="/image/profile.png" alt="profile" className="notice_profile_img" />
+                  <img src={notice.profile || "/image/profile.png"} alt="profile" className="notice_profile_img" />
                   <div className="notice_text">
                     <p className="notice_name">{notice.department}</p>
                     <p className="notice_date">
