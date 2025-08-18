@@ -1,26 +1,31 @@
 import "./Tip.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { Dropdown, Menu, Button, message } from "antd";
-import { DownOutlined } from "@ant-design/icons";
-import { TbEdit } from "react-icons/tb";
 import SearchBar from "../../Component/Search/Search";
 import TipCard from "../../Component/Card/TipCard";
 import TipModal from "../../Component/Modal/TipModal";
 import TextModal from "../../Component/Modal/TextModal";
 import { useRecoilValue } from "recoil";
 import { userBriefState } from "../../Recoil/Atom";
+import { fetchTips, deleteTip, fetchTipImagePreview } from "../../API/TipAPI";
+import { Dropdown, Menu, Button, message } from "antd";
+import { DownOutlined } from "@ant-design/icons";
+import { TbEdit } from "react-icons/tb";
 
 const Tip = () => {
   const [keyword, setKeyword] = useState("");
   const [sortOrder, setSortOrder] = useState("최신순");
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [tips, setTips] = useState([]); 
-  const [loading, setLoading] = useState(false);
-  const [totalElements, setTotalElements] = useState(0);
+
+  const [tips, setTips] = useState([]);
+
+  const [isFetchingTips, setIsFetchingTips] = useState(false);
+  const [isDeletingTips, setIsDeletingTips] = useState(false);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 6;
   const [totalPages, setTotalPages] = useState(0);
-  const [page, setPage] = useState(0); 
+
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editTipData, setEditTipData] = useState(null);
@@ -28,129 +33,154 @@ const Tip = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deleteTipId, setDeleteTipId] = useState(null);
 
-  const userBrief = useRecoilValue(userBriefState);
+  const user = useRecoilValue(userBriefState);
+
+  const imageCacheRef = useRef(new Map());
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetchTips();
-  }, [page, sortOrder, keyword]);
+  // Tip 조회 함수
+  const loadTips = useCallback(async () => {
+  if (isFetchingTips) return;
+  setIsFetchingTips(true);
 
-  const handleMenuClick = (e) => {
-    setSortOrder(e.key);
+  try {
+    const data = await fetchTips({
+      page: currentPage,
+      size: pageSize,
+      sortOrder,
+      keyword,
+    });
+
+    const list = data.content || [];
+
+    const withPreview = await Promise.all(
+      list.map(async (item) => {
+        const filename = item?.images?.[0]?.url;
+        if (!filename) return { ...item, previewUrl: null };
+
+        if (imageCacheRef.current.has(filename)) {
+          return { ...item, previewUrl: imageCacheRef.current.get(filename) };
+        }
+
+        try {
+          const blob = await fetchTipImagePreview(filename); 
+          const url = URL.createObjectURL(blob);
+          imageCacheRef.current.set(filename, url);
+          return { ...item, previewUrl: url };
+        } catch {
+          return { ...item, previewUrl: null };
+        }
+      })
+    );
+
+    setTips(withPreview);
+    setTotalPages(data.totalPages || 0);
+  } catch (error) {
+    console.error("fetchTips 오류:", error);
+    message.error("Tip을 불러오는데 실패했습니다.");
+  } finally {
+    setIsFetchingTips(false);
+  }
+}, [currentPage, pageSize, sortOrder, keyword]);
+
+  // Tip 삭제 함수
+  const handleDeleteConfirm = async () => {
+    if (isDeletingTips) return;
+    setIsDeletingTips(true);
+
+    try {
+      await deleteTip(deleteTipId);
+      message.success("Tip이 삭제되었습니다.");
+
+      setIsDeleteModalOpen(false);
+      setDeleteTipId(null);
+
+      if (tips.length === 1 && currentPage > 1) {
+        setCurrentPage((p) => p - 1);
+      } else {
+        loadTips();
+      }
+    } catch (error) {
+      console.error("삭제 오류:", error);
+      message.error("Tip 삭제에 실패했습니다.");
+      setIsDeleteModalOpen(false);
+      setDeleteTipId(null);
+    } finally {
+      setIsDeletingTips(false); 
+    }
   };
 
+  // 렌더링 함수
+  useEffect(() => {
+    loadTips();
+  }, [loadTips]);
+
+  // 이미지 메모리 정리 함수
+  useEffect(() => {
+    return () => {
+      for (const url of imageCacheRef.current.values()) {
+        try { URL.revokeObjectURL(url); } catch {}
+      }
+      imageCacheRef.current.clear();
+    };
+  }, []);
+
+  // 날짜 변환 함수
+  const formatDate = (createdAt, updatedAt) => {
+    const format = (dateStr) => new Date(dateStr).toISOString().split("T")[0];
+    return updatedAt ? `${format(updatedAt)} (수정됨)` : format(createdAt);
+  };
+
+  //검색어 함수
+  const handleSearchChange = (newKeyword) => {
+    const next = newKeyword.trim();
+    if (next === keyword) return;  
+    setKeyword(next);
+    setCurrentPage(1);            
+  };
+
+  // Tip 클릭 함수
   const handleCardClick = (id) => {
     navigate(`/tip/${id}`);
   };
 
-  // Tip 게시글 조회 API 
-  const fetchTips = async () => {
-    if (loading) return; 
-    setLoading(true)
-    console.log("요청 파라미터:", { page, sortOrder, keyword });
-    try {
-      const token = sessionStorage.getItem("accessToken"); 
-      const response = await axios.get("/community", {
-        params: { 
-          page, 
-          keyword: keyword || "",  // 추가
-          sort: sortOrder === "최신순" ? "latest" : "popular" // 필요시 변환
-         },
-        headers: {
-          Authorization: `Bearer ${token}`, // 토큰 헤더에 추가
-        },
-      });
-      const { content, totalElements, totalPages } = response.data;
-       console.log("게시글 내용(content):", content);
-      setTips(content);          
-      setTotalElements(totalElements); 
-      setTotalPages(totalPages);      
-    } catch (error) {
-      console.error("Tip 조회 오류:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-
-  const openCreateModal = () => setIsCreateModalOpen(true);
-  const closeCreateModal = () => setIsCreateModalOpen(false);
-
-  const openEditModal = (data) => {
-    setEditTipData(data);
+  // Tip 수정 클릭 함수
+  const handleEditClick = (tip) => {
+    setEditTipData(tip);
     setIsEditModalOpen(true);
   };
-  const closeEditModal = () => {
-    setEditTipData(null);
-    setIsEditModalOpen(false);
-  };
 
-  const openDeleteModal = (id) => {
-    setDeleteTipId(id);
+  // Tip 삭제 클릭 함수
+  const handleDeleteClick = (tipId) => {
+    setDeleteTipId(tipId);
     setIsDeleteModalOpen(true);
   };
 
-  const closeDeleteModal = () => {
-    setDeleteTipId(null);
+  // 작성 모달 닫기 함수
+  const handleCreateModalCancel = () => {
+    setIsCreateModalOpen(false);
+  };
+
+  // 수정 모달 닫기 함수
+  const handleEditModalCancel = () => {
+    setIsEditModalOpen(false);
+    setEditTipData(null);
+  };
+
+  // 삭제 모달 닫기 함수
+  const handleDeleteModalCancel = () => {
     setIsDeleteModalOpen(false);
+    setDeleteTipId(null);
   };
 
-  // Tip 삭제 API
-  const handleDeleteConfirm = async () => {
-    if (loading) return; 
-    setLoading(true)
-
-    try {
-      const token = sessionStorage.getItem("accessToken");
-      if (!token) {
-        message.error("로그인이 필요합니다.");
-        closeDeleteModal();
-        return;
-      }
-
-      await axios.delete(`/community/${deleteTipId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      message.success("Tip이 삭제되었습니다.");
-      closeDeleteModal();
-      fetchTips();
-
-    } catch (error) {
-      console.error("삭제 오류:", error);
-      message.error("Tip 삭제에 실패했습니다.");
-      closeDeleteModal();
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  
-  // 날짜 변환
-  const formatDate = (createdAt, updatedAt) => {
-    const format = (dateStr) => new Date(dateStr).toISOString().split("T")[0];
-    if (updatedAt) {
-      return `${format(updatedAt)} (수정됨)`;
-    }
-    return format(createdAt);
-  };
-
-
+  // 메뉴
   const menu = (
     <Menu
-      onClick={handleMenuClick}
+      onClick={(e) => setSortOrder(e.key)}
       items={[
-        {
-          key: "최신순",
-          label: "최신순",
-        },
-        {
-          key: "인기순",
-          label: "인기순",
-        },
+        { key: "최신순", label: "최신순" },
+        { key: "인기순", label: "인기순" },
       ]}
     />
   );
@@ -159,7 +189,7 @@ const Tip = () => {
     <main className="tip_layout">
       <section className="tip_header">
         <h2 className="tip_header_title">Tip 게시판</h2>
-        <SearchBar onSearchChange={setKeyword} />
+        <SearchBar onSearchChange={handleSearchChange} />
       </section>
 
       <section className="tip_body">
@@ -174,14 +204,11 @@ const Tip = () => {
             </Button>
           </Dropdown>
 
-          <TbEdit
-              className="tip_icon"
-              onClick={openCreateModal}
-          />
+          <TbEdit className="tip_icon" onClick={() => setIsCreateModalOpen(true)} />
         </div>
 
-        {loading ? (
-          <div className="tip_loading">불러오는 중...</div>
+        {isFetchingTips ? (
+          <div className="tip_empty">불러오는 중...</div>
         ) : tips.length === 0 ? (
           <div className="tip_empty">Tip이 존재하지 않습니다.</div>
         ) : (
@@ -204,30 +231,30 @@ const Tip = () => {
                   title={tip.title}
                   date={formatDate(tip.createdAt, tip.updatedAt)}
                   content={tip.text}
-                  images={tip.imageUrls}
+                  images={tip.previewUrl ?? null}
                   bookmarked={tip.bookmarked}
-                  onBookmarkToggle={fetchTips}
+                  onBookmarkToggle={loadTips}
                   liked={tip.myReaction === "LIKE"}
                   disliked={tip.myReaction === "DISLIKE"}
                   likes={tip.likeCount}
                   dislikes={tip.dislikeCount}
                   comments={tip.commentCount}
                   tags={tip.tags}
-                  isOwner={tip.authorId === userBrief.userId}
+                  role={user.roleType}
+                  isOwner={tip.authorId === user.userId}
                   type="tip"
-                  onEdit={() => openEditModal(tip)}
-                  onDelete={() => openDeleteModal(tip.id)}
+                  onEdit={() => handleEditClick(tip)}
+                  onDelete={() => handleDeleteClick(tip.id)}
                   onClick={() => handleCardClick(tip.id)}
                 />
               ))}
             </div>
 
-            {/* 페이지네이션 */}
             {totalPages > 1 && (
               <div className="tip_page_wrap" style={{ textAlign: "center", marginTop: "30px" }}>
                 <button
-                  onClick={() => setPage((prev) => Math.max(prev - 1, 0))}
-                  disabled={page === 0}
+                  onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                  disabled={currentPage === 1}
                   className="tip_page_button"
                 >
                   &lt;
@@ -236,16 +263,16 @@ const Tip = () => {
                 {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
                   <button
                     key={pageNum}
-                    onClick={() => setPage(pageNum - 1)}
-                    className={`tip_page_button ${page === pageNum - 1 ? "active" : ""}`}
+                    onClick={() => setCurrentPage(pageNum)}
+                    className={`tip_page_button ${currentPage === pageNum ? "active" : ""}`}
                   >
                     {pageNum}
                   </button>
                 ))}
 
                 <button
-                  onClick={() => setPage((prev) => Math.min(prev + 1, totalPages - 1))}
-                  disabled={page === totalPages - 1}
+                  onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                  disabled={currentPage === totalPages}
                   className="tip_page_button"
                 >
                   &gt;
@@ -256,33 +283,33 @@ const Tip = () => {
         )}
       </section>
 
-      <TipModal
-        open={isCreateModalOpen}
-        onCancel={closeCreateModal}
-        mode="create"
-        onSuccess={() => {
-          closeCreateModal();
-          fetchTips(); 
-        }}
-      />
+      {isCreateModalOpen && (
+        <TipModal
+          open={isCreateModalOpen}
+          onCancel={handleCreateModalCancel}
+          mode="create"
+          onSuccess={loadTips}
+        />
+      )}
 
-      <TipModal
-        open={isEditModalOpen}
-        onCancel={closeEditModal}
-        mode="edit"
-        initialData={editTipData}
-        onSuccess={() => {
-          closeEditModal();
-          fetchTips();
-        }}
-      />
+      {isEditModalOpen && editTipData && (
+        <TipModal
+          open={isEditModalOpen}
+          onCancel={handleEditModalCancel}
+          mode="edit"
+          initialData={editTipData}
+          onSuccess={loadTips}
+        />
+      )}
 
-      <TextModal
-        open={isDeleteModalOpen}
-        onCancel={closeDeleteModal}
-        onConfirm={handleDeleteConfirm}
-        mode="tipdelete"
-      />
+      {isDeleteModalOpen && (
+        <TextModal
+          open={isDeleteModalOpen}
+          onCancel={handleDeleteModalCancel}
+          onConfirm={handleDeleteConfirm}
+          mode="tipdelete"
+        />
+      )}
     </main>
   );
 };

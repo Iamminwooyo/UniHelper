@@ -86,7 +86,7 @@ const NoticeModal = ({ open, onCancel, initialData = null, mode = "create", onSu
     };
   }, [open, initialData]);
 
-  // 공지사항 생성 / 수정 API
+  // 공지사항 생성 / 수정 함수
   const handleSubmit = async () => {
     if (isSubmitting) return;
     if (!title.trim()) return message.error("제목을 입력해주세요.");
@@ -97,7 +97,6 @@ const NoticeModal = ({ open, onCancel, initialData = null, mode = "create", onSu
       const formData = new FormData();
 
       if (mode === "edit" && initialData?.id) {
-        // 남아있는 기존 이미지/파일 id 추출
         const keptImageIds = imageFiles.filter(f => !f.originFileObj).map(f => f.id);
         const removeImageIds = (initialData?.images || [])
           .filter(img => !keptImageIds.includes(img.id))
@@ -117,7 +116,6 @@ const NoticeModal = ({ open, onCancel, initialData = null, mode = "create", onSu
         };
         formData.append("notice", JSON.stringify(noticeDto));
 
-        // 신규 업로드만 추가
         imageFiles.forEach(f => {
           if (f.originFileObj) formData.append("images", f.originFileObj);
         });
@@ -135,7 +133,6 @@ const NoticeModal = ({ open, onCancel, initialData = null, mode = "create", onSu
         };
         formData.append("notice", JSON.stringify(noticeDto));
 
-        // 신규 업로드만
         imageFiles.forEach(f => {
           if (f.originFileObj) formData.append("images", f.originFileObj);
         });
@@ -161,15 +158,17 @@ const NoticeModal = ({ open, onCancel, initialData = null, mode = "create", onSu
   // 이미지 업로드 함수
   const beforeImageUpload = (file) => {
     const isImage = file.type?.startsWith("image/");
-    const isLt50M = file.size / 1024 / 1024 < 50;
+    const isLt50M = file.size / 1024 / 1024 < 25;
     if (!isImage) message.error("이미지 파일만 업로드 가능합니다.");
-    if (!isLt50M) message.error("이미지는 50MB 이하만 가능합니다.");
+    if (!isLt50M) message.error("이미지는 25MB 이하만 가능합니다.");
     // 업로드는 수동(FormData로 직접 append) 처리 → false 리턴
     return false;
   };
 
   // 이미지 저장 함수
-  const handleImageChange = ({ fileList }) => setImageFiles(fileList);
+  const handleImageChange = ({ fileList }) => {
+    setImageFiles(fileList);
+  }
 
   // 파일 저장 함수
   const handleAttachmentChange = ({ fileList }) => setAttachmentFiles(fileList);

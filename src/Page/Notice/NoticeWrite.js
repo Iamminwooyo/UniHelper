@@ -127,7 +127,7 @@ const NoticeWrite = () => {
     navigate(`/notice/${id}`);
   };
 
- // 공지사항 수정 클릭 함수
+  // 공지사항 수정 클릭 함수
   const handleEditClick = (noticeId) => {
     const notice = myNotices.find((n) => n.id === noticeId);
     if (notice) {
@@ -185,6 +185,7 @@ const NoticeWrite = () => {
                 <NoticeCard
                   key={post.id}
                   id={post.id}
+                  profile={post.profile}
                   authorid={post.authorId}
                   title={post.title}
                   name={post.authorName}

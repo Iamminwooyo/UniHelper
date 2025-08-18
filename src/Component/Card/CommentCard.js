@@ -1,10 +1,7 @@
 import "./Card.css";
-import { useRecoilValue } from "recoil";
-import { userBriefState } from "../../Recoil/Atom";
-
+import { Dropdown, Menu } from "antd";
 import { MdDeleteOutline } from "react-icons/md";
 import { HiDotsVertical } from "react-icons/hi";
-import { Dropdown, Menu } from "antd";
 
 const CommentCard = ({
   id,
@@ -12,29 +9,25 @@ const CommentCard = ({
   department,
   content,
   date,
+  role,
   isOwner,
   onEdit,
   onDelete,
 }) => {
-  const userBrief = useRecoilValue(userBriefState);
 
+
+  // 드롭다운 메뉴 함수
   const handleMenuClick = (info) => {
-    info.domEvent.stopPropagation(); // 클릭 이벤트 버블링 방지
-    if (info.key === "edit") {
-      onEdit?.(id);
-    } else if (info.key === "delete") {
-      onDelete?.(id);
-    }
+    info.domEvent.stopPropagation();
+    if (info.key === "edit") onEdit?.(id);
+    if (info.key === "delete") onDelete?.(id);
   };
 
+  // 드롭다운 메뉴
   const menu = (
     <Menu onClick={handleMenuClick} className="custom-dropdown-menu">
-      <Menu.Item key="edit" className="custom-dropdown-item">
-        수정
-      </Menu.Item>
-      <Menu.Item key="delete" className="custom-dropdown-item delete">
-        삭제
-      </Menu.Item>
+      <Menu.Item key="edit" className="custom-dropdown-item">수정</Menu.Item>
+      <Menu.Item key="delete" className="custom-dropdown-item delete">삭제</Menu.Item>
     </Menu>
   );
 
@@ -42,19 +35,18 @@ const CommentCard = ({
     <section className="commentcard_layout">
       <div className="commentcard_info">
         <div className="commentcard_profile">
-          <img src="/image/profile.png" alt="profile" className="commentcard_profile_img" />
+          <img src={profile || "/image/profile.png"} alt="profile" className="commentcard_profile_img" />
           <div className="commentcard_text">
             <p className="commentcard_name">{department}</p>
             <p className="commentcard_date">{date}</p>
           </div>
         </div>
 
-        {/* 본인 댓글이면 드롭다운 메뉴 */}
         {isOwner && (
           <Dropdown overlay={menu} trigger={["click"]}>
             <div
               className="commentcard_icon"
-              onClick={(e) => e.stopPropagation()} // 부모 클릭 이벤트 방지
+              onClick={(e) => e.stopPropagation()} 
               style={{ cursor: "pointer" }}
             >
               <HiDotsVertical />
@@ -62,8 +54,7 @@ const CommentCard = ({
           </Dropdown>
         )}
 
-        {/* 매니저이면 삭제 아이콘만 */}
-        {!isOwner && userBrief.roleType === "MANAGER" && (
+        {!isOwner && role === "MANAGER" && (
           <MdDeleteOutline
             className="commentcard_icon"
             style={{ cursor: "pointer" }}
