@@ -23,7 +23,25 @@
       margin: 20px 0 40px 20px;
       font-size: 25px;
       align-self: flex-start;
-      color: #ffffff;
+      color: #78D900;
+  }
+
+  .custommodal_info {
+    color: #fff;
+    font-size: 22px;
+    margin: 20px 0 0 0;
+  }
+
+  .custommodal_time {
+    color: #fff;
+    font-size: 18px;
+    margin: 0 0 10px 0;
+  }
+
+  .custommodal_result {
+    color: #fff;
+    font-size: 18px;
+    margin: 10px 0 0 0;
   }
 
   .custommodal_text {
@@ -315,8 +333,27 @@
       margin: 20px 0 40px 20px;
       font-size: min(23px, 2.5vw);
       align-self: flex-start;
-      color: #ffffff;
+      color: #78D900;
   }
+
+  .custommodal_info {
+    color: #fff;
+    font-size: min(20px, 2vw);
+    margin: 20px 0 0 0;
+  }
+
+  .custommodal_time {
+    color: #fff;
+    font-size: min(15px, 1.5vw);
+    margin: 0 0 10px 0;
+  }
+
+  .custommodal_result {
+    color: #fff;
+    font-size: min(15px, 1.5vw);
+    margin: 10px 0 0 0;
+  }
+
 
   .custommodal_input_group {
       display: flex;
@@ -614,7 +651,25 @@
       margin: 20px 0 20px 15px;
       font-size: min(16px, 5vw);
       align-self: flex-start;
-      color: #ffffff;
+      color: #78D900;
+  }
+
+  .custommodal_info {
+    color: #fff;
+    font-size: min(12px, 4vw);
+    margin: 20px 0 0 0;
+  }
+
+  .custommodal_time {
+    color: #fff;
+    font-size: min(10px, 2vw);
+    margin: 0 0 10px 0;
+  }
+
+  .custommodal_result {
+    color: #fff;
+    font-size: min(10px, 2vw);
+    margin: 10px 0 0 0;
   }
 
   .custommodal_input_group {
@@ -729,7 +784,7 @@
     .custommodal_input_button.ant-btn {
       height: min(35px,8vw) !important;
       font-size: max(12px,0.9vw) !important; 
-      padding: 0 16px;
+      padding: 0 10px;
 
       background-color: #78D900;
       border: none;

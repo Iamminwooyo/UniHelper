@@ -1,0 +1,1131 @@
+@media (min-width: 1241px) {    
+    .enroll_layout {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        width: 100%;
+
+        color: #ffffff;
+
+        border-radius: 20px;
+    }
+
+    .enroll_header {
+        flex: 0.2;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        width: 98%;
+        padding: 0 0 1vw 0; 
+    }
+
+    .enroll_header_title {
+        display: flex;
+
+        margin: 0;
+
+        font-size: 2vw;
+    }
+
+    .enroll_body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        width: 100%;
+        min-height: 650px;
+        padding: 20px 0;
+
+        background-color: #1b1b1b;
+        border-radius: 20px;
+    }
+
+    .enroll_guide_button_wrapper {
+        width: 90%;
+        display: flex;
+        justify-content: flex-start; 
+    }
+    .enroll_guide_button {
+        padding: 0.5vw 1vw;
+        border-radius: 6px;
+        background-color: #78D900;
+        color: #fff;
+        font-size: 0.9vw;
+        font-weight: bold;
+        border: none;
+        cursor: pointer;
+    }
+
+   .enroll_guide_menu {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        width: 90%;
+        padding: 20px;
+        margin: 30px 0;
+
+        border: 3px solid #2a2a2a;
+        box-sizing: border-box;
+    }
+
+    .enroll_guide_select {
+        padding: 0.5vw 1vw;     
+
+        color: #fff;              
+        font-size: 0.7vw;
+
+        border: 1px solid #3a3a3a;
+        background-color: #2a2a2a;    
+    
+        cursor: pointer;
+        outline: none;
+    }
+
+    .enroll_guide_select option {
+        background-color: #2a2a2a;
+        color: #fff;
+    }
+
+    .enroll_guide_search {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+
+        padding: 0.5vw 1vw;   
+
+        color: #fff;
+        font-size: 0.7vw;
+
+        background-color: #3a3a3a;
+        border: none;
+
+        cursor: pointer;
+    }
+
+    .enroll_guide_search:hover {
+        background-color: #666666;
+        color: #fff;
+    }
+
+    .enroll_guide_container {
+        flex-grow: 1;
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+
+        width: 90%;
+    }
+
+    .enroll_guide_left {
+        flex: 2;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .enroll_guide_title {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        margin-bottom: 10px;
+        gap: 0.8vw;
+    }
+
+    .enroll_guide_circle {
+        color: #ffffff;
+        font-size: 0.7vw;
+    }
+
+    .enroll_guide_count {
+        font-size: 0.8vw;
+        color: #aaa;
+    }
+
+    .enroll_guide_plus {
+        padding: 0.2vw 0.3vw;
+
+        color: white;
+        font-size: 0.6vw;
+
+        background-color: #3a3a3a;
+        border-radius: 6px;
+        border: none;
+
+        cursor: pointer;
+    }
+
+    .enroll_guide_plus:hover {
+        background-color: #666666;
+        color: #fff;
+    }
+
+    .enroll_guide_help {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+
+        margin-top: auto;
+    }
+
+    .enroll_guide_help button {
+        padding: 0.3vw 0.6vw;
+
+        color: #ddd;
+        font-size: 0.6vw;
+
+        background-color: #3a3a3a;
+        border: 1px solid #2a2a2a;
+        border-radius: 6px;
+
+        cursor: pointer;
+    }
+
+    .enroll_guide_help button:hover {
+        background-color: #666666;
+        color: #fff;
+    }
+
+    .enroll_guide_scroll {
+        height: 14vw;
+        overflow-y: auto;
+        padding: 0; 
+    }
+
+    .enroll_guide_scroll thead th {
+        position: sticky;
+        top: 0;
+        background-color: #2a2a2a;
+        z-index: 2;
+    }
+
+    .enroll_guide_time_scroll {
+        height: 43vw;
+        overflow-y: auto;
+        padding: 0; 
+    }
+
+    .enroll_guide_time_scroll thead th {
+        position: sticky;
+        top: 0;
+        background-color: #2a2a2a;
+        z-index: 2;
+    }
+
+    .enroll_guide_time {
+        flex: 1.3;
+        height: 45vw;
+        background-color: #242424;
+        border: 2px solid #2a2a2a;
+        border-radius: 12px;
+        padding: 15px;
+        color: #fff;
+    }
+
+    .enroll_guide_list,
+    .enroll_guide_apply { 
+        display: flex;
+        flex-direction: column; 
+        height: 21vw;
+        background-color: #242424;
+        border: 2px solid #2a2a2a;
+        border-radius: 12px;
+        padding: 15px;
+        color: #fff;
+    }
+
+    .enroll_guide_apply h3,
+    .enroll_guide_list h3,
+    .enroll_guide_time  h3 {
+        margin: 0;
+        font-size: 1.3vw;
+        font-weight: bold;
+        color: #78D900;
+    }
+
+    .enroll_guide_apply table,
+    .enroll_guide_list table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.6vw;
+        table-layout: auto; /* 그대로 auto */
+    }
+
+    .enroll_guide_time table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.6vw;
+        table-layout: fixed; /* 시간표만 fixed */
+    }
+
+    .enroll_guide_apply th, .enroll_guide_apply td,
+    .enroll_guide_list th, .enroll_guide_list td {
+        border: 1px solid #3a3a3a;
+        padding: 6px;
+        text-align: center;
+        color: #ccc;
+        height: 1.8vw;
+    }
+
+    .enroll_guide_time th,
+    .enroll_guide_time td {
+        text-align: center;
+        border: 1px solid #3a3a3a;
+        padding: 4px;
+        color: #ccc;
+    }
+
+    /* 열 너비 비율 */
+    .enroll_guide_time th:nth-child(1),
+    .enroll_guide_time td:nth-child(1) {
+        width: 8%;   /* No. */
+    }
+
+    .enroll_guide_time th:nth-child(2),
+    .enroll_guide_time td:nth-child(2) {
+        width: 22%;  /* Time */
+    }
+
+    /* 요일 + 야외 칸들 → 남은 거 균등 분배 */
+    .enroll_guide_time th:nth-child(n+3),
+    .enroll_guide_time td:nth-child(n+3) {
+        width: calc((100% - 30%) / 8); 
+        /* 전체 100% - 앞에 15%(No+Time) 나머지 8칸 균등 */
+    }
+
+    input[type="checkbox"] {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+
+        width: 1vw;
+        height: 1vw;
+        cursor: pointer;
+        background-color: #ffffff; 
+        border: 1px solid #3a3a3a; 
+        border-radius: 4px;
+        position: relative;
+    }
+
+    input[type="checkbox"]:checked {
+        background-color: #78D900; 
+    }
+
+    input[type="checkbox"]:checked::after {
+        content: "✔";
+        position: absolute;
+        top: 0.1vw;
+        left: 0.25vw;
+        font-size: 0.6vw;
+        color: white;  
+        font-weight: bold;
+    }
+
+    .enroll_guide_summary {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        color: #ddd;
+        padding: 5px 0;
+        margin-top: auto;
+    }
+
+    .enroll_guide_summary_row {
+        display: flex;
+        gap: 1vw;
+        align-items: center;
+    }
+
+    .enroll_guide_summary_left {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        font-size: 0.6vw;
+    }
+
+     .enroll_guide_summary_item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        min-width: 7vw;
+    }
+
+    .senroll_guide_summary_label {
+        text-align: center; 
+        color: #ddd;
+    }
+
+    .enroll_guide_summary_value {
+        display: inline-block;
+        width: 20px;      
+        text-align: center;
+        padding: 2px 6px;
+        border: 1px solid #3a3a3a;
+        border-radius: 4px;
+        background-color: #2a2a2a;
+        color: #fff;
+        font-weight: bold;
+    }
+
+     .enroll_guide_summary_right {
+        display: flex;
+        align-items: center;
+    }
+
+    .enroll_guide_save {
+        display: flex;
+        justify-content: center;
+        padding: 1vw 0.8vw;
+        border-radius: 6px;
+        background-color: #78D900;
+        color: #fff;
+        gap: 0.5em;
+        font-size: 0.6vw;
+        font-weight: bold;
+        border: none;
+        cursor: pointer;
+    }
+
+    .enroll_guide_save:hover {
+        background-color: #63b400;
+    }
+
+    /* 투어 전체 배경 */
+    .ant-tour .ant-tour-inner {
+        width: 400px !important;
+        background-color: #1b1b1b !important;
+        color: #ffffff !important;
+        border-radius: 12px !important;
+        border: 1px solid #333 !important;
+    }
+
+    /* 타이틀 */
+    .ant-tour .ant-tour-title {
+        color: #78D900 !important;
+    }
+
+    /* 설명 텍스트 */
+    .ant-tour .ant-tour-description {
+        color: #cccccc !important;
+    }
+    .ant-tour .ant-tour-close .anticon {
+        color: #fff !important;
+    }
+    /* 비활성 인디케이터 (흰색) */
+    .ant-tour .ant-tour-indicator {
+        background-color: #fff !important;
+        opacity: 0.5;
+    }
+
+    /* 활성 인디케이터 (초록색) */
+    .ant-tour .ant-tour-indicator-active {
+        background-color: #78D900 !important;
+        opacity: 1;
+    }
+
+    /* 버튼 공통 */
+    .ant-tour .ant-btn {
+        font-size: 0.5vw;
+        gap: 10px;
+        padding: 0.5vw 0.5vw;
+        background-color: #78D900 !important;
+        border: none !important;
+        color: #fff !important;
+        border-radius: 6px !important;
+    }
+
+    .ant-tour .ant-btn:hover {
+        background-color: #63b400 !important;
+    }
+
+    .ant-tour .ant-btn:disabled {
+        background-color: #444 !important;
+        color: #888 !important;
+    }
+
+    .enroll_practice_container {
+        flex-grow: 1;
+        display: flex;
+        justify-content: space-between;
+        gap: 4vw;
+
+        width: 90%;
+        padding: 20px 0;
+    }
+
+    .enroll_practice_left {
+        flex: 2;
+        display: flex;
+        flex-direction: column;
+        gap: 2vw;
+    }
+
+    .enroll_practice_mode {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        text-align: left;
+        padding: 20px 30px;
+
+        background-color: #242424;
+        border: 2px solid #2a2a2a;
+        border-radius: 20px;
+
+        cursor: pointer;
+    }
+
+    .enroll_practice_mode:hover {
+        background-color: #3a3a3a;
+    }
+
+    .enroll_practice_mode h3 {
+        margin: 0;
+        font-size: 25px;
+        color: #78D900;
+    }
+
+    .enroll_practice_mode p {
+        margin: 0;
+        font-size: 14px;
+        color: #ccc;
+    }
+
+    .enroll_practice_right {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 2vw;;
+    }
+
+    .enroll_practice_record {
+        flex: 3;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        background-color: #242424;
+        border: 2px solid #2a2a2a;
+        border-radius: 20px;
+        padding: 20px;
+    }
+
+    .enroll_practice_record_list {
+        flex: 1;              
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+
+    .enroll_practice_record_index {
+        font-weight: bold;
+        color: #fff;
+        margin-right: 6px;
+        font-size: 16px;
+    }
+
+    .enroll_practice_record_text {
+        color: #ccc;
+    }
+
+    .enroll_practice_record_average {
+        margin-top: auto;  
+        text-align: center;
+        font-weight: bold;
+        color: #fff;
+    }
+
+    .enroll_practice_record_label {
+        font-weight: bold;
+        color: #fff;
+        margin-right: 4px;
+    }
+
+    .enroll_practice_record_value {
+        font-weight: 400;
+        font-size: 16px;
+        color: #ccc;
+    }
+
+    .enroll_practice_average {
+        flex: 1;
+         display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        background-color: #242424;
+        border: 2px solid #2a2a2a;
+        border-radius: 20px;
+        padding: 20px;
+    }
+
+    .enroll_practice_record h3,
+    .enroll_practice_average h3 {
+        margin: 0 0 10px 0;
+        font-size: 18px;
+        font-weight: bold;
+        color: #78D900;
+    }
+
+    .enroll_practice_record p,
+    .enroll_practice_average p {
+        font-size: 14px;
+        margin: 6px 0;
+        color: #ddd;
+    }
+
+    .enroll_practice_tab {
+        display: flex;
+        justify-content: space-around;
+
+        width: 90%;
+        padding: 10px 0 20px 0;
+    }
+
+    .enroll_practice_button {
+        width: 60px;
+        padding: 5px;
+        border-radius: 6px;
+        background-color: #3a3a3a;
+        cursor: pointer;
+        font-size: 14px;
+        color: #ddd;
+    }
+
+    .enroll_practice_button:hover {
+         background-color: #6a6a6a;
+    }
+
+    .enroll_practice_average_time {
+        display: flex;
+        justify-content: space-around;
+
+        width: 100%;
+    }
+
+    .enroll_practice_average_label {
+        font-weight: bold;
+        color: #fff;
+        display: block;
+    }
+
+    .enroll_practice_averagee_value {
+        font-weight: 400;
+        color: #ccc;
+    }
+
+    .enroll_practice_warning {
+        margin: 0;
+        padding: 20px 0 20px 0;
+        font-size: 18px;
+        color: red;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .enroll_background {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        width: 100%;
+
+        color: #000000;
+
+        border-radius: 20px;
+    }
+
+    .enroll_main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        width: 100%;
+        min-height: 650px;
+
+        background-color: #ffffff;
+        border-radius: 20px;
+    }
+
+    .enroll_head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        width: 90%;
+        padding: 0 0 10px 0; 
+    }
+
+    .enroll_head_title {
+        display: flex;
+
+        margin: 10px 0 0 0;
+
+        font-size: 2vw;
+        font-weight: 400;
+    }
+
+    .enroll_menu {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        width: 90%;
+        padding: 20px;
+        margin: 10px 0;
+
+        border: 3px solid rgba(42, 42, 42, 0.5);
+        box-sizing: border-box;
+    }
+
+    .enroll_menu_wrap {
+        display: flex;
+        gap: 1vw;
+    }
+
+    .enroll_condition {
+        display: flex;
+        gap: 1vw;
+        width: 100%;
+        align-items: center;
+    }
+
+    
+    .enroll_condition_code,
+    .enroll_condition_name_wrap,
+    .enroll_condition_grade,
+    .enroll_condition_subject {
+    height: 32px;   /* ✅ 통일된 높이 */
+    display: flex;
+    align-items: center;  /* 안쪽 요소도 수직 가운데 */
+    }
+
+    .enroll_condition_code {
+        flex: 0.5;
+        font-size: 0.6vw;
+        text-align: center; 
+        background-color: #dddddd;
+        border: none;
+        width: 80%;
+        padding: 0 10px;
+          box-sizing: border-box; /* 패딩 포함해서 크기 계산 */
+    }
+    .enroll_condition_name_wrap {
+        position: relative;
+        flex: 2;    
+    }
+
+    .enroll_condition_name {
+        width: 100%;
+        height: 100%;
+        padding: 0 10px;
+        font-size: 0.6vw;
+        box-sizing: border-box;
+    }
+
+    /* 아이콘 버튼 공통 */
+    .icon_btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        font-size: 0.8vw;
+        color: #555;
+        padding: 0;
+    }
+
+    /* ❌ 버튼 오른쪽 */
+    .clear_btn {
+        right: 2em;
+    }
+
+    /* 🔍 버튼 맨 오른쪽 */
+    .search_btn {
+        right: 0.4em;
+    }
+    .enroll_condition_grade {
+        flex: 0.7;
+        text-align: center; 
+        font-size: 0.6vw;
+          box-sizing: border-box; /* 패딩 포함해서 크기 계산 */
+    }
+
+    .enroll_condition_subject {
+        flex: 1;
+        font-size: 0.6vw;
+        padding: 0 10px;
+        box-sizing: border-box;
+        width: 10vw;
+    }
+
+    .enroll_select {
+        padding: 0.5vw 1vw;   
+
+        color: #000000;              
+        font-size: 0.6vw;
+
+        border: 1px solid #3a3a3a;
+        background-color: #ffffff;    
+    
+        cursor: pointer;
+        outline: none;
+    }
+
+    .enroll_select option {
+        color: blue;
+    }
+
+    .enroll_search {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+
+        padding: 0.6vw 1vw;   
+
+        color: #fff;
+        font-size: 0.7vw;
+
+        background-color: #707070;
+        border: none;
+        border-radius: 5px;
+
+        cursor: pointer;
+    }
+
+    .enroll_search:hover {
+        background-color: #666666;
+        color: #fff;
+    }
+
+    .enroll_container {
+        flex-grow: 1;
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+
+        width: 90%;
+    }
+
+    .enroll_left {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .enroll_title {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        margin-bottom: 10px;
+        gap: 0.5vw;
+    }
+
+    .enroll_circle {
+        color: #4F75B0;
+        font-size: 0.8vw;
+    }
+
+    .enroll_count {
+        font-size: 1vw;
+        font-weight: bold;
+        margin-left: 0.3vw;
+    }
+
+    .enroll_plus {
+        padding: 0.2vw 0.3vw;
+
+        font-size: 0.6vw;
+
+        background-color: #e9e9e9;
+        border-radius: 6px;
+        border: none;
+
+        cursor: pointer;
+    }
+
+    .enroll_plus:hover {
+        background-color: #a5a4a4;
+        color: #fff;
+    }
+
+    .enroll_help {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        margin-top: 10px;
+    }
+
+    .enroll_help button {
+        padding: 0.4vw 0.6vw;
+
+        color: #ffffff;
+        font-size: 0.6vw;
+        font-weight: bold;
+
+        background-color: #888888;
+        border: none;
+        border-radius: 6px;
+
+        cursor: pointer;
+    }
+
+    .enroll_help button:hover {
+        background-color: #727171;
+        color: #fff;
+    }
+
+    .enroll_scroll {
+        height: 18vw;
+        overflow-y: auto;
+        padding: 0; 
+        border-top: #266FCD 2px solid;
+        background-color: #F0F1F3;
+    }
+
+    .enroll_scroll thead th {
+        position: sticky;
+        top: 0;
+        background-color: #E8E8E8;
+        z-index: 2;
+    }
+
+    .enroll_time_scroll {
+        height: 47vw;
+        overflow-y: auto;
+        padding: 0; 
+        border-top: #266FCD 2px solid;
+    }
+
+    .enroll_time_scroll thead th {
+        position: sticky;
+        top: 0;
+        background-color: #E8E8E8;
+        z-index: 2;
+    }
+
+    .enroll_time {
+        flex: 1;
+        height: 47vw;
+        padding: 15px;
+        color: #000000;
+    }
+
+    .enroll_list,
+    .enroll_apply { 
+        display: flex;
+        flex-direction: column; 
+        height: 23vw;
+        padding: 15px;
+        color: #000000;
+    }
+
+    .enroll_apply h3,
+    .enroll_list h3,
+    .enroll_time  h3 {
+        margin: 0;
+        font-size: 1.3vw;
+        font-weight: 400;
+        color: #000000;
+    }
+
+    .enroll_apply table,
+    .enroll_list table {
+        background-color: #ffffff;
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.6vw;
+        table-layout: fixed; /* 그대로 auto */
+    }
+
+    .enroll_time table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.6vw;
+        table-layout: fixed; /* 시간표만 fixed */
+    }
+
+    .enroll_apply th, .enroll_apply td,
+    .enroll_list th, .enroll_list td {
+        border: 1px solid #3a3a3a;
+        padding: 4px;
+        text-align: center;
+        color: #000000;
+        height: 1.8vw;
+    }
+
+    .enroll_list tbody tr:hover,
+    .enroll_apply tbody tr:hover {
+    background-color: #FFF173; /* 옅은 노란색 */
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    }
+
+    .enroll_list th:nth-child(1),
+    .enroll_list td:nth-child(1) { width: 8%; }   /* 이수구분 */
+    .enroll_list th:nth-child(2),
+    .enroll_list td:nth-child(2) { width: 12%; }  /* 학수번호 */
+    .enroll_list th:nth-child(3),
+    .enroll_list td:nth-child(3) { width: 20%; }  /* 교과목명 */
+    .enroll_list th:nth-child(4),
+    .enroll_list td:nth-child(4) { width: 8%; }   /* 학년 */
+    .enroll_list th:nth-child(5),
+    .enroll_list td:nth-child(5) { width: 8%; }   /* 학점 */
+    .enroll_list th:nth-child(6),
+    .enroll_list td:nth-child(6) { width: 12%; }  /* 담당교수 */
+    .enroll_list th:nth-child(7),
+    .enroll_list td:nth-child(7) { width: 20%; }  /* 학과 */
+    .enroll_list th:nth-child(8),
+    .enroll_list td:nth-child(8) { width: 12%; }  /* 선택 */
+
+    .enroll_apply th:nth-child(1),
+    .enroll_apply td:nth-child(1) { width: 8%; }   /* 이수구분 */
+    .enroll_apply th:nth-child(2),
+    .enroll_apply td:nth-child(2) { width: 12%; }  /* 학수번호 */
+    .enroll_apply th:nth-child(3),
+    .enroll_apply td:nth-child(3) { width: 20%; }  /* 교과목명 */
+    .enroll_apply th:nth-child(4),
+    .enroll_apply td:nth-child(4) { width: 8%; }   /* 학년 */
+    .enroll_apply th:nth-child(5),
+    .enroll_apply td:nth-child(5) { width: 8%; }   /* 학점 */
+    .enroll_apply th:nth-child(6),
+    .enroll_apply td:nth-child(6) { width: 12%; }  /* 수강구분 */
+    .enroll_apply th:nth-child(7),
+    .enroll_apply td:nth-child(7) { width: 12%; }  /* 재이수과목 */
+    .enroll_apply th:nth-child(8),
+    .enroll_apply td:nth-child(8) { width: 12%; }  /* 취소 */
+
+
+    .enroll_time th {
+        text-align: center;
+        border: 1px solid #3a3a3a;
+        padding: 4px;
+        color: #000000;
+        height: 1.8vw;
+    }
+    .enroll_time td {
+        text-align: center;
+        border: 1px solid #3a3a3a;
+        padding: 4px;
+        color: #000000;
+        height: 1vw;
+    }
+    .enroll_time tbody tr:nth-child(n+19) td {
+        background-color: #ececec;
+    }
+
+    /* 열 너비 비율 */
+    .enroll_time th:nth-child(1),
+    .enroll_time td:nth-child(1) {
+        width: 5%;   /* No. */
+    }
+
+    .enroll_time th:nth-child(2),
+    .enroll_time td:nth-child(2) {
+        width: 10%;  /* Time */
+    }
+
+    /* 요일 + 야외 칸들 → 남은 거 균등 분배 */
+    .enroll_time th:nth-child(n+3),
+    .enroll_time td:nth-child(n+3) {
+        width: calc((100% - 15%) / 8); 
+        /* 전체 100% - 앞에 15%(No+Time) 나머지 8칸 균등 */
+    }
+
+    .enroll_summary {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+
+        background-color: #ececec;
+
+        padding: 5px 0;
+    }
+
+    .enroll_summary_left {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        font-size: 0.7vw;
+    }
+
+    .enroll_summary_row {
+        display: flex;
+        gap: 2vw;
+        align-items: center;
+    }
+
+     .enroll_summary_item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        min-width: 9vw;
+    }
+
+    .senroll_summary_label {
+        text-align: center; 
+        color: #ddd;
+    }
+
+    .enroll_summary_value {
+        display: inline-block;
+        width: 20px;      
+        text-align: center;
+        padding: 2px 6px;
+        font-weight: bold;
+        border: 1px solid rgba(42, 42, 42, 0.2);
+        border-radius: 4px;
+    }
+
+    .enroll_summary_right {
+        display: flex;
+        align-items: center;
+    }
+
+    .enroll_save {
+        display: flex;
+        justify-content: center;
+        gap: 0.5em;
+        padding: 1.3vw 1.5vw;
+        border-radius: 6px;
+        background-color: #fc9a1a;
+        color: #fff;
+        font-size: 0.7vw;
+        font-weight: bold;
+        border: none;
+        cursor: pointer;
+    }
+
+    .enroll_save:hover {
+        background-color: #f78c00;
+    }
+
+    .highlight_top {
+    background-color: #E7EFFF; /* 하늘색 (LightSkyBlue) */
+    transition: background-color 0.2s ease-in-out;
+    }
+
+    .highlight_bottom {
+    background-color: #FFE0E0; /* 자홍색 (HotPink) */
+    transition: background-color 0.2s ease-in-out;
+    }
+}    
+
+@media (min-width: 769px) and (max-width: 1240px) {}
+
+@media (min-width: 1px) and (max-width: 768px) {}
