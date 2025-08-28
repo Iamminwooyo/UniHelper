@@ -18,6 +18,7 @@ const Tip = () => {
 
   const [tips, setTips] = useState([]);
 
+  const isFetchingRef = useRef(false);
   const [isFetchingTips, setIsFetchingTips] = useState(false);
   const [isDeletingTips, setIsDeletingTips] = useState(false);
 
@@ -41,48 +42,50 @@ const Tip = () => {
 
   // Tip 조회 함수
   const loadTips = useCallback(async () => {
-  if (isFetchingTips) return;
-  setIsFetchingTips(true);
+    if (isFetchingRef.current) return;
+    isFetchingRef.current = true;
+    setIsFetchingTips(true);
 
-  try {
-    const data = await fetchTips({
-      page: currentPage,
-      size: pageSize,
-      sortOrder,
-      keyword,
-    });
+    try {
+      const data = await fetchTips({
+        page: currentPage,
+        size: pageSize,
+        sortOrder,
+        keyword,
+      });
 
-    const list = data.content || [];
+      const list = data.content || [];
 
-    const withPreview = await Promise.all(
-      list.map(async (item) => {
-        const filename = item?.images?.[0]?.url;
-        if (!filename) return { ...item, previewUrl: null };
+      const withPreview = await Promise.all(
+        list.map(async (item) => {
+          const filename = item?.images?.[0]?.url;
+          if (!filename) return { ...item, previewUrl: null };
 
-        if (imageCacheRef.current.has(filename)) {
-          return { ...item, previewUrl: imageCacheRef.current.get(filename) };
-        }
+          if (imageCacheRef.current.has(filename)) {
+            return { ...item, previewUrl: imageCacheRef.current.get(filename) };
+          }
 
-        try {
-          const blob = await fetchTipImagePreview(filename); 
-          const url = URL.createObjectURL(blob);
-          imageCacheRef.current.set(filename, url);
-          return { ...item, previewUrl: url };
-        } catch {
-          return { ...item, previewUrl: null };
-        }
-      })
-    );
+          try {
+            const blob = await fetchTipImagePreview(filename); 
+            const url = URL.createObjectURL(blob);
+            imageCacheRef.current.set(filename, url);
+            return { ...item, previewUrl: url };
+          } catch {
+            return { ...item, previewUrl: null };
+          }
+        })
+      );
 
-    setTips(withPreview);
-    setTotalPages(data.totalPages || 0);
-  } catch (error) {
-    console.error("fetchTips 오류:", error);
-    message.error("Tip을 불러오는데 실패했습니다.");
-  } finally {
-    setIsFetchingTips(false);
-  }
-}, [currentPage, pageSize, sortOrder, keyword]);
+      setTips(withPreview);
+      setTotalPages(data.totalPages || 0);
+    } catch (error) {
+      console.error("fetchTips 오류:", error);
+      message.error("Tip을 불러오는데 실패했습니다.");
+    } finally {
+      setIsFetchingTips(false);
+      isFetchingRef.current = false;
+    }
+  }, [currentPage, pageSize, sortOrder, keyword]);
 
   // Tip 삭제 함수
   const handleDeleteConfirm = async () => {

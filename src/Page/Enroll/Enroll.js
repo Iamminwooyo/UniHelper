@@ -4,23 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { DeptModal, SaveModal } from "../../Component/Modal/PracticeModal";
 import { timeSlots } from "../../Data/Timedata";
 import { courseData } from "../../Data/Enrolldata";
+import { finishEnrollTimer, cancelEnrollTimer } from "../../API/EnrollAPI";
 import { FaSearch } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import { FaDotCircle } from "react-icons/fa";
-
-const departmentMap = {
-  "테스트학과": "3251",
-  "컴퓨터공학과": "4401",
-  "경영학과": "4202",
-  "심리학과": "4203",
-  "사학과": "4102",
-  "영어영문학과": "4103",
-  "국어국문학과": "4101",
-  "수학과": "4301",
-  "화학과": "4303",
-  "물리학과": "4302",
-  // 필요할 때 계속 추가
-};
 
 const Enroll = () => {
   const mode = sessionStorage.getItem("practiceMode");
@@ -44,7 +31,6 @@ const Enroll = () => {
 
   // ✅ 모달
   const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
-  const [isMissionModalOpen, setIsMissionModalOpen] = useState(false);
 
   // 검색 조건 입력값
   const [deptCode, setDeptCode] = useState("");
@@ -66,23 +52,50 @@ const Enroll = () => {
       setSearchMode("basket");
     } else {
       setDisplayList(
-       courseData.filter(
+        courseData.filter(
          (c) =>
            c.department.includes("테스트학과") &&
            String(c.grade) === "1"
-       )
-     );
+        )
+      );
       setSearchMode("department");
-      setDeptCode("3251");      // 교양학부 코드 (표시용)
-      setDeptName("테스트학과");  // 학과 이름 기본값
-      setGradeFilter("1");      // 학년 기본값
+      setDeptCode("3251"); 
+      setDeptName("테스트학과");
+      setGradeFilter("1");     
     }
 
     setStartTime(Date.now());
   }, [mode]);
 
+  useEffect(() => {
+    if (!startTime) return;
+
+    const timer = setInterval(async () => {
+      const diff = Math.floor((Date.now() - startTime) / 1000);
+      if (diff > 3000) {
+        clearInterval(timer);
+
+        try {
+          await cancelEnrollTimer();
+        } catch (err) {
+          console.error("연습 취소 API 실패:", err);
+        }
+
+        sessionStorage.setItem("missionResult", JSON.stringify({
+          success: false,
+          reason: "timeout"
+        }));
+
+        navigate("/enroll/practice");
+      }
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [startTime, navigate]);
+  
+
   /// ✅ 과목 추가
-    const handleAdd = (course) => {
+  const handleAdd = (course) => {
     if (!appliedList.find((c) => c.code === course.code)) {
         setAppliedList([...appliedList, course]);
 
@@ -93,10 +106,9 @@ const Enroll = () => {
         }
         setTimetable(newTimetable);
     } else {
-        // ✅ 이미 신청된 과목인 경우 경고창
         window.alert("이미 수강신청한 과목입니다.");
     }
-    };
+  };
 
   // ✅ 체크박스 토글
   const toggleCancel = (code) => {
@@ -106,59 +118,58 @@ const Enroll = () => {
   };
 
   // ✅ 조건검색
-    const handleSearch = () => {
+  const handleSearch = () => {
     if (mode === "practicebasic") {
-         if (searchMode === "basket") {
+      if (searchMode === "basket") {
         setDisplayList([]);
-        } else if(searchMode === "department") {
-            setDisplayList(
-                courseData.filter(
-                (c) =>
-                    (deptName === "" || c.department === deptName) &&   // ✅ 정확히 일치로 변경
-                    (gradeFilter === "" || String(c.grade) === gradeFilter)
-                )
-            );
-        } else if (searchMode === "subject") {
-             if (!subjectKeyword.trim()) {
-                window.alert("학수번호나 과목명을 입력하세요!");
-                return;
-            }
-            setDisplayList(
-                courseData.filter(
-                    (c) =>
-                    c.name.includes(subjectKeyword) || c.code.includes(subjectKeyword)
-                )
-            );
+      } else if(searchMode === "department") {
+        setDisplayList(
+          courseData.filter(
+            (c) =>
+            (deptName === "" || c.department === deptName) &&
+            (gradeFilter === "" || String(c.grade) === gradeFilter)
+          )
+        );
+      } else if (searchMode === "subject") {
+        if (!subjectKeyword.trim()) {
+          window.alert("학수번호나 과목명을 입력하세요!");
+          return;
         }
+        setDisplayList(
+          courseData.filter(
+            (c) =>
+            c.name.includes(subjectKeyword) || c.code.includes(subjectKeyword)
+          )
+        );
+      }
     }
-    };
+  };
 
-    const handleSaveClick = () => {
+  const handleSaveClick = () => {
     const confirmed = window.confirm("저장 하시겠습니까?");
     if (confirmed) {
-        handleSave();  // ✅ 확인 시 저장 실행
+      handleSave();
     } else {
-        console.log("저장 취소됨");
+      console.log("저장 취소됨");
     }
-    };
+  };
 
-    const handleDeleteImmediate = (course) => {
-        const newTimetable = { ...timetable };
-        const { day, start, end } = course.schedule[0];
-        for (let i = start; i <= end; i++) {
-            if (newTimetable[`${day}-${i}`] === course.code) {
-            delete newTimetable[`${day}-${i}`];
-            }
-        }
+  const handleDeleteImmediate = (course) => {
+    const newTimetable = { ...timetable };
+    const { day, start, end } = course.schedule[0];
+    for (let i = start; i <= end; i++) {
+      if (newTimetable[`${day}-${i}`] === course.code) {
+        delete newTimetable[`${day}-${i}`];
+      }
+    }
 
-        setTimetable(newTimetable);
-        setAppliedList(appliedList.filter((c) => c.code !== course.code));
-    };
+    setTimetable(newTimetable);
+    setAppliedList(appliedList.filter((c) => c.code !== course.code));
+  };
 
   const handleSave = async () => {
     let newApplied = appliedList;
 
-    // ✅ 취소 체크된 과목 처리
     if (cancelSet.size > 0) {
         const removedCourses = appliedList.filter((c) => cancelSet.has(c.code));
 
@@ -189,35 +200,29 @@ const Enroll = () => {
     }
 
     if (allMatched && !elapsedTime) {
-        const endTime = Date.now();
-        const seconds = ((endTime - startTime) / 1000).toFixed(2);
-        setElapsedTime(seconds);
+      try {
+        const apiMode = mode === "practicebasic" ? "BASIC"
+                      : mode === "practicebasket" ? "CART"
+                      : mode;           
+        const result = await finishEnrollTimer(apiMode);
 
-        try {
-        // ✅ 2. API 요청 (자리 표시)
-        // const response = await fetch("/api/enroll/mission", {
-        //   method: "POST",
-        //   headers: { "Content-Type": "application/json" },
-        //   body: JSON.stringify({ appliedList: newApplied, time: seconds }),
-        // });
-        // if (!response.ok) throw new Error("API 실패");
+        sessionStorage.setItem("missionResult", JSON.stringify({
+          success: true,
+          time: result.measuredSeconds,
+          mode: result.mode,
+          finishedAt: result.finishedAt,
+          diffVsOthers: result.diffVsOthersSeconds
+        }));
 
-        // ✅ 3. 성공 → 이동
-      sessionStorage.setItem("missionResult", JSON.stringify({
-    success: true,
-    time: seconds,
-    mode: mode
-    }));
-    navigate("/enroll/practice");
+        navigate("/enroll/practice");
         return;
-        } catch (error) {
+      } catch (error) {
         console.error("미션 저장 API 실패:", error);
-        }
+      }
     }
 
-    // ✅ 미션 실패 → 그냥 저장 모달
     setIsSaveModalOpen(true);
-    };
+  };
 
 
   return (
@@ -270,11 +275,7 @@ const Enroll = () => {
                     type="text"
                     placeholder="학과명"
                     value={deptName}
-                    onChange={(e) => {
-                    const newDeptName = e.target.value;
-                    setDeptName(newDeptName);
-                    setDeptCode(departmentMap[newDeptName] || "");
-                    }}
+                    onChange={(e) => setDeptName(e.target.value)}
                 />
                 {deptName && (
                     <button

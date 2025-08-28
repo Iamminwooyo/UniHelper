@@ -73,8 +73,6 @@ const modalConfig = {
     title: "기본 수강신청",
     content: () => "기본 수강신청 연습을 시작하시겠습니까?",
     onOk: (name, onCancel) => {
-      // 실제 실행 로직 (예: 페이지 이동, 상태 변경 등)
-      console.log("기본 수강신청 시작!");
       onCancel();
     },
   },
@@ -82,7 +80,13 @@ const modalConfig = {
     title: "장바구니 수강신청",
     content: () => "장바구니 수강신청 연습을 시작하시겠습니까?",
     onOk: (name, onCancel) => {
-      console.log("장바구니 수강신청 시작!");
+      onCancel();
+    },
+  },
+  practicefail: {
+    title: "수강신청 연습 실패",
+    content: () => "제한 시간(30초)을 초과하여 연습이 취소되었습니다.",
+    onOk: (name, onCancel) => {
       onCancel();
     },
   },
