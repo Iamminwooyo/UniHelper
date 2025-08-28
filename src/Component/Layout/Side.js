@@ -24,10 +24,10 @@ const Side = () => {
       ],
     },
     {
-      match: (p) => p.startsWith("/practice"),
+      match: (p) => p.startsWith("/enroll"),
       items: [
-        { name: "수강신청 시작", link: "/practice/start" },
-        { name: "지난 기록", link: "/practice/history" },
+        { name: "수강신청 가이드", link: "/enroll/guide" },
+        { name: "수강신청 연습", link: "/enroll/practice" },
       ],
     },
     {

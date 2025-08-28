@@ -13,6 +13,9 @@ import Tip from "../../Page/Tip/Tip";
 import TipDetail from "../../Page/Tip/TipDetail";
 import TipWrite from "../../Page/Tip/TipWrite";
 import TipSub from "../../Page/Tip/TipSub";
+import Enroll from "../../Page/Enroll/Enroll";
+import EnrollPractice from "../../Page/Enroll/EnrollPractice";
+import EnrollGuide from "../../Page/Enroll/EnrollGuide";
 
 import { Routes, Route, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -63,6 +66,12 @@ const Layout = () => {
         );
     }
 
+    if (path === "/enroll") {
+        return (
+            <Enroll />
+        );
+    }
+
     const isMain = path === "/";
 
     return(
@@ -80,7 +89,9 @@ const Layout = () => {
                     <Route path="/tip/:id" element={<TipDetail />} />
                     <Route path="/tip/write" element={<TipWrite />} />
                     <Route path="/tip/subscribe" element={<TipSub />} />
-                  
+                    <Route path="/enroll/practice" element={<EnrollPractice />} />
+                    <Route path="/enroll/guide" element={<EnrollGuide />} />
+
                     <Route path="*" element={<Main />} />
                 </Routes>
             </div>

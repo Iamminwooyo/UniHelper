@@ -14,7 +14,7 @@ const Header = () => {
   const menuMap = {
     "/user": "user",
     "/academic": "academic",
-    "/practice": "practice",
+    "/enroll": "enroll",
     "/tip": "tip",
     "/notice": "notice",
   };
@@ -33,6 +33,7 @@ const Header = () => {
   // 로그아웃 처리
   const handleLogout = () => {
     sessionStorage.removeItem("accessToken");
+    sessionStorage.removeItem("refreshToken");
     setIsLoggedIn(false);
     navigate("/login");
   };
@@ -64,7 +65,7 @@ const Header = () => {
       <nav className="header_menu">
         <Link to="/user" onClick={() => handleMenuClick("/user")} className="header_menu_nav">마이페이지</Link>
         <Link to="/academic" onClick={() => handleMenuClick("/academic")} className="header_menu_nav">학사정보</Link>
-        <Link to="/practice" onClick={() => handleMenuClick("/practice")} className="header_menu_nav">수강신청 연습</Link>
+        <Link to="/enroll" onClick={() => handleMenuClick("/enroll")} className="header_menu_nav">수강신청 연습</Link>
         <Link to="/tip" onClick={() => handleMenuClick("/tip")} className="header_menu_nav">Tip 게시판</Link>
         <Link to="/notice" onClick={() => handleMenuClick("/notice")} className="header_menu_nav">공지사항</Link>
       </nav>

@@ -2,7 +2,7 @@ import "./Join.css";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";  
 import { useMediaQuery } from 'react-responsive';
-import axios from "axios";
+import { requestSignupEmail, verifySignupEmail, signup } from "../../API/AccountAPI";
 import { Select, Input, Button, message } from "antd";
 import { RiArrowGoBackFill } from "react-icons/ri";
 import { BiSolidRightArrow, BiSolidLeftArrow } from "react-icons/bi";
@@ -47,7 +47,9 @@ const Join = () => {
 
   const [isPasswordValid, setIsPasswordValid] = useState(true);
 
-  const [isLoading, setIsLoading] = useState(false);
+ const [isEmailSending, setIsEmailSending] = useState(false);
+  const [isCodeVerifying, setIsCodeVerifying] = useState(false);
+  const [isJoinProcessing, setIsJoinProcessing] = useState(false);
 
   const selectRef = useRef(null);
 
@@ -55,90 +57,16 @@ const Join = () => {
 
   const isMobile = useMediaQuery({ maxWidth: 768 })
 
-  useEffect(() => {
-    if (emailVerificationStatus !== "sent" || timer <= 0) return;
-    const interval = setInterval(() => {
-      setTimer((prev) => {
-        if (prev <= 1) {
-          clearInterval(interval);
-          setEmailVerificationStatus("resend");
-          setEmailVerificationMessage("인증번호 전송됨");
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [emailVerificationStatus, timer]);
-
-  const formatTime = (seconds) => {
-    const min = String(Math.floor(seconds / 60)).padStart(2, '0');
-    const sec = String(seconds % 60).padStart(2, '0');
-    return `${min}:${sec}`;
-  };
-
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-    setEmailVerificationStatus("idle");
-    setEmailVerificationMessage("");
-    setCodeVerificationStatus("idle");
-    setCodeVerificationMessage("");
-  };
-
-  const handleAuthCodeChange = (e) => {
-    setAuthCode(e.target.value);
-    if (codeVerificationStatus === "verified" || codeVerificationStatus === "error") {
-      setCodeVerificationStatus("idle");
-      setCodeVerificationMessage("");
-    }
-  };
-
-  const validatePassword = (pw) => {
-    const lengthCheck = pw.length >= 8;
-    const upperCheck = /[A-Z]/.test(pw);
-    const lowerCheck = /[a-z]/.test(pw);
-    const specialCheck = /[^A-Za-z0-9]/.test(pw);
-    return lengthCheck && upperCheck && lowerCheck && specialCheck;
-  };
-
-  const handlePasswordChange = (e) => {
-    const newPassword = e.target.value;
-    setPassword(newPassword);
-    setIsPasswordValid(validatePassword(newPassword));
-
-    if (confirmPassword !== "") {
-      setPasswordMatch(newPassword === confirmPassword);
-    } else {
-      setPasswordMatch(null);
-    }
-  };
-
-  const handleConfirmPasswordChange = (e) => {
-    setConfirmPassword(e.target.value);
-    setPasswordMatch(password === e.target.value && e.target.value !== "");
-  };
-
-  const handleNameChange = (e) => setName(e.target.value);
-
-  const handleStudentIdChange = (e) => {
-    const onlyNumbers = e.target.value.replace(/\D/g, "");
-    setStudentId(onlyNumbers);
-  };
-  
-  const handleDepartmentChange = (value) => {
-    setDepartment(value);
-    if (selectRef.current) {
-      selectRef.current.blur();
-    }
-  };
-
-
-  // 이메일 인증번호 전송 API
+  // 이메일 인증번호 전송 함수
   const handleSendEmail = async () => {
+    if (isEmailSending) return;
+
     if (!email) {
       message.error("이메일을 입력해주세요.");
       return;
     }
+
+    setIsEmailSending(true);
 
     setEmailVerificationStatus("sending");
     setEmailVerificationMessage("인증번호 전송중...");
@@ -147,9 +75,9 @@ const Join = () => {
     setTimer(0);
 
     try {
-      const res = await axios.post("/auth/email/signup/request", { email });
+      const response = await requestSignupEmail(email);
 
-      const messageText = typeof res.data === "string" ? res.data : res.data?.message || "";
+      const messageText = typeof response.data === "string" ? response.data : response.data?.message || "";
       const isSuccess = messageText.includes("인증코드가 전송");
 
       if (isSuccess) {
@@ -175,25 +103,26 @@ const Join = () => {
 
       setEmailVerificationStatus("error");
       setEmailVerificationMessage(errorMessage);
+    } finally {
+      setIsEmailSending(false);
     }
   };
 
-  // 이메일 인증코드 확인 API
+  // 이메일 인증코드 확인 함수
   const handleVerifyCode = async () => {
+    if (isCodeVerifying) return;
+
     if (!authCode) {
       message.error("인증코드를 입력해주세요.");
       return;
     }
 
-    setIsLoading(true);
+    setIsCodeVerifying(true);
 
     try {
-      const res = await axios.post("/auth/email/verify", {
-        email,
-        code: authCode,
-      });
+      const response = await verifySignupEmail(email, authCode);
 
-      if (typeof res.data === "string" && res.data.includes("인증 성공")) {
+      if (typeof response.data === "string" && response.data.includes("인증 성공")) {
         setCodeVerificationStatus("verified");
         setCodeVerificationMessage("이메일 인증 완료");
         setEmailVerificationStatus("verified");
@@ -215,84 +144,156 @@ const Join = () => {
         message.error("인증 중 오류가 발생했습니다.");
       }
     } finally {
-      setIsLoading(false);
+      setIsCodeVerifying(false);
     }
   };
 
-  // 회원가입 API
+  // 회원가입 함수
   const handleJoin = async (e) => {
     e.preventDefault();
-  
-    setIsLoading(true);
+    if (isJoinProcessing) return;
 
     if (emailVerificationStatus !== "verified") {
-    message.error("이메일 인증을 완료해주세요.");
-    setStep(1);
-    setIsLoading(false); 
-    return;
+      message.error("이메일 인증을 완료해주세요.");
+      setStep(1);
+      return;
     }
     if (!password) {
       message.error("비밀번호를 입력해주세요.");
       setStep(1);
-      setIsLoading(false);
       return;
     }
     if (!confirmPassword) {
       message.error("비밀번호 확인을 입력해주세요.");
       setStep(1);
-      setIsLoading(false);
       return;
     }
     if (password !== confirmPassword) {
       message.error("비밀번호가 일치하지 않습니다.");
       setStep(1);
-      setIsLoading(false);
       return;
     }
     if (!name) {
       message.error("이름을 입력해주세요.");
       setStep(2);
-      setIsLoading(false);
       return;
     }
     if (!studentId) {
       message.error("학번을 입력해주세요.");
       setStep(2);
-      setIsLoading(false);
       return;
     }
     if (!department) {
       message.error("학과를 선택해주세요.");
       setStep(2);
-      setIsLoading(false);
       return;
     }
 
-    try {
-      const res = await axios.post("/auth/signup", {
-        username: name,
-        password: password,
-        email: email,
-        department: department,
-        role: "STUDENT",
-        student_number: studentId,
-      });
+    setIsJoinProcessing(true);
 
-      if (res.data.success || res.status === 200) {
+    try {
+      const response = await signup({ username: name, password, email, department, role: "STUDENT", student_number: studentId });
+
+      if (response.data.success || response.status === 200) {
         message.success("회원가입 완료!");
         navigate("/login");
       } else {
-        message.error(res.data.message || "회원가입에 실패했습니다.");
+        message.error(response.data.message || "회원가입에 실패했습니다.");
       }
     } catch (error) {
       console.error(error);
       message.error("회원가입 중 오류가 발생했습니다: " + (error.response?.data || error.message));
     } finally {
-      setIsLoading(false);
+      setIsJoinProcessing(false);
+    }
+  };
+  
+  // 타이머 함수
+  useEffect(() => {
+    if (emailVerificationStatus !== "sent" || timer <= 0) return;
+    const interval = setInterval(() => {
+      setTimer((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          setEmailVerificationStatus("resend");
+          setEmailVerificationMessage("인증번호 전송됨");
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [emailVerificationStatus, timer]);
+
+  // 시간 변환 함수
+  const formatTime = (seconds) => {
+    const min = String(Math.floor(seconds / 60)).padStart(2, '0');
+    const sec = String(seconds % 60).padStart(2, '0');
+    return `${min}:${sec}`;
+  };
+
+  // 이메일 함수
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+    setEmailVerificationStatus("idle");
+    setEmailVerificationMessage("");
+    setCodeVerificationStatus("idle");
+    setCodeVerificationMessage("");
+  };
+
+  // 인증번호 함수
+  const handleAuthCodeChange = (e) => {
+    setAuthCode(e.target.value);
+    if (codeVerificationStatus === "verified" || codeVerificationStatus === "error") {
+      setCodeVerificationStatus("idle");
+      setCodeVerificationMessage("");
     }
   };
 
+  // 비밀번호 정규식 함수
+  const validatePassword = (pw) => {
+    const lengthCheck = pw.length >= 8;
+    const upperCheck = /[A-Z]/.test(pw);
+    const lowerCheck = /[a-z]/.test(pw);
+    const specialCheck = /[^A-Za-z0-9]/.test(pw);
+    return lengthCheck && upperCheck && lowerCheck && specialCheck;
+  };
 
+  // 비밀번호 함수
+  const handlePasswordChange = (e) => {
+    const newPassword = e.target.value;
+    setPassword(newPassword);
+    setIsPasswordValid(validatePassword(newPassword));
+
+    if (confirmPassword !== "") {
+      setPasswordMatch(newPassword === confirmPassword);
+    } else {
+      setPasswordMatch(null);
+    }
+  };
+
+  // 비밀번호 확인 함수
+  const handleConfirmPasswordChange = (e) => {
+    setConfirmPassword(e.target.value);
+    setPasswordMatch(password === e.target.value && e.target.value !== "");
+  };
+
+  // 이름 함수
+  const handleNameChange = (e) => setName(e.target.value);
+
+  // 학번 함수
+  const handleStudentIdChange = (e) => {
+    const onlyNumbers = e.target.value.replace(/\D/g, "");
+    setStudentId(onlyNumbers);
+  };
+  
+  // 학과 함수
+  const handleDepartmentChange = (value) => {
+    setDepartment(value);
+    if (selectRef.current) {
+      selectRef.current.blur();
+    }
+  };
 
   return (
     <div className="join_layout">
@@ -358,7 +359,7 @@ const Join = () => {
                 }`}>
                   {emailVerificationMessage}
                   {timer > 0 && emailVerificationStatus === "sent" && (
-                    <span> ({formatTime(timer)})</span>
+                    <span> (재전송까지 {formatTime(timer)})</span>
                   )}
                 </p>
               </div>
@@ -378,7 +379,7 @@ const Join = () => {
                         className="join_input_button"
                         onClick={handleVerifyCode}
                         disabled={
-                          isLoading || !["sent", "resend"].includes(emailVerificationStatus)
+                          isCodeVerifying || !["sent", "resend"].includes(emailVerificationStatus)
                         }
                         style={{ cursor: ["sent", "resend"].includes(emailVerificationStatus) ? "pointer" : "not-allowed" }}
                     >
@@ -463,7 +464,7 @@ const Join = () => {
                 <p className="join_input_message hidden">&nbsp;</p>
               </div>
 
-              <Button type="default" htmlType="submit" className="join_button" disabled={isLoading}>
+              <Button type="default" htmlType="submit" className="join_button" disabled={isJoinProcessing}>
                 회원가입
               </Button>
             </>

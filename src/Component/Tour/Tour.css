@@ -1,0 +1,54 @@
+.tour {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2000;
+}
+
+.tour-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+}
+
+.tour-highlight {
+  position: absolute;
+  border: 3px solid #00c4ff;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0,196,255,0.7);
+  background: transparent;
+  pointer-events: none;
+}
+
+.tour-popup {
+  position: absolute;
+  background: #1b1b1b;
+  color: white;
+  padding: 16px;
+  border-radius: 12px;
+  min-width: 260px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+  transform: translateX(-50%);
+}
+
+.tour-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+
+.tour-footer button {
+  background: #00c4ff;
+  border: none;
+  color: white;
+  padding: 6px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.tour-footer button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}

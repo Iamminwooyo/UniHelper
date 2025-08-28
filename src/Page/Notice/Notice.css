@@ -1129,7 +1129,6 @@
         font-size: min(15px, 1.5vw);
     }
 }
-
 @media (min-width: 1px) and (max-width: 768px) {
     .notice_layout {
         flex: 1;

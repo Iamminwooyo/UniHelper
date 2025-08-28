@@ -3,76 +3,76 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
 import { useSetRecoilState } from "recoil";
-import axios from "axios";
 import { userBriefState } from "../../Recoil/Atom";
 import PasswordModal from "../../Component/Modal/PasswordModal";
+import { login, fetchUserBrief } from "../../API/AccountAPI";
 import { Input, Button, message } from "antd";
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const navigate = useNavigate();
+
+  const [isLoginProcessing, setIsLoginProcessing] = useState(false);
+
   const setUserBrief = useSetRecoilState(userBriefState);
 
+  const navigate = useNavigate();
 
   const isMobile = useMediaQuery({ maxWidth: 768 })
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
-
-  // 로그인 API
+  // 로그인 함수
   const handleLogin = async (e) => {
     e.preventDefault();
+    if (isLoginProcessing) return;
 
     if (!email) {
-      message.error("이메일을 입력해주세요.");
-      return;
+      return message.error("이메일을 입력해주세요.");
     }
     if (!password) {
-      message.error("비밀번호를 입력해주세요.");
-      return;
+      return message.error("비밀번호를 입력해주세요.");
     }
 
+    setIsLoginProcessing(true);
+
     try {
-      const res = await axios.post("/auth/login", {
-        email,
-        password,
-      });
+      const response = await login(email, password);
 
-      if (res.data.success || res.status === 200) {
-        sessionStorage.setItem("accessToken", res.data.accessToken);
-        sessionStorage.setItem("refreshToken", res.data.refreshToken);
+      sessionStorage.setItem("accessToken", response.accessToken);
+      sessionStorage.setItem("refreshToken", response.refreshToken);
 
-        const accessToken = res.data.accessToken;
+      const briefRes = await fetchUserBrief(response.accessToken);
+      setUserBrief(briefRes);
 
-        const briefRes = await axios.get("/mypage/brief", {
-          headers: { Authorization: `Bearer ${accessToken}` }
-        });
-
-        console.log("📌 /mypage/brief 응답:", briefRes.data);
-        
-        setUserBrief(briefRes.data)
-
-        message.success("로그인 성공!");
-        
-        navigate("/");
-      } else {
-        message.error(res.data.message || "로그인에 실패했습니다.");
-      }
+      message.success("로그인 성공!");
+      navigate("/");
     } catch (error) {
       console.error(error);
-      message.error("로그인 중 오류가 발생했습니다: " + (error.response?.data || error.message));
+      const status = error.response?.status;
+      const serverMsg = error.response?.data?.message;
+
+      if (status === 400) {
+        message.error(serverMsg || "잘못된 요청입니다.");
+      } else if (status === 401) {
+        message.error("이메일 또는 비밀번호가 올바르지 않습니다.");
+      } else if (status === 403) {
+        message.error("접근 권한이 없습니다.");
+      } else if (status === 500) {
+        message.error("서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+      } else {
+        message.error(
+          "로그인 중 알 수 없는 오류가 발생했습니다: " + (serverMsg || error.message)
+        );
+      }
+    } finally {
+      setIsLoginProcessing(false);
     }
   };
 
+  // 회원가입 클릭 함수
   const handleJoinClick = () => navigate("/join");
-  const handlePasswordResetClick = () => setIsModalOpen(true);
+
+  // 비밀번호 변경 모달 닫기 함수
   const handleCloseModal = () => setIsModalOpen(false);
 
   return (
@@ -95,7 +95,7 @@ const Login = () => {
               placeholder="이메일"
               className="login_input"
               value={email}
-              onChange={handleEmailChange}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
 
@@ -105,17 +105,17 @@ const Login = () => {
               placeholder="비밀번호"
               className="login_input"
               value={password}
-              onChange={handlePasswordChange}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
 
-          <Button type="primary" htmlType="submit" className="login_button">
+          <Button type="primary" htmlType="submit" className="login_button" disabled={isLoginProcessing}>
             로그인
           </Button>
         </form>
         <div className="login_sub">
           <div className="login_link" onClick={handleJoinClick}>회원가입</div>
-          <div className="login_link" onClick={handlePasswordResetClick}>비밀번호 변경</div>
+          <div className="login_link" onClick={() => setIsModalOpen(true)}>비밀번호 변경</div>
         </div>
       </section>
 
