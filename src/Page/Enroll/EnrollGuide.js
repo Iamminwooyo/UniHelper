@@ -170,8 +170,8 @@ const EnrollGuide = () => {
                       <span className="enroll_guide_summary_label">4.0 이상 허용학점:</span>
                       <span className="enroll_guide_summary_value">0</span>
                     </div>
-                    <div className="enroll_guide_summary_item">
-                      <span className="enroll_guide_summary_label" ref={refs.refSummaryTotalCredit}>총 신청학점</span>
+                    <div className="enroll_guide_summary_item" ref={refs.refSummaryTotalCredit}>
+                      <span className="enroll_guide_summary_label">총 신청학점</span>
                       <span className="enroll_guide_summary_value" >
                         {enrolledList.reduce((sum, e) => sum + e.credit, 0)}
                       </span>

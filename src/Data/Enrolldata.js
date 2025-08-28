@@ -1,30 +1,3 @@
-// 나의 기록 (기본 / 장바구니)
-export const myRecords = {
-  basic: [
-    { id: 1, date: "2025-08-10", time: 41.3 },
-    { id: 2, date: "2025-08-11", time: 39.5 },
-    { id: 3, date: "2025-08-11", time: 41.3 },
-    { id: 4, date: "2025-08-13", time: 39.5 },
-    { id: 5, date: "2025-08-18", time: 41.3 },
-  ],
-  basket: [
-    { id: 1, date: "2025-08-11", time: 27.2 },
-    { id: 2, date: "2025-08-17", time: 29.8 },
-  ],
-};
-
-// 내 평균 시간
-export const myAverage = {
-  basic: 40.4, // (41.3+39.5)/2
-  basket: 28.5, // (27.2+29.8)/2
-};
-
-// 전체 사용자 평균 시간
-export const userAverage = {
-  basic: 41.3,
-  basket: 27.2,
-};
-
 // 조회 결과용 데이터
 export const courseList = [
   {
@@ -63,15 +36,15 @@ export const courseList = [
     professor: "최교수",
     department: "컴퓨터공학과",
   },
-  {
-    division: "전공선택",
-    code: "CSE210",
-    name: "데이터베이스",
-    grade: 2,
-    credit: 3,
-    professor: "정교수",
-    department: "컴퓨터공학과",
-  },
+  // {
+  //   division: "전공선택",
+  //   code: "CSE210",
+  //   name: "데이터베이스",
+  //   grade: 2,
+  //   credit: 3,
+  //   professor: "정교수",
+  //   department: "컴퓨터공학과",
+  // },
   // {
   //   division: "전공필수",
   //   code: "CSE101",
@@ -130,15 +103,15 @@ export const enrolledList = [
     type: "일반",
     retake: "",
   },
-  {
-    division: "교양",
-    code: "GEN105",
-    name: "글쓰기",
-    grade: 1,
-    credit: 2,
-    type: "재수강(이수)",
-    retake: "GEN105",
-  },
+  // {
+  //   division: "교양",
+  //   code: "GEN105",
+  //   name: "글쓰기",
+  //   grade: 1,
+  //   credit: 2,
+  //   type: "재수강(이수)",
+  //   retake: "GEN105",
+  // },
   // {
   //   division: "전공선택",
   //   code: "CSE210",
@@ -172,189 +145,6 @@ export const getEnrollGuideSteps = (refs) => [
   { title: "전수강신청내역조회", description: "모든 수강신청 내역을 한번에 확인할 수 있습니다.", target: () => refs.refAll.current },
 ];
 
-export const practiceDummyCourses = [
-  {
-    division: "전공필수",
-    code: "CSE101",
-    name: "자료구조",
-    grade: 2,
-    credit: 3,
-    professor: "김교수",
-    department: "컴퓨터공학과",
-  },
-  {
-    division: "전공선택",
-    code: "CSE202",
-    name: "운영체제",
-    grade: 3,
-    credit: 3,
-    professor: "박교수",
-    department: "컴퓨터공학과",
-  },
-  {
-    division: "교양",
-    code: "GEN101",
-    name: "대학 글쓰기",
-    grade: 1,
-    credit: 2,
-    professor: "이교수",
-    department: "교양학부",
-  },
-  {
-    division: "교양",
-    code: "GEN102",
-    name: "영어 회화",
-    grade: 1,
-    credit: 2,
-    professor: "최교수",
-    department: "교양학부",
-  },
-  {
-    division: "전공필수",
-    code: "BUS101",
-    name: "경영학원론",
-    grade: 1,
-    credit: 3,
-    professor: "정교수",
-    department: "경영학과",
-  },
-  {
-    division: "전공선택",
-    code: "ECO201",
-    name: "미시경제학",
-    grade: 2,
-    credit: 3,
-    professor: "오교수",
-    department: "경제학과",
-  },
-  {
-    division: "전공필수",
-    code: "LAW101",
-    name: "헌법",
-    grade: 1,
-    credit: 3,
-    professor: "한교수",
-    department: "법학과",
-  },
-  {
-    division: "전공선택",
-    code: "LAW202",
-    name: "형법",
-    grade: 2,
-    credit: 3,
-    professor: "윤교수",
-    department: "법학과",
-  },
-  {
-    division: "전공필수",
-    code: "MED101",
-    name: "해부학",
-    grade: 1,
-    credit: 3,
-    professor: "강교수",
-    department: "의학과",
-  },
-  {
-    division: "전공선택",
-    code: "MED203",
-    name: "생리학",
-    grade: 2,
-    credit: 3,
-    professor: "장교수",
-    department: "의학과",
-  },
-  {
-    division: "전공필수",
-    code: "ART101",
-    name: "기초드로잉",
-    grade: 1,
-    credit: 2,
-    professor: "유교수",
-    department: "미술학과",
-  },
-  {
-    division: "전공선택",
-    code: "ART205",
-    name: "현대미술사",
-    grade: 2,
-    credit: 3,
-    professor: "임교수",
-    department: "미술학과",
-  },
-  {
-    division: "교양",
-    code: "GEN201",
-    name: "심리학의 이해",
-    grade: 1,
-    credit: 2,
-    professor: "남교수",
-    department: "교양학부",
-  },
-  {
-    division: "교양",
-    code: "GEN202",
-    name: "세계문화사",
-    grade: 1,
-    credit: 2,
-    professor: "노교수",
-    department: "교양학부",
-  },
-  {
-    division: "전공필수",
-    code: "EDU101",
-    name: "교육학개론",
-    grade: 1,
-    credit: 3,
-    professor: "문교수",
-    department: "교육학과",
-  },
-  {
-    division: "전공선택",
-    code: "EDU203",
-    name: "교육심리학",
-    grade: 2,
-    credit: 3,
-    professor: "서교수",
-    department: "교육학과",
-  },
-  {
-    division: "전공필수",
-    code: "PHY101",
-    name: "일반물리학",
-    grade: 1,
-    credit: 3,
-    professor: "차교수",
-    department: "물리학과",
-  },
-  {
-    division: "전공선택",
-    code: "CHE201",
-    name: "유기화학",
-    grade: 2,
-    credit: 3,
-    professor: "배교수",
-    department: "화학과",
-  },
-  {
-    division: "전공필수",
-    code: "NUR101",
-    name: "기초간호학",
-    grade: 1,
-    credit: 3,
-    professor: "조교수",
-    department: "간호학과",
-  },
-  {
-    division: "전공선택",
-    code: "NUR202",
-    name: "아동간호학",
-    grade: 2,
-    credit: 3,
-    professor: "최교수",
-    department: "간호학과",
-  },
-];
-
 export const courseData = [
   // 교양
   {
@@ -365,7 +155,7 @@ export const courseData = [
     credit: 2,
     professor: "테스트",
     department: "테스트학과",
-    deptCode: "3251",   // ✅ 교양(테스트학과)
+    deptCode: "3251",
     type: "일반",
     retake: "N",
     schedule: [{ day: "월", start: 1, end: 2 }],

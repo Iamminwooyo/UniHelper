@@ -26,8 +26,8 @@ const Side = () => {
     {
       match: (p) => p.startsWith("/enroll"),
       items: [
-        { name: "수강신청 가이드", link: "/enroll/guide" },
         { name: "수강신청 연습", link: "/enroll/practice" },
+        { name: "수강신청 가이드", link: "/enroll/guide" },
       ],
     },
     {

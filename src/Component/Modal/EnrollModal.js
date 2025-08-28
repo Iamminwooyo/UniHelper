@@ -1,6 +1,6 @@
 import { Modal, Button } from "antd";
 
-const EnrollModal = ({ open, onCancel, mode, time, onConfirm }) => {
+const EnrollModal = ({ open, onCancel, mode, time, diffVsOthers, onConfirm }) => {
   const clearSession = () => {
     sessionStorage.removeItem("practiceMode");
     sessionStorage.removeItem("missionCourses");
@@ -18,8 +18,25 @@ const EnrollModal = ({ open, onCancel, mode, time, onConfirm }) => {
     onCancel();
   };
 
-    const resultMessage =
-    time > 30 ? `평균보다 약 ${time - 30}초 느립니다!` : "평균입니다!";
+  let resultMessage = "";
+
+  if (diffVsOthers !== null && diffVsOthers !== undefined) {
+    const diff = Number(diffVsOthers);  // 문자열이어도 숫자로 변환 시도
+
+    if (!isNaN(diff)) {
+      if (diff > 0) {
+        resultMessage = `평균보다 약 ${diff.toFixed(2)}초 느립니다!`;
+      } else if (diff < 0) {
+        resultMessage = `평균보다 약 ${Math.abs(diff).toFixed(2)}초 빠릅니다!`;
+      } else {
+        resultMessage = "평균입니다!";
+      }
+    } else {
+      resultMessage = "기록 없음";
+    }
+  } else {
+    resultMessage = "기록 없음";
+  }
 
   return (
     <Modal
