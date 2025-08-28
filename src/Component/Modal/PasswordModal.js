@@ -50,9 +50,10 @@ const PasswordModal = ({ open, onCancel }) => {
     try {
       const response = await requestPasswordResetEmail(state.email);
 
-      const messageText = typeof response.data === "string" ? response.data : response.data?.message || "";
+      const messageText = response;
+      const isSuccess = messageText.includes("인증코드가 전송");
 
-      if (messageText.includes("인증코드가 전송")) {
+      if (isSuccess) {
         setTimeout(() => {
           setState(prev => ({
             ...prev,

@@ -47,7 +47,7 @@ const Join = () => {
 
   const [isPasswordValid, setIsPasswordValid] = useState(true);
 
- const [isEmailSending, setIsEmailSending] = useState(false);
+  const [isEmailSending, setIsEmailSending] = useState(false);
   const [isCodeVerifying, setIsCodeVerifying] = useState(false);
   const [isJoinProcessing, setIsJoinProcessing] = useState(false);
 
@@ -77,7 +77,7 @@ const Join = () => {
     try {
       const response = await requestSignupEmail(email);
 
-      const messageText = typeof response.data === "string" ? response.data : response.data?.message || "";
+      const messageText = response;
       const isSuccess = messageText.includes("인증코드가 전송");
 
       if (isSuccess) {
