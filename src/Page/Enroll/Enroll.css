@@ -298,7 +298,7 @@
         /* 전체 100% - 앞에 15%(No+Time) 나머지 8칸 균등 */
     }
 
-    input[type="checkbox"] {
+    .enroll_guide_apply input[type="checkbox"] {
         appearance: none;
         -webkit-appearance: none;
         -moz-appearance: none;
@@ -312,11 +312,11 @@
         position: relative;
     }
 
-    input[type="checkbox"]:checked {
+    .enroll_guide_apply input[type="checkbox"]:checked {
         background-color: #78D900; 
     }
 
-    input[type="checkbox"]:checked::after {
+    .enroll_guide_apply input[type="checkbox"]:checked::after {
         content: "✔";
         position: absolute;
         top: 0.1vw;
@@ -985,6 +985,23 @@
         height: 1.8vw;
     }
 
+     .enroll_apply input[type="checkbox"] {
+        width: 1vw;
+        height: 1vw;
+        cursor: pointer;
+    }
+
+    .enroll_apply_cancle {
+        display: block;  
+        width: 1.5vw;
+        height: 1.5vw;
+        margin: 0 auto;  
+        font-size: 1vw;
+        background-color: #d6d6d6;
+        border-radius: 4px;
+        border: 1px solid #dfdfdf;
+    }
+
     .enroll_list tbody tr:hover,
     .enroll_apply tbody tr:hover {
     background-color: #FFF173; /* 옅은 노란색 */
@@ -1641,7 +1658,7 @@
         /* 전체 100% - 앞에 15%(No+Time) 나머지 8칸 균등 */
     }
 
-    input[type="checkbox"] {
+    .enroll_guide_apply input[type="checkbox"] {
         appearance: none;
         -webkit-appearance: none;
         -moz-appearance: none;
@@ -1655,11 +1672,11 @@
         position: relative;
     }
 
-    input[type="checkbox"]:checked {
+    .enroll_guide_apply input[type="checkbox"]:checked {
         background-color: #78D900; 
     }
 
-    input[type="checkbox"]:checked::after {
+    .enroll_guide_apply input[type="checkbox"]:checked::after {
         content: "✔";
         position: absolute;
         top: 0.1vw;
@@ -1807,8 +1824,6 @@
 
         width: 100%;
 
-        color: #000000;
-
         border-radius: 20px;
     }
 
@@ -1819,10 +1834,8 @@
         align-items: center;
 
         width: 100%;
-        min-height: 650px;
 
         background-color: #ffffff;
-        border-radius: 20px;
     }
 
     .enroll_head {
@@ -1830,16 +1843,16 @@
         justify-content: space-between;
         align-items: center;
 
-        width: 90%;
+        width: 95%;
         padding: 0 0 10px 0; 
     }
 
     .enroll_head_title {
         display: flex;
 
-        margin: 10px 0 0 0;
+        margin: 1.5vw 0 0 0;
 
-        font-size: 2vw;
+        font-size: 2.5vw;
         font-weight: 400;
     }
 
@@ -1848,9 +1861,9 @@
         justify-content: space-between;
         align-items: center;
 
-        width: 90%;
-        padding: 20px;
-        margin: 10px 0;
+        width: 95%;
+        padding: 2vw;
+        margin: 1.5vw 0;
 
         border: 3px solid rgba(42, 42, 42, 0.5);
         box-sizing: border-box;
@@ -1858,6 +1871,7 @@
 
     .enroll_menu_wrap {
         display: flex;
+        width: 45%;
         gap: 1vw;
     }
 
@@ -1873,31 +1887,31 @@
     .enroll_condition_name_wrap,
     .enroll_condition_grade,
     .enroll_condition_subject {
-    height: 32px;   /* ✅ 통일된 높이 */
-    display: flex;
-    align-items: center;  /* 안쪽 요소도 수직 가운데 */
+        height: 3vw;  
+        display: flex;
+        align-items: center; 
     }
 
     .enroll_condition_code {
         flex: 0.5;
-        font-size: 0.6vw;
+        font-size: 1.2vw;
         text-align: center; 
         background-color: #dddddd;
         border: none;
         width: 80%;
-        padding: 0 10px;
-          box-sizing: border-box; /* 패딩 포함해서 크기 계산 */
+        padding: 0 1vw;
+        box-sizing: border-box;
     }
     .enroll_condition_name_wrap {
         position: relative;
-        flex: 2;    
+        flex: 1.5;    
     }
 
     .enroll_condition_name {
         width: 100%;
         height: 100%;
-        padding: 0 10px;
-        font-size: 0.6vw;
+        padding: 0 1vw;
+        font-size: 1.2vw;
         box-sizing: border-box;
     }
 
@@ -1909,40 +1923,40 @@
         background: transparent;
         border: none;
         cursor: pointer;
-        font-size: 0.8vw;
         color: #555;
         padding: 0;
     }
 
     /* ❌ 버튼 오른쪽 */
     .clear_btn {
-        right: 2em;
+        right: 2.5vw;
+        font-size: 1.5vw;
     }
 
     /* 🔍 버튼 맨 오른쪽 */
     .search_btn {
-        right: 0.4em;
+        right: 1vw;
+        font-size: 1.2vw;
     }
     .enroll_condition_grade {
         flex: 0.7;
         text-align: center; 
-        font-size: 0.6vw;
-          box-sizing: border-box; /* 패딩 포함해서 크기 계산 */
+        font-size: 1.2vw;
     }
 
     .enroll_condition_subject {
         flex: 1;
-        font-size: 0.6vw;
-        padding: 0 10px;
+        font-size: 1.2vw;
+        padding: 0 1vw;
         box-sizing: border-box;
-        width: 10vw;
+        width: 20vw;
     }
 
     .enroll_select {
         padding: 0.5vw 1vw;   
 
         color: #000000;              
-        font-size: 0.6vw;
+        font-size: 1.2vw;
 
         border: 1px solid #3a3a3a;
         background-color: #ffffff;    
@@ -1963,7 +1977,7 @@
         padding: 0.6vw 1vw;   
 
         color: #fff;
-        font-size: 0.7vw;
+        font-size: 1.2vw;
 
         background-color: #707070;
         border: none;
@@ -1981,44 +1995,44 @@
         flex-grow: 1;
         display: flex;
         justify-content: space-between;
-        gap: 20px;
+        gap: 1vw;
 
-        width: 90%;
+        width: 95%;
     }
 
     .enroll_left {
         flex: 1;
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        gap: 1vw;
     }
 
     .enroll_title {
         display: flex;
         justify-content: flex-start;
         align-items: center;
-        margin-bottom: 10px;
+        margin-bottom: 1vw;
         gap: 0.5vw;
     }
 
     .enroll_circle {
         color: #4F75B0;
-        font-size: 0.8vw;
+        font-size: 1.2vw;
     }
 
     .enroll_count {
-        font-size: 1vw;
+        font-size: 1.3vw;
         font-weight: bold;
-        margin-left: 0.3vw;
+        margin-left: 0.5vw;
     }
 
     .enroll_plus {
-        padding: 0.2vw 0.3vw;
+        padding: 0.4vw 0.5vw;
 
-        font-size: 0.6vw;
+        font-size: 1vw;
 
         background-color: #e9e9e9;
-        border-radius: 6px;
+        border-radius: 4px;
         border: none;
 
         cursor: pointer;
@@ -2032,15 +2046,15 @@
     .enroll_help {
         display: flex;
         justify-content: flex-end;
-        gap: 12px;
-        margin-top: 10px;
+        gap: 0.8vw;
+        margin-top: 1vw;
     }
 
     .enroll_help button {
-        padding: 0.4vw 0.6vw;
+        padding: 0.5vw 0.7vw;
 
         color: #ffffff;
-        font-size: 0.6vw;
+        font-size: 1vw;
         font-weight: bold;
 
         background-color: #888888;
@@ -2056,7 +2070,7 @@
     }
 
     .enroll_scroll {
-        height: 18vw;
+        height: 30vw;
         overflow-y: auto;
         padding: 0; 
         border-top: #266FCD 2px solid;
@@ -2071,7 +2085,7 @@
     }
 
     .enroll_time_scroll {
-        height: 47vw;
+        height: 80vw;
         overflow-y: auto;
         padding: 0; 
         border-top: #266FCD 2px solid;
@@ -2086,8 +2100,8 @@
 
     .enroll_time {
         flex: 1;
-        height: 47vw;
-        padding: 15px;
+        height: 82vw;
+        padding: 1vw;
         color: #000000;
     }
 
@@ -2095,8 +2109,8 @@
     .enroll_apply { 
         display: flex;
         flex-direction: column; 
-        height: 23vw;
-        padding: 15px;
+        height: 40vw;
+        padding: 1vw;
         color: #000000;
     }
 
@@ -2104,7 +2118,7 @@
     .enroll_list h3,
     .enroll_time  h3 {
         margin: 0;
-        font-size: 1.3vw;
+        font-size: 1.8vw;
         font-weight: 400;
         color: #000000;
     }
@@ -2114,66 +2128,84 @@
         background-color: #ffffff;
         width: 100%;
         border-collapse: collapse;
-        font-size: 0.6vw;
+        font-size: 1vw;
         table-layout: fixed; /* 그대로 auto */
     }
 
     .enroll_time table {
         width: 100%;
         border-collapse: collapse;
-        font-size: 0.6vw;
+        font-size: 1vw;
         table-layout: fixed; /* 시간표만 fixed */
     }
 
     .enroll_apply th, .enroll_apply td,
     .enroll_list th, .enroll_list td {
         border: 1px solid #3a3a3a;
-        padding: 4px;
+        padding: 0.5vw;
         text-align: center;
         color: #000000;
         height: 1.8vw;
     }
 
+    .enroll_apply input[type="checkbox"] {
+        width: 1vw;
+        height: 1vw;
+        cursor: pointer;
+    }
+
+    .enroll_apply_cancle {
+        display: block;  
+        width: 1.3vw;
+        height: 1.3vw;
+        margin: 0 auto; 
+        font-size: 1.3vw;
+        line-height: 1.3vw;
+        background-color: #d6d6d6;
+        border-radius: 4px;
+        border: 1px solid #dfdfdf;
+    }
+
     .enroll_list tbody tr:hover,
     .enroll_apply tbody tr:hover {
-    background-color: #FFF173; /* 옅은 노란색 */
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
+        background-color: #FFF173; /* 옅은 노란색 */
+        cursor: pointer;
+        transition: background-color 0.2s ease-in-out;
     }
 
     .enroll_list th:nth-child(1),
-    .enroll_list td:nth-child(1) { width: 8%; }   /* 이수구분 */
+    .enroll_list td:nth-child(1) { width: 14%; }   /* 이수구분 */
     .enroll_list th:nth-child(2),
-    .enroll_list td:nth-child(2) { width: 12%; }  /* 학수번호 */
+    .enroll_list td:nth-child(2) { width: 11%; }  /* 학수번호 */
     .enroll_list th:nth-child(3),
     .enroll_list td:nth-child(3) { width: 20%; }  /* 교과목명 */
     .enroll_list th:nth-child(4),
-    .enroll_list td:nth-child(4) { width: 8%; }   /* 학년 */
+    .enroll_list td:nth-child(4) { width: 6%; }   /* 학년 */
     .enroll_list th:nth-child(5),
-    .enroll_list td:nth-child(5) { width: 8%; }   /* 학점 */
+    .enroll_list td:nth-child(5) { width: 6%; }   /* 학점 */
     .enroll_list th:nth-child(6),
     .enroll_list td:nth-child(6) { width: 12%; }  /* 담당교수 */
     .enroll_list th:nth-child(7),
     .enroll_list td:nth-child(7) { width: 20%; }  /* 학과 */
     .enroll_list th:nth-child(8),
-    .enroll_list td:nth-child(8) { width: 12%; }  /* 선택 */
+    .enroll_list td:nth-child(8) { width: 11%; }  /* 선택 */
 
     .enroll_apply th:nth-child(1),
-    .enroll_apply td:nth-child(1) { width: 8%; }   /* 이수구분 */
+    .enroll_apply td:nth-child(1) { width: 15%; }   /* 이수구분 */
     .enroll_apply th:nth-child(2),
     .enroll_apply td:nth-child(2) { width: 12%; }  /* 학수번호 */
     .enroll_apply th:nth-child(3),
-    .enroll_apply td:nth-child(3) { width: 20%; }  /* 교과목명 */
+    .enroll_apply td:nth-child(3) { width: 22%; }  /* 교과목명 */
     .enroll_apply th:nth-child(4),
-    .enroll_apply td:nth-child(4) { width: 8%; }   /* 학년 */
+    .enroll_apply td:nth-child(4) { width: 6%; }   /* 학년 */
     .enroll_apply th:nth-child(5),
-    .enroll_apply td:nth-child(5) { width: 8%; }   /* 학점 */
+    .enroll_apply td:nth-child(5) { width: 6%; }   /* 학점 */
     .enroll_apply th:nth-child(6),
     .enroll_apply td:nth-child(6) { width: 12%; }  /* 수강구분 */
     .enroll_apply th:nth-child(7),
-    .enroll_apply td:nth-child(7) { width: 12%; }  /* 재이수과목 */
+    .enroll_apply td:nth-child(7) { width: 17%; }  /* 재이수과목 */
     .enroll_apply th:nth-child(8),
-    .enroll_apply td:nth-child(8) { width: 12%; }  /* 취소 */
+    .enroll_apply td:nth-child(8) { width: 10%; }  /* 취소 */
 
 
     .enroll_time th {
@@ -2219,20 +2251,20 @@
 
         background-color: #ececec;
 
-        padding: 5px 0;
+        padding: 1vw 0;
     }
 
     .enroll_summary_left {
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 0.8vw;
 
-        font-size: 0.7vw;
+        font-size: 1vw;
     }
 
     .enroll_summary_row {
         display: flex;
-        gap: 2vw;
+        gap: 1vw;
         align-items: center;
     }
 
@@ -2241,7 +2273,7 @@
         align-items: center;
         justify-content: space-between;
 
-        min-width: 9vw;
+        min-width: 11vw;
     }
 
     .senroll_summary_label {
@@ -2251,7 +2283,7 @@
 
     .enroll_summary_value {
         display: inline-block;
-        width: 20px;      
+        width: 1vw;      
         text-align: center;
         padding: 2px 6px;
         font-weight: bold;
@@ -2267,12 +2299,12 @@
     .enroll_save {
         display: flex;
         justify-content: center;
-        gap: 0.5em;
-        padding: 1.3vw 1.5vw;
+        gap: 0.7vw;
+        padding: 1.9vw 1.5vw;
         border-radius: 6px;
         background-color: #fc9a1a;
         color: #fff;
-        font-size: 0.7vw;
+        font-size: 1vw;
         font-weight: bold;
         border: none;
         cursor: pointer;
@@ -2817,7 +2849,7 @@
         /* 전체 100% - 앞에 15%(No+Time) 나머지 8칸 균등 */
     }
 
-    input[type="checkbox"] {
+    .enroll_guide_apply input[type="checkbox"] {
         appearance: none;
         -webkit-appearance: none;
         -moz-appearance: none;
@@ -2831,11 +2863,11 @@
         position: relative;
     }
 
-    input[type="checkbox"]:checked {
+    .enroll_guide_apply input[type="checkbox"]:checked {
         background-color: #78D900; 
     }
 
-    input[type="checkbox"]:checked::after {
+    .enroll_guide_apply input[type="checkbox"]:checked::after {
         content: "✔";
         position: absolute;
         top: 0.1vw;
@@ -2972,6 +3004,545 @@
     .ant-tour .ant-btn:disabled {
         background-color: #444 !important;
         color: #888 !important;
+    }
+
+    .enroll_background {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        width: 100%;
+
+        color: #000000;
+
+        border-radius: 20px;
+    }
+
+    .enroll_main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        width: 100%;
+        min-height: 650px;
+
+        background-color: #ffffff;
+        border-radius: 20px;
+    }
+
+    .enroll_head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        width: 95%;
+        padding: 0 0 1.5vw 0; 
+    }
+
+    .enroll_head_title {
+        display: flex;
+
+        margin: 1vw 0 0 0;
+
+        font-size: 3vw;
+        font-weight: 400;
+    }
+
+    .enroll_menu {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        width: 95%;
+        padding: 2vw;
+        margin: 1.5vw 0;
+
+        border: 3px solid rgba(42, 42, 42, 0.5);
+        box-sizing: border-box;
+    }
+
+    .enroll_menu_wrap {
+        display: flex;
+        gap: 1vw;
+    }
+
+    .enroll_condition {
+        display: flex;
+        gap: 1vw;
+        width: 60%;
+        align-items: center;
+    }
+
+    
+    .enroll_condition_code,
+    .enroll_condition_name_wrap,
+    .enroll_condition_grade,
+    .enroll_condition_subject {
+        height: 3vw;   
+        display: flex;
+        align-items: center; 
+    }
+
+    .enroll_condition_code {
+        flex: 0.5;
+        font-size: 1.5vw;
+        text-align: center; 
+        background-color: #dddddd;
+        border: none;
+        width: 80%;
+        padding: 0 1vw;
+        box-sizing: border-box;
+    }
+    .enroll_condition_name_wrap {
+        position: relative;
+        flex: 1.5;    
+    }
+
+    .enroll_condition_name {
+        width: 100%;
+        height: 100%;
+        padding: 0 1vw;
+        font-size: 1.5vw;
+        box-sizing: border-box;
+    }
+
+    /* 아이콘 버튼 공통 */
+    .icon_btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        color: #555;
+        padding: 0;
+    }
+
+    /* ❌ 버튼 오른쪽 */
+    .clear_btn {
+        right: 4vw;
+        font-size: 2vw;
+    }
+
+    /* 🔍 버튼 맨 오른쪽 */
+    .search_btn {
+        right: 2vw;
+        font-size: 1.5vw;
+    }
+    .enroll_condition_grade {
+        flex: 0.7;
+        text-align: center; 
+        font-size: 1.5vw;
+        box-sizing: border-box; /* 패딩 포함해서 크기 계산 */
+    }
+
+    .enroll_condition_subject {
+        flex: 1;
+        font-size: 1.5vw;
+        padding: 0 1vw;
+        box-sizing: border-box;
+        width: 30vw;
+    }
+
+    .enroll_select {
+        padding: 0.5vw 1vw;   
+
+        color: #000000;              
+        font-size: 1.5vw;
+
+        border: 1px solid #3a3a3a;
+        background-color: #ffffff;    
+    
+        cursor: pointer;
+        outline: none;
+    }
+
+    .enroll_select option {
+        color: blue;
+    }
+
+    .enroll_search {
+        display: flex;
+        align-items: center;
+        gap: 1vw;
+
+        padding: 0.6vw 1vw;   
+
+        color: #fff;
+        font-size: 1.5vw;
+
+        background-color: #707070;
+        border: none;
+        border-radius: 5px;
+
+        cursor: pointer;
+    }
+
+    .enroll_search:hover {
+        background-color: #666666;
+        color: #fff;
+    }
+
+    .enroll_container {
+        flex-grow: 1;
+        display: flex;
+        justify-content: space-between;
+        gap: 1vw;
+
+        width: 95%;
+    }
+
+    .enroll_left {
+        flex: 1vw;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5vw;
+    }
+
+    .enroll_title {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        margin-bottom: 1vw;
+        gap: 0.5vw;
+    }
+
+    .enroll_circle {
+        color: #4F75B0;
+        font-size: 1.8vw;
+    }
+
+    .enroll_count {
+        font-size: 1.5vw;
+        font-weight: bold;
+        margin-left: 1vw;
+    }
+
+    .enroll_plus {
+        padding: 0.4vw 0.5vw;
+
+        font-size: 1.2vw;
+
+        background-color: #e9e9e9;
+        border-radius: 4px;
+        border: none;
+
+        cursor: pointer;
+    }
+
+    .enroll_plus:hover {
+        background-color: #a5a4a4;
+        color: #fff;
+    }
+
+    .enroll_help {
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.7vw;
+        margin-top: 1vw;
+    }
+
+    .enroll_help button {
+        padding: 0.7vw 0.7vw;
+
+        color: #ffffff;
+        font-size: 1.1vw;
+        font-weight: bold;
+
+        background-color: #888888;
+        border: none;
+        border-radius: 4px;
+
+        cursor: pointer;
+    }
+
+    .enroll_help button:hover {
+        background-color: #727171;
+        color: #fff;
+    }
+
+    .enroll_scroll {
+        height: 40vw;
+        overflow-y: auto;
+        padding: 0; 
+        border-top: #266FCD 2px solid;
+        background-color: #F0F1F3;
+    }
+
+    .enroll_scroll::-webkit-scrollbar {
+        width: 6px;   /* 세로 스크롤바 두께 */
+    }
+
+    .enroll_scroll::-webkit-scrollbar-thumb {
+        background-color: rgba(150, 150, 150, 0.6); 
+        border-radius: 3px; /* 살짝 둥글게 */
+    }
+
+    .enroll_scroll::-webkit-scrollbar-track {
+        background-color: transparent; /* 기본 배경은 그대로 */
+    }
+
+    .enroll_scroll thead th {
+        position: sticky;
+        top: 0;
+        background-color: #E8E8E8;
+        z-index: 2;
+    }
+
+    .enroll_time_scroll {
+        height: 100vw;
+        overflow-y: auto;
+        padding: 0; 
+        border-top: #266FCD 2px solid;
+    }
+
+    .enroll_time_scroll::-webkit-scrollbar {
+        width: 6px;   /* 세로 스크롤바 두께 */
+    }
+
+    .enroll_time_scroll::-webkit-scrollbar-thumb {
+        background-color: rgba(150, 150, 150, 0.6); 
+        border-radius: 3px; /* 살짝 둥글게 */
+    }
+
+    .enroll_time_scroll::-webkit-scrollbar-track {
+        background-color: transparent; /* 기본 배경은 그대로 */
+    }
+
+    .enroll_time_scroll thead th {
+        position: sticky;
+        top: 0;
+        background-color: #E8E8E8;
+        z-index: 2;
+    }
+
+    .enroll_time {
+        flex: 1;
+        height: 101vw;
+        padding: 1vw;
+        color: #000000;
+    }
+
+    .enroll_list,
+    .enroll_apply { 
+        display: flex;
+        flex-direction: column; 
+        height: 50vw;
+        padding: 1vw;
+        color: #000000;
+    }
+
+    .enroll_apply h3,
+    .enroll_list h3,
+    .enroll_time  h3 {
+        margin: 0;
+        font-size: 2vw;
+        font-weight: 400;
+        color: #000000;
+    }
+
+    .enroll_apply table,
+    .enroll_list table {
+        background-color: #ffffff;
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 1.2vw;
+        table-layout: fixed; /* 그대로 auto */
+    }
+
+    .enroll_time table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 1vw;
+        table-layout: fixed; /* 시간표만 fixed */
+    }
+
+    .enroll_apply th, .enroll_apply td,
+    .enroll_list th, .enroll_list td {
+        border: 1px solid #3a3a3a;
+        padding: 0.5vw;
+        text-align: center;
+        color: #000000;
+        height: 1.8vw;
+    }
+
+    .enroll_apply input[type="checkbox"] {
+        width: 1.5vw;
+        height: 1.5vw;
+        cursor: pointer;
+    }
+
+    .enroll_apply_cancle {
+        display: block;  
+        width: 2vw;
+        height: 2vw;
+        margin: 0 auto; 
+        font-size: 1.8vw;
+        line-height: 1.5vw;
+        background-color: #d6d6d6;
+        border-radius: 4px;
+        border: 1px solid #dfdfdf;
+    }
+
+    .enroll_list tbody tr:hover,
+    .enroll_apply tbody tr:hover {
+    background-color: #FFF173; /* 옅은 노란색 */
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    }
+
+    .enroll_list th:nth-child(1),
+    .enroll_list td:nth-child(1) { width: 14%; }   /* 이수구분 */
+    .enroll_list th:nth-child(2),
+    .enroll_list td:nth-child(2) { width: 15%; }  /* 학수번호 */
+    .enroll_list th:nth-child(3),
+    .enroll_list td:nth-child(3) { width: 15%; }  /* 교과목명 */
+    .enroll_list th:nth-child(4),
+    .enroll_list td:nth-child(4) { width: 7%; }   /* 학년 */
+    .enroll_list th:nth-child(5),
+    .enroll_list td:nth-child(5) { width: 7%; }   /* 학점 */
+    .enroll_list th:nth-child(6),
+    .enroll_list td:nth-child(6) { width: 14%; }  /* 담당교수 */
+    .enroll_list th:nth-child(7),
+    .enroll_list td:nth-child(7) { width: 15%; }  /* 학과 */
+    .enroll_list th:nth-child(8),
+    .enroll_list td:nth-child(8) { width: 12%; }  /* 선택 */
+
+    .enroll_apply th:nth-child(1),
+    .enroll_apply td:nth-child(1) { width: 14%; }   /* 이수구분 */
+    .enroll_apply th:nth-child(2),
+    .enroll_apply td:nth-child(2) { width: 15%; }  /* 학수번호 */
+    .enroll_apply th:nth-child(3),
+    .enroll_apply td:nth-child(3) { width: 15%; }  /* 교과목명 */
+    .enroll_apply th:nth-child(4),
+    .enroll_apply td:nth-child(4) { width: 7%; }   /* 학년 */
+    .enroll_apply th:nth-child(5),
+    .enroll_apply td:nth-child(5) { width: 7%; }   /* 학점 */
+    .enroll_apply th:nth-child(6),
+    .enroll_apply td:nth-child(6) { width: 15%; }  /* 수강구분 */
+    .enroll_apply th:nth-child(7),
+    .enroll_apply td:nth-child(7) { width: 17%; }  /* 재이수과목 */
+    .enroll_apply th:nth-child(8),
+    .enroll_apply td:nth-child(8) { width: 12%; }  /* 취소 */
+
+
+    .enroll_time th {
+        text-align: center;
+        border: 1px solid #3a3a3a;
+        padding: 4px;
+        color: #000000;
+        height: 1.8vw;
+    }
+    .enroll_time td {
+        text-align: center;
+        border: 1px solid #3a3a3a;
+        padding: 4px;
+        color: #000000;
+        height: 1vw;
+    }
+    .enroll_time tbody tr:nth-child(n+19) td {
+        background-color: #ececec;
+    }
+
+    /* 열 너비 비율 */
+    .enroll_time th:nth-child(1),
+    .enroll_time td:nth-child(1) {
+        width: 5%;   /* No. */
+    }
+
+    .enroll_time th:nth-child(2),
+    .enroll_time td:nth-child(2) {
+        width: 10%;  /* Time */
+    }
+
+    /* 요일 + 야외 칸들 → 남은 거 균등 분배 */
+    .enroll_time th:nth-child(n+3),
+    .enroll_time td:nth-child(n+3) {
+        width: calc((100% - 15%) / 8); 
+        /* 전체 100% - 앞에 15%(No+Time) 나머지 8칸 균등 */
+    }
+
+    .enroll_summary {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+
+        background-color: #ececec;
+
+        padding: 1vw 0;
+    }
+
+    .enroll_summary_left {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8vw;
+
+        font-size: 1.2vw;
+    }
+
+    .enroll_summary_row {
+        display: flex;
+        gap: 1vw;
+        align-items: center;
+    }
+
+     .enroll_summary_item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        min-width: 12vw;
+    }
+
+    .senroll_summary_label {
+        text-align: center; 
+        color: #ddd;
+    }
+
+    .enroll_summary_value {
+        display: inline-block;
+        width: 1vw;      
+        text-align: center;
+        padding: 2px 4px;
+        font-weight: bold;
+        border: 1px solid rgba(42, 42, 42, 0.2);
+        border-radius: 4px;
+    }
+
+    .enroll_summary_right {
+        display: flex;
+        align-items: center;
+    }
+
+    .enroll_save {
+        display: flex;
+        justify-content: center;
+        gap: 0.7vw;
+        padding: 2vw 1.5vw;
+        border-radius: 6px;
+        background-color: #fc9a1a;
+        color: #fff;
+        font-size: 1.2vw;
+        font-weight: bold;
+        border: none;
+        cursor: pointer;
+    }
+
+    .enroll_save:hover {
+        background-color: #f78c00;
+    }
+
+    .highlight_top {
+    background-color: #E7EFFF; /* 하늘색 (LightSkyBlue) */
+    transition: background-color 0.2s ease-in-out;
+    }
+
+    .highlight_bottom {
+    background-color: #FFE0E0; /* 자홍색 (HotPink) */
+    transition: background-color 0.2s ease-in-out;
     }
 
 }

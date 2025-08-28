@@ -72,7 +72,7 @@ const Enroll = () => {
 
     const timer = setInterval(async () => {
       const diff = Math.floor((Date.now() - startTime) / 1000);
-      if (diff > 3000) {
+      if (diff > 30) {
         clearInterval(timer);
 
         try {
@@ -428,12 +428,12 @@ const Enroll = () => {
                                 onChange={() => toggleCancel(e.code)}
                             />
                             ) : (
-                            <button
-                                style={{cursor:'pointer'}}
+                            <div
+                                className="enroll_apply_cancle"
                                 onClick={() => handleDeleteImmediate(e)}
                             >
                                 x
-                            </button>
+                            </div>
                             )}
                         </td>
                       </tr>
