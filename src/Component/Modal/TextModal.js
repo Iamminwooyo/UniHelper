@@ -90,6 +90,27 @@ const modalConfig = {
       onCancel();
     },
   },
+  alarmread: {
+    title: "알림 읽음",
+    content: () => "해당 알림을 읽음 처리하시겠습니까?",
+    onOk: (name, onCancel) => {
+      onCancel();
+    },
+  },
+  alarmdelete: {
+    title: "알림 삭제",
+    content: () => "해당 알림을 삭제하시겠습니까?",
+    onOk: (name, onCancel) => {
+      onCancel();
+    },
+  },
+  inquirydelete: {
+    title: "문의 삭제",
+    content: (title) => `"${title}" 문의를 삭제하시겠습니까?`,
+    onOk: (title, onCancel) => {
+      onCancel();
+    },
+  },
 };
 
 const TextModal = ({ open, onCancel, mode, name, title, onConfirm }) => {
@@ -117,7 +138,7 @@ const TextModal = ({ open, onCancel, mode, name, title, onConfirm }) => {
   }, [open, mode]);
 
   const getContentParam = () => {
-    if (mode.startsWith("tip")) return title;
+    if (mode.startsWith("tip") || mode === "inquirydelete") return title;
     return name;
   };
 
@@ -144,24 +165,24 @@ const TextModal = ({ open, onCancel, mode, name, title, onConfirm }) => {
       footer={null}
       centered
       closable={false}
-      wrapClassName="custommodal_wrap"
+      wrapClassName="textmodal_wrap"
     >
       <section className="custommodal_layout">
         <h2 className="custommodal_title">{config.title || ""}</h2>
         <div className="custommodal_text">{config.content ? config.content(getContentParam()) : ""}</div>
         {mode === "practicebasic" && (
           <>
-            <p style={{ color: "white", marginTop: "10px" }}>
+            <p className="custommodal_notice">
               아래 5개 과목을 찾아서 신청하세요
             </p>
-            <div style={{ color: "white", lineHeight: "2" }}>
+            <div className="custommodal_course_list">
               {missionCourses.map((c) => (
-                <div key={c.code}>
-                  {c.name} - {c.code} ({c.department}) 
+                <div key={c.code} className="custommodal_course_item">
+                  {c.name} - {c.code} ({c.department})
                 </div>
               ))}
             </div>
-            <p style={{ color: "red", fontWeight: "bold", marginTop: "10px" }}>
+            <p className="custommodal_warning">
               모든 과목을 저장해야 연습이 종료됩니다.
             </p>
           </>
@@ -169,22 +190,21 @@ const TextModal = ({ open, onCancel, mode, name, title, onConfirm }) => {
 
         {mode === "practicebasket" && (
           <>
-            <p style={{ color: "white", marginTop: "10px" }}>
+            <p className="custommodal_notice">
               장바구니에 있는 과목들을 신청하세요
             </p>
-            <p style={{ color: "red", fontWeight: "bold", marginTop: "10px" }}>
+            <p className="custommodal_warning">
               모든 과목을 저장해야 연습이 종료됩니다.
             </p>
           </>
         )}
       </section>
 
-      <section style={{ marginTop: 10, marginBottom: 10, textAlign: "right" }}>
+      <section className="custommodal_footer">
         <Button
           type="primary"
           className="custommodal_button_ok"
           onClick={handleSubmit}
-          style={{ marginRight: 20 }}
         >
           확인
         </Button>

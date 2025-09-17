@@ -1,19 +1,23 @@
 import "./Layout.css";
 import { Link, useNavigate } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { MenuState } from "../../Recoil/Atom";
+import { AlarmCountState } from "../../Recoil/Atom";
+import { useEffect, useState } from "react";
+import { fetchUnreadAlarmCount } from "../../API/UserApi"; 
+import { Badge } from "antd";
 import { FaBell } from "react-icons/fa";
 import { TbLogout } from "react-icons/tb";
-import { useEffect, useState } from "react";
 
 const Header = () => {
   const setMenu = useSetRecoilState(MenuState);
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [unreadCount, setUnreadCount] = useRecoilState(AlarmCountState);
 
   const menuMap = {
     "/user": "user",
-    "/academic": "academic",
+    "/academic": "academic/chat",
     "/enroll/practice": "/enroll/practice",
     "/tip": "tip",
     "/notice": "notice",
@@ -24,10 +28,16 @@ const Header = () => {
     setMenu(menuKey);
   };
 
-  // 로그인 여부 확인
+  // 로그인 여부 확인s
   useEffect(() => {
     const token = sessionStorage.getItem("accessToken");
     setIsLoggedIn(!!token);
+
+    if (token) {
+      fetchUnreadAlarmCount()
+        .then((count) => setUnreadCount(count))
+        .catch((err) => console.error("알림 개수 조회 실패:", err));
+    }
   }, []);
 
   // 로그아웃 처리
@@ -35,6 +45,7 @@ const Header = () => {
     sessionStorage.removeItem("accessToken");
     sessionStorage.removeItem("refreshToken");
     setIsLoggedIn(false);
+    setUnreadCount(0);
     navigate("/login");
   };
 
@@ -47,11 +58,17 @@ const Header = () => {
       <nav className="header_side">
         {isLoggedIn ? (
           <>
-            <Link to="/alarm" className="header_side_nav" title="알림">
-              <FaBell size={20} />
-            </Link>
-            <button onClick={handleLogout} className="header_side_nav" title="로그아웃" style={{ background: "none", border: "none", cursor: "pointer" }}>
-              <TbLogout size={22} />
+           <button
+              onClick={() => navigate("/user/alarm")}
+              style={{ background: "none", border: "none", cursor: "pointer" }}
+              title="알림"
+            >
+              <Badge count={unreadCount} color="#78D900" offset={[-2, 2]}>
+                <FaBell className="header_side_bell" />
+              </Badge>
+            </button>
+            <button onClick={handleLogout} className="header_side_logout" title="로그아웃" style={{ background: "none", border: "none", cursor: "pointer" }}>
+              <TbLogout/>
             </button>
           </>
         ) : (
@@ -64,7 +81,7 @@ const Header = () => {
 
       <nav className="header_menu">
         <Link to="/user" onClick={() => handleMenuClick("/user")} className="header_menu_nav">마이페이지</Link>
-        <Link to="/academic" onClick={() => handleMenuClick("/academic")} className="header_menu_nav">학사정보</Link>
+        <Link to="/academic/chat" onClick={() => handleMenuClick("/academic/chat")} className="header_menu_nav">학사정보</Link>
         <Link to="/enroll/practice" onClick={() => handleMenuClick("/enroll/practice")} className="header_menu_nav">수강신청 연습</Link>
         <Link to="/tip" onClick={() => handleMenuClick("/tip")} className="header_menu_nav">Tip 게시판</Link>
         <Link to="/notice" onClick={() => handleMenuClick("/notice")} className="header_menu_nav">공지사항</Link>

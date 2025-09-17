@@ -304,6 +304,11 @@
         cursor: pointer;
     }
 
+    .notice_file_item:hover {
+        text-decoration: underline;
+        color: #aaff00;
+    }
+
     .notice_detail {
         display: flex;
         flex-direction: column;
@@ -872,6 +877,11 @@
         cursor: pointer;
     }
 
+    .notice_file_item:hover {
+        text-decoration: underline;
+        color: #aaff00;
+    }
+
     .notice_detail {
         display: flex;
         flex-direction: column;
@@ -1434,6 +1444,11 @@
 
         text-decoration: underline;
         cursor: pointer;
+    }
+
+    .notice_file_item:hover {
+        text-decoration: underline;
+        color: #aaff00;
     }
 
     .notice_detail {

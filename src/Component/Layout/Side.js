@@ -19,9 +19,22 @@ const Side = () => {
     {
       match: (p) => p.startsWith("/user"),
       items: [
-        { name: "내 정보", link: "/user/info" },
-        { name: "비밀번호 변경", link: "/user/password" },
+        { name: "내 정보", link: "/user" },
+        { name: "알림 목록", link: "/user/alarm" },
       ],
+    },
+    {
+      match: (p) => p.startsWith("/academic"),
+      items: (user.roleType === "MANAGER") 
+      ? [
+          { name: "학사정보 챗봇", link: "/academic/chat" },
+          { name: "학사정보 관리", link: "/academic/management" },
+          { name: "FAQ", link: "/academic/faq" },
+        ]
+      : [
+          { name: "학사정보 챗봇", link: "/academic/chat" },
+          { name: "FAQ", link: "/academic/faq" },
+        ],
     },
     {
       match: (p) => p.startsWith("/enroll"),

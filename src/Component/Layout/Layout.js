@@ -16,8 +16,13 @@ import TipSub from "../../Page/Tip/TipSub";
 import Enroll from "../../Page/Enroll/Enroll";
 import EnrollPractice from "../../Page/Enroll/EnrollPractice";
 import EnrollGuide from "../../Page/Enroll/EnrollGuide";
+import User from "../../Page/User/User";
+import UserAlarm from "../../Page/User/UserAlarm";
+import AcademicFAQ from "../../Page/Academic/AcademicFAQ";
+import AcademicChat from "../../Page/Academic/AcademicChat";
+import AcademicManagement from "../../Page/Academic/AcademicManagement";
 
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -25,6 +30,11 @@ import { LoadingOutlined } from "@ant-design/icons";
 const antIcon = (
   <LoadingOutlined style={{ fontSize: 48, color: "#78D900" }} spin />
 );
+
+const PrivateRoute = ({ children }) => {
+  const token = sessionStorage.getItem("accessToken");
+  return token ? children : <Navigate to="/login" replace />;
+};
 
 const Layout = () => {
     const location = useLocation();
@@ -81,18 +91,25 @@ const Layout = () => {
                 {!isMain &&  <Side />}
                <Routes>
                     <Route path="/" element={<Main />} />
-                    <Route path="/notice" element={<Notice />} />
-                    <Route path="/notice/:id" element={<NoticeDetail />} />
-                    <Route path="/notice/write" element={<NoticeWrite />} />
-                    <Route path="/notice/subscribe" element={<NoticeSub />} />
-                    <Route path="/tip" element={<Tip />} />
-                    <Route path="/tip/:id" element={<TipDetail />} />
-                    <Route path="/tip/write" element={<TipWrite />} />
-                    <Route path="/tip/subscribe" element={<TipSub />} />
-                    <Route path="/enroll/practice" element={<EnrollPractice />} />
-                    <Route path="/enroll/guide" element={<EnrollGuide />} />
+                    <Route path="/notice" element={<PrivateRoute><Notice /></PrivateRoute>} />
+                    <Route path="/notice/:id" element={<PrivateRoute><NoticeDetail /></PrivateRoute>} />
+                    <Route path="/notice/write" element={<PrivateRoute><NoticeWrite /></PrivateRoute>} />
+                    <Route path="/notice/subscribe" element={<PrivateRoute><NoticeSub /></PrivateRoute>} />
 
-                    <Route path="*" element={<Main />} />
+                    <Route path="/tip" element={<PrivateRoute><Tip /></PrivateRoute>} />
+                    <Route path="/tip/:id" element={<PrivateRoute><TipDetail /></PrivateRoute>} />
+                    <Route path="/tip/write" element={<PrivateRoute><TipWrite /></PrivateRoute>} />
+                    <Route path="/tip/subscribe" element={<PrivateRoute><TipSub /></PrivateRoute>} />
+
+                    <Route path="/enroll/practice" element={<PrivateRoute><EnrollPractice /></PrivateRoute>} />
+                    <Route path="/enroll/guide" element={<PrivateRoute><EnrollGuide /></PrivateRoute>} />
+
+                    <Route path="/user" element={<PrivateRoute><User /></PrivateRoute>} />
+                    <Route path="/user/alarm" element={<PrivateRoute><UserAlarm /></PrivateRoute>} />
+
+                    <Route path="/academic/faq" element={<PrivateRoute><AcademicFAQ /></PrivateRoute>} />
+                    <Route path="/academic/chat" element={<PrivateRoute><AcademicChat /></PrivateRoute>} />
+                    <Route path="/academic/management" element={<PrivateRoute><AcademicManagement /></PrivateRoute>} />
                 </Routes>
             </div>
             <Footer />

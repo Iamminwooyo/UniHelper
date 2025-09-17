@@ -1,0 +1,1510 @@
+ @media (min-width: 1241px) {
+     .academic_layout {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+
+    color: #ffffff;
+
+    border-radius: 20px;
+  }
+
+  .academic_header {
+        flex: 0.2;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        width: 98%;
+        padding: 0 0 1vw 0; 
+    }
+
+    .academic_header_title {
+        display: flex;
+
+        margin: 0;
+
+        font-size: 2vw;
+    }
+
+    .academic_faq_body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 40px;
+
+        width: 100%;
+        min-height: 650px;
+        padding: 30px 0;
+
+        background-color: #1b1b1b;
+        border-radius: 20px;
+    }
+
+    .academic_faq_feedback {
+        display: flex;
+        flex-direction: column;
+        width: 90%;
+        align-items: center;
+        justify-content: space-around;
+        padding: 1vw 0;
+        background-color: #78D900;
+        border: 1px solid #2a2a2a;
+        border-radius: 12px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    .academic_faq_title {
+        font-size: min(18px, 1.1vw);
+        font-weight: bold;
+    }
+
+    .academic_faq_text {
+        font-size: min(12px, 0.9vw);
+        font-weight: 400;
+    }
+
+    .academic_faq_button {
+        padding: 10px 15px;
+        border-radius: 6px;
+        background-color: #2b2b2b;
+        color: #fff;
+        font-size: min(11px, 0.8vw);
+        font-weight: bold;
+        border: none;
+        cursor: pointer;
+    }
+
+    .academic_faq_button:hover {
+        background-color: #4b4b4b;
+    }
+
+    .academic_chat_body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 40px;
+
+        width: 100%;
+        min-height: 650px;
+        padding: 30px 0;
+
+        background-color: #1b1b1b;
+        border-radius: 20px;
+    }
+
+    .academic_chat_warning {
+        width: 90%;
+    }
+
+    .academic_chat_warning .ant-collapse {
+        background-color: #242424 !important;
+        border: 1px solid #333 !important;
+        border-radius: 8px !important;
+        color: #fff !important;
+    }
+
+    .academic_chat_warning .ant-collapse-header {
+        font-size: min(15px, 1.1vw);
+        font-weight: 600;
+        color: #78d900 !important; /* 초록색 포인트 */
+        background-color: #242424 !important;
+        border-bottom: 1px solid #333 !important;
+        border-radius: 8px 8px 0 0;
+    }
+
+    .academic_chat_warning .ant-collapse-expand-icon {
+        color: #78d900 !important;
+    }
+
+    .academic_chat_warning .ant-collapse-content {
+        background-color: #000000 !important;
+        color: #ddd !important;
+        border-top: 1px solid #333 !important;
+    }
+
+    .academic_chat_warning .ant-collapse-content p {
+        margin: 0 0 6px 0;
+        font-size: max(12px, 0.7vw);
+        color: #ccc;
+    }
+
+    .academic_chat_container {
+        display: flex;
+        width: 90%;
+        gap: 1vw;
+    }
+
+    .academic_chat_main {
+        flex: 3;
+        background-color: #242424;
+        border-radius: 12px;
+        border: 1px solid #333 !important;
+    }
+
+    
+    .academic_chat {
+        flex: 1;
+        display: flex;
+        flex-direction: column; /* 말풍선은 위아래로 쌓이게 */
+        gap: 10px;
+        overflow-y: auto;
+        height: 400px;
+        padding: 10px 20px;
+    }
+
+    /* 크롬, 사파리, 엣지용 */
+    .academic_chat::-webkit-scrollbar {
+        width: 6px;    /* 스크롤바 두께 */
+    }
+
+    .academic_chat::-webkit-scrollbar-track {
+        background: #2a2a2a; /* 트랙 배경 */
+        border-radius: 4px;
+        margin: 8px
+    }
+
+    .academic_chat::-webkit-scrollbar-thumb {
+        background-color: #8a8989; /* 초록색 스크롤바 */
+        border-radius: 4px;
+    }
+
+    .academic_chat::-webkit-scrollbar-thumb:hover {
+        background-color: #5fb000; /* hover 시 조금 어둡게 */
+    }
+
+    .academic_chat_row {
+        display: flex;
+        align-items: flex-start;
+        margin: 6px 0;
+    }
+
+    .academic_chat_row.bot {
+        justify-content: flex-start;
+    }
+
+    .academic_chat_row.user {
+        justify-content: flex-end;
+    }
+
+    .academic_chat_avatar {
+        width: 1.5vw;
+        height: 1.5vw;
+        border-radius: 50%;
+        margin-right: 8px;
+        object-fit: cover;
+    }
+
+    /* 말풍선 스타일 */
+    .academic_chat_message {
+        text-align: left;
+        max-width: 70%;
+        padding: 10px 14px;
+        border-radius: 15px;
+        line-height: 1.4;
+        word-break: break-word;
+        white-space: pre-line;
+        font-size: max(12px, 0.7vw);
+    }
+
+    .academic_chat_message.user {
+        align-self: flex-end;
+        background: #78d900;
+        color: #ffffff;
+        border-bottom-right-radius: 3px;
+    }
+
+    .academic_chat_message.bot {
+        align-self: flex-start;
+        background-color: #2e2e2e;
+        color: #fff;
+        border-bottom-left-radius: 3px;
+    }
+
+     .academic_chat_input {
+        display: flex;
+        padding: 10px;
+        background: #242424;
+        border-radius: 12px;
+    }
+
+    .academic_chat_input input {
+        flex: 1;
+        padding: 10px;
+        border: none;
+        border-radius: 8px;
+        margin-right: 10px;
+        font-size: max(12px, 0.7vw);
+    }
+
+    .academic_chat_input button {
+        padding: 10px 16px;
+        background: #78d900;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: max(12px, 0.7vw);
+    }
+
+    .academic_chat_history {
+        flex: 1.3;
+        background-color: #242424;
+        border-radius: 12px;
+        border: 1px solid #333 !important;
+    }
+
+
+    .academic_chat_history h3 {
+        padding: 10px 0;
+        font-size: min(15px, 1.1vw);
+        font-weight: bold;
+        color: #78d900; /* 포인트 색상 */
+    }
+
+    .academic_chat_list {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: left;
+        gap: 0.8vw;
+
+        overflow-y: auto;
+        max-height: 400px;
+    }
+
+   /* 크롬, 사파리, 엣지용 */
+    .academic_chat_list::-webkit-scrollbar {
+        width: 6px;    /* 스크롤바 두께 */
+    }
+
+    .academic_chat_list::-webkit-scrollbar-track {
+        background: #2a2a2a; /* 트랙 배경 */
+        border-radius: 4px;
+        margin: 8px
+    }
+
+    .academic_chat_list::-webkit-scrollbar-thumb {
+        background-color: #8a8989; /* 초록색 스크롤바 */
+        border-radius: 4px;
+    }
+
+    .academic_chat_list::-webkit-scrollbar-thumb:hover {
+        background-color: #5fb000; /* hover 시 조금 어둡게 */
+    }
+
+    /* 각 기록 아이템 */
+    .academic_chat_list_item {
+        width: 80%;
+        padding: 10px 10px;
+        background: #2e2e2e;
+        border-radius: 8px;
+        box-sizing: border-box;
+        font-size: min(12px, 0.9vw);
+        color: #ddd;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    /* hover 효과 */
+    .academic_chat_list_item:hover {
+        background: #3a3a3a;
+        color: #fff;
+    }
+
+   .academic_chat_loader {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 12px 0;
+    }
+
+    .academic_chat_loader .ant-spin-dot-item {
+        background-color: #78d900 !important;
+    }
+
+    .academic_management_body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 40px;
+
+        width: 100%;
+        min-height: 650px;
+        padding: 30px 0;
+
+        background-color: #1b1b1b;
+        border-radius: 20px;
+    }
+
+    /* 버튼을 감싸는 래퍼 */
+    .academic_management_top {
+        display: flex;
+        justify-content: flex-end; /* 오른쪽 끝으로 */
+        width: 90%;
+    }
+
+    .academic_management_button {
+        background-color: #78d900;
+        padding: 10px 15px;
+        border-radius: 6px;
+        color: #fff;
+    }
+
+    .academic_management_file {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+
+        width: 90%;
+        padding: 30px 0;
+
+        background-color: #242424;
+        border-radius: 20px;
+    }
+
+    .academic_file_header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 90%;
+    }
+
+    .academic_management_file h2 {
+        text-align: left;
+        font-size: min(20px ,1.5vw);
+        font-weight: bold;
+        color: #78d900;
+        padding: 0;
+        margin: 0;
+    }
+
+    .academic_management_plus {
+        font-size: max(20px ,1.5vw);
+        color: #ffffff;
+    }
+
+    .academic_management_plus:hover {
+        color: #78d900;
+    }
+
+    .academic_file_list {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;  
+        gap: 20px;
+    }
+
+    /* Collapse 전체 */
+    .academic_management_file .ant-collapse {
+    background: transparent;
+    border: none;
+    width: 90%;
+    }
+
+    /* 각 Panel */
+    .academic_management_file .ant-collapse-item {
+    margin-bottom: 12px; /* 패널 간격 */
+    border: 1px solid #2a2a2a;
+    border-radius: 10px;
+    overflow: hidden;
+    }
+
+    /* header (학기 제목 부분) */
+    .academic_management_file .ant-collapse-header {
+        display: flex !important;
+        align-items: center !important;
+        font-size: min(13px, 1.2vw);
+        font-weight: bold;
+        color: #ffffff !important;
+        padding: 20px 16px !important;
+        background-color: #2e2e2e;
+    }
+
+    .academic_management_file .ant-collapse-header-text {
+        flex: 1; /* 텍스트가 남는 공간 전부 차지하게 */
+        text-align: left; 
+    }
+
+    /* hover 효과 */
+    .academic_management_file .ant-collapse-item:hover {
+        background-color: #2a2a2a;
+    }
+
+    /* 화살표 아이콘 */
+    .academic_management_file .ant-collapse-arrow {
+        font-size: 14px;
+    }
+
+    /* Panel 안쪽 (파일 리스트 부분) */
+    .academic_management_file .ant-collapse-content {
+        background-color: #1b1b1b;
+        border-top: none;
+        padding: 0 !important;
+    }
+
+    .academic_management_file .ant-collapse-content-box {
+        color: #ddd;
+        font-size: max(12px ,0.7vw);
+        padding: 12px 16px;
+    }
+
+    .academic_management_warning {
+        width: 90%;
+        color: #ff0000;
+        font-size: max(12px ,0.7vw);
+    }
+
+
+    .academic_management_inquiry {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+
+        width: 90%;
+        padding: 30px 0;
+
+        background-color: #242424;
+        border-radius: 20px;
+    }
+
+    .academic_inquiry_header {
+        width: 90%;  
+    }
+
+    .academic_inquiry_header h2 {
+        text-align: left;  
+        font-size: min(20px ,1.5vw);
+        font-weight: bold;
+        color: #78d900;
+        margin: 0;
+    }
+
+    .academic_inquiry_list {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;  
+        gap: 20px;
+    }
+ }
+ @media (min-width: 769px) and (max-width: 1240px) {
+    .academic_layout {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+
+    color: #ffffff;
+
+    border-radius: 20px;
+  }
+
+  .academic_header {
+        flex: 0.2;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        width: 98%;
+        padding: 0 0 1vw 0; 
+    }
+
+    .academic_header_title {
+        display: flex;
+
+        margin: 0;
+
+        font-size: 2.5vw;
+    }
+
+    .academic_faq_body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 30px;
+
+        width: 100%;
+        padding: 30px 0;
+
+        background-color: #1b1b1b;
+        border-radius: 20px;
+    }
+
+    .academic_faq_feedback {
+        display: flex;
+        flex-direction: column;
+        width: 90%;
+        align-items: center;
+        justify-content: space-around;
+        padding: 10px 0;
+        background-color: #78D900;
+        border: 1px solid #2a2a2a;
+        border-radius: 12px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    .academic_faq_title {
+        font-size: min(18px, 1.7vw);
+        font-weight: bold;
+    }
+
+    .academic_faq_text {
+        font-size: min(13px, 1.3vw);
+        font-weight: 400;
+    }
+
+    .academic_faq_button {
+        padding: 1vw 1.5vw;
+        border-radius: 6px;
+        background-color: #2b2b2b;
+        color: #fff;
+        font-size: min(12px, 1.2vw);
+        font-weight: bold;
+        border: none;
+        cursor: pointer;
+    }
+
+    .academic_faq_button:hover {
+        background-color: #4b4b4b;
+    }
+
+    .academic_chat_body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 40px;
+
+        width: 100%;
+        min-height: 650px;
+        padding: 30px 0;
+
+        background-color: #1b1b1b;
+        border-radius: 20px;
+    }
+
+    .academic_chat_warning {
+        width: 90%;
+    }
+
+    .academic_chat_warning .ant-collapse {
+        background-color: #242424 !important;
+        border: 1px solid #333 !important;
+        border-radius: 8px !important;
+        color: #fff !important;
+    }
+
+    .academic_chat_warning .ant-collapse-header {
+        display: flex !important;
+        align-items: center !important;
+        font-size: min(15px, 1.5vw);
+        font-weight: 600;
+        color: #78d900 !important; /* 초록색 포인트 */
+        background-color: #242424 !important;
+        border-bottom: 1px solid #333 !important;
+        border-radius: 8px 8px 0 0;
+    }
+
+    .academic_chat_warning .ant-collapse-expand-icon {
+        color: #78d900 !important;
+    }
+
+    .academic_chat_warning .ant-collapse-content {
+        background-color: #000000 !important;
+        color: #ddd !important;
+        border-top: 1px solid #333 !important;
+    }
+
+    .academic_chat_warning .ant-collapse-content p {
+        margin: 0 0 6px 0;
+        font-size: min(12px, 1.2vw);
+        color: #ccc;
+    }
+
+    .academic_chat_container {
+        display: flex;
+        width: 90%;
+        gap: 1vw;
+    }
+
+    .academic_chat_main {
+        flex: 3;
+        background-color: #242424;
+        border-radius: 12px;
+        border: 1px solid #333 !important;
+    }
+
+    
+    .academic_chat {
+        flex: 1;
+        display: flex;
+        flex-direction: column; /* 말풍선은 위아래로 쌓이게 */
+        gap: 10px;
+        overflow-y: auto;
+        height: 400px;
+        padding: 10px 20px;
+    }
+
+    /* 크롬, 사파리, 엣지용 */
+    .academic_chat::-webkit-scrollbar {
+        width: 6px;    /* 스크롤바 두께 */
+    }
+
+    .academic_chat::-webkit-scrollbar-track {
+        background: #2a2a2a; /* 트랙 배경 */
+        border-radius: 4px;
+        margin: 8px
+    }
+
+    .academic_chat::-webkit-scrollbar-thumb {
+        background-color: #8a8989; /* 초록색 스크롤바 */
+        border-radius: 4px;
+    }
+
+    .academic_chat::-webkit-scrollbar-thumb:hover {
+        background-color: #5fb000; /* hover 시 조금 어둡게 */
+    }
+
+    .academic_chat_row {
+        display: flex;
+        align-items: flex-start;
+        margin: 6px 0;
+    }
+
+    .academic_chat_row.bot {
+        justify-content: flex-start;
+    }
+
+    .academic_chat_row.user {
+        justify-content: flex-end;
+    }
+
+    .academic_chat_avatar {
+        width: 1.5vw;
+        height: 1.5vw;
+        border-radius: 50%;
+        margin-right: 8px;
+        object-fit: cover;
+    }
+
+    /* 말풍선 스타일 */
+    .academic_chat_message {
+        text-align: left;
+        max-width: 70%;
+        padding: 10px 14px;
+        border-radius: 15px;
+        line-height: 1.4;
+        word-break: break-word;
+        white-space: pre-line;
+        font-size: min(12px, 1.4vw);
+    }
+
+    .academic_chat_message.user {
+        align-self: flex-end;
+        background: #78d900;
+        color: #ffffff;
+        border-bottom-right-radius: 3px;
+    }
+
+    .academic_chat_message.bot {
+        align-self: flex-start;
+        background-color: #2e2e2e;
+        color: #fff;
+        border-bottom-left-radius: 3px;
+    }
+
+     .academic_chat_input {
+        display: flex;
+        padding: 10px;
+        background: #242424;
+        border-radius: 12px;
+    }
+
+    .academic_chat_input input {
+        flex: 1;
+        padding: 10px;
+        border: none;
+        border-radius: 8px;
+        margin-right: 10px;
+        font-size: min(12px, 1.2vw);
+    }
+
+    .academic_chat_input button {
+        padding: min(8px, 1vw) min(14px, 1.6vw);
+        background: #78d900;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: min(12px, 1.2vw);
+    }
+
+    .academic_chat_history {
+        flex: 1.3;
+        background-color: #242424;
+        border-radius: 12px;
+        border: 1px solid #333 !important;
+    }
+
+
+    .academic_chat_history h3 {
+        padding: 10px 0;
+        font-size: min(15px, 1.5vw);
+        font-weight: bold;
+        color: #78d900; /* 포인트 색상 */
+    }
+
+    .academic_chat_list {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: left;
+        gap: 0.8vw;
+
+        overflow-y: auto;
+        max-height: 400px;
+    }
+
+   /* 크롬, 사파리, 엣지용 */
+    .academic_chat_list::-webkit-scrollbar {
+        width: 6px;    /* 스크롤바 두께 */
+    }
+
+    .academic_chat_list::-webkit-scrollbar-track {
+        background: #2a2a2a; /* 트랙 배경 */
+        border-radius: 4px;
+        margin: 8px
+    }
+
+    .academic_chat_list::-webkit-scrollbar-thumb {
+        background-color: #8a8989; /* 초록색 스크롤바 */
+        border-radius: 4px;
+    }
+
+    .academic_chat_list::-webkit-scrollbar-thumb:hover {
+        background-color: #5fb000; /* hover 시 조금 어둡게 */
+    }
+
+    /* 각 기록 아이템 */
+    .academic_chat_list_item {
+        width: 80%;
+        padding: 10px 10px;
+        background: #2e2e2e;
+        border-radius: 8px;
+        box-sizing: border-box;
+        font-size: min(12px, 1.1vw);
+        color: #ddd;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    /* hover 효과 */
+    .academic_chat_list_item:hover {
+        background: #3a3a3a;
+        color: #fff;
+    }
+
+   .academic_chat_loader {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 12px 0;
+    }
+
+    .academic_chat_loader .ant-spin-dot-item {
+        background-color: #78d900 !important;
+    }
+
+    .academic_management_body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 40px;
+
+        width: 100%;
+        min-height: 650px;
+        padding: 30px 0;
+
+        background-color: #1b1b1b;
+        border-radius: 20px;
+    }
+
+    /* 버튼을 감싸는 래퍼 */
+    .academic_management_top {
+        display: flex;
+        justify-content: flex-end; /* 오른쪽 끝으로 */
+        width: 90%;
+    }
+
+    .academic_management_button {
+        background-color: #78d900;
+        padding: 10px 15px;
+        border-radius: 6px;
+        color: #fff;
+    }
+
+    .academic_management_file {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+
+        width: 90%;
+        padding: 30px 0;
+
+        background-color: #242424;
+        border-radius: 20px;
+    }
+
+    .academic_file_header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 90%;
+    }
+
+    .academic_management_file h2 {
+        text-align: left;
+        font-size: min(20px ,1.8vw);
+        font-weight: bold;
+        color: #78d900;
+        padding: 0;
+        margin: 0;
+    }
+
+    .academic_management_plus {
+        font-size: min(20px ,1.8vw);
+        color: #ffffff;
+    }
+
+    .academic_management_plus:hover {
+        color: #78d900;
+    }
+
+    .academic_file_list {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;  
+        gap: 20px;
+    }
+
+    /* Collapse 전체 */
+    .academic_management_file .ant-collapse {
+    background: transparent;
+    border: none;
+    width: 90%;
+    }
+
+    /* 각 Panel */
+    .academic_management_file .ant-collapse-item {
+    margin-bottom: 12px; /* 패널 간격 */
+    border: 1px solid #2a2a2a;
+    border-radius: 10px;
+    overflow: hidden;
+    }
+
+    /* header (학기 제목 부분) */
+    .academic_management_file .ant-collapse-header {
+    display: flex !important;
+    align-items: center !important;
+    font-size: min(15px, 1.2vw);
+    font-weight: bold;
+    color: #ffffff !important;
+    padding: 1.2vw 1vw !important;
+    background-color: #2e2e2e;
+    }
+
+    .academic_management_file .ant-collapse-header-text {
+    flex: 1; /* 텍스트가 남는 공간 전부 차지하게 */
+    text-align: left; 
+    }
+
+    /* hover 효과 */
+    .academic_management_file .ant-collapse-item:hover {
+    background-color: #2a2a2a;
+    }
+
+    /* 화살표 아이콘 */
+    .academic_management_file .ant-collapse-arrow {
+    font-size: 10px !important;
+    }
+
+    /* Panel 안쪽 (파일 리스트 부분) */
+    .academic_management_file .ant-collapse-content {
+    background-color: #1b1b1b;
+    border-top: none;
+    padding: 0 !important;
+    }
+
+    .academic_management_file .ant-collapse-content-box {
+    color: #ddd;
+    font-size: min(14px, 1.1vw);
+    padding: 12px 16px;
+    }
+
+    .academic_management_warning {
+        width: 90%;
+        color: #ff0000;
+        font-size: min(12px ,1.2vw);
+    }
+
+
+    .academic_management_inquiry {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+
+        width: 90%;
+        padding: 30px 0;
+
+        background-color: #242424;
+        border-radius: 20px;
+    }
+
+    .academic_inquiry_header {
+        width: 90%;  
+    }
+
+    .academic_inquiry_header h2 {
+        text-align: left;  
+        font-size: min(20px ,1.8vw);
+        font-weight: bold;
+        color: #78d900;
+        margin: 0;
+    }
+
+    .academic_inquiry_list {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;  
+        gap: 20px;
+    }
+ }
+ @media (min-width: 1px) and (max-width: 768px) {
+    .academic_layout {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+
+    color: #ffffff;
+
+    border-radius: 20px;
+  }
+
+  .academic_header {
+        flex: 0.2;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        width: 98%;
+        max-height: 62px;
+        padding: 0 0 3vw 0; 
+    }
+
+    .academic_header_title {
+        display: flex;
+
+        margin: 0;
+
+        font-size: 3vw;
+    }
+
+    .academic_faq_body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 25px;
+
+        width: 100%;
+        padding: 30px 0;
+
+        background-color: #1b1b1b;
+        border-radius: 20px;
+    }
+
+    .academic_faq_feedback {
+        display: flex;
+        flex-direction: column;
+        width: 90%;
+        align-items: center;
+        justify-content: space-around;
+        padding: 10px 0;
+        background-color: #78D900;
+        border: 1px solid #2a2a2a;
+        border-radius: 12px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    .academic_faq_title {
+        font-size: min(16px, 2.4vw);
+        font-weight: bold;
+    }
+
+    .academic_faq_text {
+        font-size: min(12px, 2vw);
+        font-weight: 400;
+    }
+
+    .academic_faq_button {
+        padding: min(10px, 2vw) min(14px, 2.5vw);
+        border-radius: 6px;
+        background-color: #2b2b2b;
+        color: #fff;
+        font-size: min(12px, 1.8vw);
+        font-weight: bold;
+        border: none;
+        cursor: pointer;
+    }
+
+    .academic_faq_button:hover {
+        background-color: #4b4b4b;
+    }
+
+    .academic_chat_body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 25px;
+
+        width: 100%;
+        padding: 30px 0;
+
+        background-color: #1b1b1b;
+        border-radius: 20px;
+    }
+
+    .academic_chat_warning {
+        width: 90%;
+    }
+
+    .academic_chat_warning .ant-collapse {
+        background-color: #242424 !important;
+        border: 1px solid #333 !important;
+        border-radius: 8px !important;
+        color: #fff !important;
+    }
+
+    .academic_chat_warning .ant-collapse-header {
+        display: flex !important;
+        align-items: center !important;
+        font-size: min(15px, 2vw);
+        font-weight: 600;
+        color: #78d900 !important; /* 초록색 포인트 */
+        background-color: #242424 !important;
+        border-bottom: 1px solid #333 !important;
+        border-radius: 8px 8px 0 0;
+    }
+
+    .academic_chat_warning .ant-collapse-expand-icon {
+        color: #78d900 !important;
+    }
+
+    .academic_chat_warning .ant-collapse-content {
+        background-color: #000000 !important;
+        color: #ddd !important;
+        border-top: 1px solid #333 !important;
+    }
+
+    .academic_chat_warning .ant-collapse-content p {
+        margin: 0 0 6px 0;
+        font-size: min(12px, 1.7vw);
+        color: #ccc;
+    }
+
+    .academic_chat_container {
+        display: flex;
+        width: 90%;
+        gap: 1.5vw;
+    }
+
+    .academic_chat_main {
+        flex: 3;
+        background-color: #242424;
+        border-radius: 12px;
+        border: 1px solid #333 !important;
+    }
+
+    
+    .academic_chat {
+        flex: 1;
+        display: flex;
+        flex-direction: column; /* 말풍선은 위아래로 쌓이게 */
+        gap: 10px;
+        overflow-y: auto;
+        height: 350px;
+        padding: 10px 20px;
+    }
+
+    /* 크롬, 사파리, 엣지용 */
+    .academic_chat::-webkit-scrollbar {
+        width: 6px;    /* 스크롤바 두께 */
+    }
+
+    .academic_chat::-webkit-scrollbar-track {
+        background: #2a2a2a; /* 트랙 배경 */
+        border-radius: 4px;
+        margin: 8px
+    }
+
+    .academic_chat::-webkit-scrollbar-thumb {
+        background-color: #8a8989; /* 초록색 스크롤바 */
+        border-radius: 4px;
+    }
+
+    .academic_chat::-webkit-scrollbar-thumb:hover {
+        background-color: #5fb000; /* hover 시 조금 어둡게 */
+    }
+
+    .academic_chat_row {
+        display: flex;
+        align-items: flex-start;
+        margin: 6px 0;
+    }
+
+    .academic_chat_row.bot {
+        justify-content: flex-start;
+    }
+
+    .academic_chat_row.user {
+        justify-content: flex-end;
+    }
+
+    .academic_chat_avatar {
+        width: 1.5vw;
+        height: 1.5vw;
+        border-radius: 50%;
+        margin-right: 8px;
+        object-fit: cover;
+    }
+
+    /* 말풍선 스타일 */
+    .academic_chat_message {
+        text-align: left;
+        max-width: 70%;
+        padding: 10px 14px;
+        border-radius: 15px;
+        line-height: 1.4;
+        word-break: break-word;
+        white-space: pre-line;
+        font-size: min(13px, 1.8vw);
+    }
+
+    .academic_chat_message.user {
+        align-self: flex-end;
+        background: #78d900;
+        color: #ffffff;
+        border-bottom-right-radius: 3px;
+    }
+
+    .academic_chat_message.bot {
+        align-self: flex-start;
+        background-color: #2e2e2e;
+        color: #fff;
+        border-bottom-left-radius: 3px;
+    }
+
+     .academic_chat_input {
+        display: flex;
+        padding: 10px;
+        background: #242424;
+        border-radius: 12px;
+    }
+
+    .academic_chat_input input {
+        flex: 1;
+        padding: 10px;
+        border: none;
+        border-radius: 8px;
+        margin-right: 10px;
+        font-size: min(13px, 1.8vw);
+    }
+
+    .academic_chat_input button {
+        padding: min(8px, 1.4vw) min(14px, 2vw);
+        background: #78d900;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: min(13px, 1.8vw);
+    }
+
+    .academic_chat_history {
+        flex: 1.3;
+        background-color: #242424;
+        border-radius: 12px;
+        border: 1px solid #333 !important;
+    }
+
+
+    .academic_chat_history h3 {
+        padding: 10px 0;
+        font-size: min(15px, 2vw);
+        font-weight: bold;
+        color: #78d900; /* 포인트 색상 */
+    }
+
+    .academic_chat_list {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: left;
+        gap: 0.8vw;
+
+        overflow-y: auto;
+        max-height: 350px;
+    }
+
+   /* 크롬, 사파리, 엣지용 */
+    .academic_chat_list::-webkit-scrollbar {
+        width: 6px;    /* 스크롤바 두께 */
+    }
+
+    .academic_chat_list::-webkit-scrollbar-track {
+        background: #2a2a2a; /* 트랙 배경 */
+        border-radius: 4px;
+        margin: 8px
+    }
+
+    .academic_chat_list::-webkit-scrollbar-thumb {
+        background-color: #8a8989; /* 초록색 스크롤바 */
+        border-radius: 4px;
+    }
+
+    .academic_chat_list::-webkit-scrollbar-thumb:hover {
+        background-color: #5fb000; /* hover 시 조금 어둡게 */
+    }
+
+    /* 각 기록 아이템 */
+    .academic_chat_list_item {
+        width: 80%;
+        padding: 10px 10px;
+        background: #2e2e2e;
+        border-radius: 8px;
+        box-sizing: border-box;
+        font-size: min(12px, 1.6vw);
+        color: #ddd;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    /* hover 효과 */
+    .academic_chat_list_item:hover {
+        background: #3a3a3a;
+        color: #fff;
+    }
+
+   .academic_chat_loader {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 12px 0;
+    }
+
+    .academic_chat_loader .ant-spin-dot-item {
+        background-color: #78d900 !important;
+    }
+
+    .academic_management_body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+
+        width: 100%;
+        padding: 30px 0;
+
+        background-color: #1b1b1b;
+        border-radius: 20px;
+    }
+
+    /* 버튼을 감싸는 래퍼 */
+    .academic_management_top {
+        display: flex;
+        justify-content: flex-end; /* 오른쪽 끝으로 */
+        width: 90%;
+    }
+
+    .academic_management_button {
+        background-color: #78d900;
+        padding: 10px 15px;
+        border-radius: 6px;
+        color: #fff;
+    }
+
+    .academic_management_file {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+
+        width: 90%;
+        padding: 30px 0;
+
+        background-color: #242424;
+        border-radius: 20px;
+    }
+
+    .academic_file_header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 90%;
+    }
+
+    .academic_management_file h2 {
+        text-align: left;
+        font-size: min(25px ,2.3vw);
+        font-weight: bold;
+        color: #78d900;
+        padding: 0;
+        margin: 0;
+    }
+
+    .academic_management_plus {
+        font-size: min(30px ,3vw);
+        color: #ffffff;
+    }
+
+    .academic_management_plus:hover {
+        color: #78d900;
+    }
+
+    .academic_file_list {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;  
+        gap: 20px;
+    }
+
+    /* Collapse 전체 */
+    .academic_management_file .ant-collapse {
+    background: transparent;
+    border: none;
+    width: 90%;
+    }
+
+    /* 각 Panel */
+    .academic_management_file .ant-collapse-item {
+    margin-bottom: 12px; /* 패널 간격 */
+    border: 1px solid #2a2a2a;
+    border-radius: 10px;
+    overflow: hidden;
+    }
+
+    /* header (학기 제목 부분) */
+    .academic_management_file .ant-collapse-header {
+    display: flex !important;
+    align-items: center !important;
+    font-size: min(15px, 2vw);
+    font-weight: bold;
+    color: #ffffff !important;
+    padding: 2vw 2.5vw !important;
+    background-color: #2e2e2e;
+    }
+
+    .academic_management_file .ant-collapse-header-text {
+    flex: 1; /* 텍스트가 남는 공간 전부 차지하게 */
+    text-align: left; 
+    }
+
+    /* hover 효과 */
+    .academic_management_file .ant-collapse-item:hover {
+    background-color: #2a2a2a;
+    }
+
+    /* 화살표 아이콘 */
+    .academic_management_file .ant-collapse-arrow {
+    font-size: 14px;
+    }
+
+    /* Panel 안쪽 (파일 리스트 부분) */
+    .academic_management_file .ant-collapse-content {
+    background-color: #1b1b1b;
+    border-top: none;
+    padding: 0 !important;
+    }
+
+    .academic_management_file .ant-collapse-content-box {
+    color: #ddd;
+    font-size: min(18px, 1.7vw);
+    padding: 12px 16px;
+    }
+
+    .academic_management_warning {
+        width: 90%;
+        color: #ff0000;
+        font-size: min(18px ,1.8vw);
+    }
+
+
+    .academic_management_inquiry {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+
+        width: 90%;
+        padding: 30px 0;
+
+        background-color: #242424;
+        border-radius: 20px;
+    }
+
+    .academic_inquiry_header {
+        width: 90%;  
+    }
+
+    .academic_inquiry_header h2 {
+        text-align: left;  
+        font-size: min(25px ,2.3vw);
+        font-weight: bold;
+        color: #78d900;
+        margin: 0;
+    }
+
+    .academic_inquiry_list {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;  
+        gap: 20px;
+    }
+ }
