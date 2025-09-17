@@ -16,3 +16,8 @@ export const userBriefState = atom({
     profileImageUrl: "",
   },
 });
+
+export const AlarmCountState = atom({
+  key: "UnreadAlarmCountState",
+  default: 0,
+});

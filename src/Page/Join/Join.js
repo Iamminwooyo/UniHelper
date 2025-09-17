@@ -122,7 +122,7 @@ const Join = () => {
     try {
       const response = await verifySignupEmail(email, authCode);
 
-      if (typeof response.data === "string" && response.data.includes("인증 성공")) {
+       if (response.includes("인증 성공")) {
         setCodeVerificationStatus("verified");
         setCodeVerificationMessage("이메일 인증 완료");
         setEmailVerificationStatus("verified");

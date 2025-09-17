@@ -483,6 +483,355 @@
         white-space: pre-line;
         text-align: left; 
     }
+
+    .alarmcard_layout {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        width: 90%;
+        height: auto;
+        padding: 0.4vw 0 0.8vw 0;
+
+        background-color: #242424;
+        border: 1px solid #2a2a2a;
+        border-radius: 15px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    }
+
+    .alarmcard_dot {
+        position: absolute;
+        top: 0.4vw;
+        left: 1vw;
+    }
+
+    .alarmcard_dot .ant-badge-status-dot {
+        width: 12px !important;
+        height: 12px !important;
+        min-width: 12px !important;
+        min-height: 12px !important;
+        border-radius: 50% !important;
+    }
+
+    .alarmcard_header {
+        display: flex;
+        justify-content: space-between;
+
+        width: 92%;
+        padding: 10px 0;
+    }
+
+    .alarmcard_info {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 0.7vw;
+    }
+
+   
+    .alarmcard_img {
+        width: 2vw;
+        height: 2vw;
+
+        border-radius: 50%;
+
+        object-fit: cover;
+    }
+
+    .alarmcard_text {
+        font-size: min(11px, 0.8vw);
+    }
+
+    .alarmcard_name {
+        display: flex;
+        align-items: flex-end;
+
+        margin: 0;
+    }
+
+    .alarmcard_date {
+        display: flex;
+        align-items: flex-end;
+
+        margin: 0;
+    }
+
+    /* 체크됐을 때 배경/테두리 색상 */
+    .ant-checkbox-checked .ant-checkbox-inner {
+    background-color: #78D900 !important;
+    border-color: #78D900 !important;
+    }
+
+    /* hover 시 색상 */
+    .ant-checkbox-wrapper:hover .ant-checkbox-inner,
+    .ant-checkbox:hover .ant-checkbox-inner {
+    border-color: #78D900 !important;
+    }
+
+    /* 체크 아이콘 색상 (✔) */
+    .ant-checkbox-checked .ant-checkbox-inner::after {
+    border-color: #fff !important; /* 흰색 체크 표시 */
+    }
+    .alarmcard_content {
+        display: flex;
+        gap: 0.3vw;
+
+        width: 92%;
+        height: 4vw;
+
+
+        font-size: min(11px, 0.8vw);
+        white-space: pre-line;
+        text-align: left; 
+
+        background-color: #2e2e2e;
+        border: 1px solid #2a2a2a;
+        border-radius: 8px;
+
+        padding: 12px;
+        box-sizing: border-box;
+
+        cursor: pointer;
+    }
+
+    /* 전체 FAQ 카드 컨테이너 */
+    .faqcard_layout {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 90%;
+        background-color: #242424;
+        border: 1px solid #2a2a2a;
+        border-radius: 12px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        overflow: hidden; /* border-radius 안 벗어나게 */
+    }
+
+    /* Collapse 전체 */
+    .faqcard_layout .ant-collapse {
+        background: transparent;
+        border: none;
+    }
+
+    /* 각 Panel */
+    .faqcard_layout .ant-collapse-item {
+        border-bottom: 1px solid #333;
+    }
+
+    /* header (질문 부분) */
+    .faqcard_layout .ant-collapse-header {
+        font-size: max(13px, 0.8vw);
+        font-weight: bold;
+        color: #78D900 !important;
+        padding: 2vw 0.8vw !important;
+    }
+
+    /* hover 효과 */
+    .faqcard_layout:hover {
+        background-color: #2a2a2a;
+    }
+
+    /* 화살표 아이콘 */
+    .faqcard_layout .ant-collapse-arrow {
+        color: #78D900;
+        font-size: 14px;
+    }
+
+    /* answer 내용 부분 */
+    .faqcard_layout .ant-collapse-content {
+        background-color: #000000;
+        border-top: none;
+        padding: 0.7vw 0.8vw !important;
+    }
+
+    .faqcard_layout .ant-collapse-content-box {
+        color: #ddd;
+        font-size: max(13px, 0.8vw);
+        padding: 12px 16px;
+    }
+
+    .faqcard_header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .faqcard_prefix {
+        font-weight: bold;
+        color: #78D900; /* Q.는 초록 */
+    }
+
+    .faqcard_question {
+        font-weight: bold;
+        color: #ffffff; /* 질문은 흰색 */
+    }
+
+    .faqcard_answer_prefix {
+        font-weight: bold;
+        margin-right: 6px;
+        color: #78D900;
+    }
+
+    .academiccard_layout {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 80%;
+        background-color: #2e2e2e;
+        border: 1px solid #2a2a2a;
+        border-radius: 12px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    .academiccard_index {
+        margin-right: 6px;
+        color: #78d900;
+        font-weight: bold;
+    }
+
+    .academiccard_name {
+        text-align: left;
+        padding-left: 20px;
+        box-sizing: border-box;
+    }
+
+    .academiccard_link {
+    color: #ffffff;
+    text-decoration: none;
+    text-decoration: underline;
+    cursor: pointer;
+    }
+
+    .academiccard_link:hover {
+    text-decoration: underline;
+    color: #aaff00;
+    }
+
+    .academiccard_date {
+        padding-right: 20px;
+    }
+
+     .inquirycard_layout {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        width: 90%;
+        height: auto;
+        padding: 5px 0;
+
+        background-color: #2e2e2e;
+        border: 1px solid #2a2a2a;
+        border-radius: 15px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    }
+
+    .inquirycard_header {
+        display: flex;
+        justify-content: space-between;
+
+        width: 90%;
+        padding: 10px 0;
+    }
+
+    .inquirycard_title {
+        display: flex;
+        justify-content: flex-start;
+
+        width: 90%;
+
+        font-size: min(20px, 1vw);
+
+        cursor: pointer;
+    }
+
+    .inquirycard_icon {
+        display: flex;
+        align-items: center;
+        gap: 0.5vw;
+        font-size: max(15px, 1.3vw);
+        color: #78D900 !important;
+
+        cursor: pointer;
+    }
+
+    .inquirycard_divider {
+        width: 90%;
+        margin: 0 0;
+        
+        border: none;
+        border-top: 1px solid #ffffff; /* 연한 회색 선 */
+        opacity: 0.5;
+
+        cursor: pointer;
+    }
+
+    .inquirycard_info {
+        display: flex;
+        align-items: center;
+        
+        width: 90%;
+        padding: 10px 0;
+        gap: 0.5vw;
+
+        cursor: pointer;
+    }
+
+    .inquirycard_profile {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        width: 80%;
+    }
+
+    .inquirycard_profile_img {
+        width: 2vw;
+        height: 2vw;
+
+        border-radius: 50%;
+
+        object-fit: cover;
+    }
+
+    .inquirycard_text {
+        font-size: min(11px, 0.8vw);
+    }
+
+    .inquirycard_name {
+        display: flex;
+        align-items: flex-end;
+
+        margin: 0;
+    }
+
+    .inquirycard_date {
+        display: flex;
+        align-items: flex-end;
+
+        margin: 0;
+    }
+
+    .inquirycard_content {
+        flex: 1;
+        width: 90%;
+        background-color: #3d3d3d;
+        border-radius: 12px;
+
+        min-height: 70px;
+        padding: 10px 20px;
+        box-sizing: border-box;
+
+        font-size: min(11px, 0.8vw);
+        text-align: left;
+        margin-bottom: 10px;
+    }
+    
 }
 @media (min-width: 769px) and (max-width: 1240px) {
     .noticecard_layout {
@@ -969,6 +1318,359 @@
         white-space: pre-line;
         text-align: left; 
     }
+
+    /* 전체 FAQ 카드 컨테이너 */
+    .faqcard_layout {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 90%;
+        background-color: #242424;
+        border: 1px solid #2a2a2a;
+        border-radius: 12px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        overflow: hidden; /* border-radius 안 벗어나게 */
+    }
+
+    /* Collapse 전체 */
+    .faqcard_layout .ant-collapse {
+        background: transparent;
+        border: none;
+    }
+
+    /* 각 Panel */
+    .faqcard_layout .ant-collapse-item {
+        border-bottom: 1px solid #333;
+    }
+
+    /* header (질문 부분) */
+    .faqcard_layout .ant-collapse-header {
+        display: flex !important;
+        align-items: center !important;
+        font-size: min(15px, 1.5vw);
+        font-weight: bold;
+        color: #78D900 !important;
+        padding: 2.8vw 1.5vw !important;
+    }
+
+    /* hover 효과 */
+    .faqcard_layout:hover {
+        background-color: #2a2a2a;
+    }
+
+    /* 화살표 아이콘 */
+    .faqcard_layout .ant-collapse-arrow {
+        color: #78D900;
+        font-size: 14px;
+    }
+
+    /* answer 내용 부분 */
+    .faqcard_layout .ant-collapse-content {
+        background-color: #000000;
+        border-top: none;
+        padding: 1vw 1.2vw !important;
+    }
+
+    .faqcard_layout .ant-collapse-content-box {
+        color: #ddd;
+        font-size: min(15px, 1.5vw);
+        padding: 12px 16px;
+    }
+
+    .faqcard_header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .faqcard_prefix {
+        font-weight: bold;
+        color: #78D900; /* Q.는 초록 */
+    }
+
+    .faqcard_question {
+        font-weight: bold;
+        color: #ffffff; /* 질문은 흰색 */
+    }
+
+    .faqcard_answer_prefix {
+        font-weight: bold;
+        margin-right: 6px;
+        color: #78D900;
+    }
+
+    .academiccard_layout {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 80%;
+        background-color: #2e2e2e;
+        border: 1px solid #2a2a2a;
+        border-radius: 12px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    .academiccard_index {
+        margin-right: 6px;
+        color: #78d900;
+        font-weight: bold;
+    }
+
+    .academiccard_name {
+        text-align: left;
+        padding-left: 20px;
+        box-sizing: border-box;
+    }
+
+    .academiccard_link {
+    color: #ffffff;
+    text-decoration: none;
+    text-decoration: underline;
+    cursor: pointer;
+    }
+
+    .academiccard_link:hover {
+    text-decoration: underline;
+    color: #aaff00;
+    }
+
+    .academiccard_date {
+        padding-right: 20px;
+    }
+
+    .alarmcard_layout {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        width: 90%;
+        height: auto;
+        padding: 0.8vw 0 1.2vw 0;
+
+        background-color: #242424;
+        border: 1px solid #2a2a2a;
+        border-radius: 15px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    }
+
+    .alarmcard_dot {
+        position: absolute;
+        top: 0.1vw;
+        left: 1vw;
+    }
+
+    .alarmcard_dot .ant-badge-status-dot {
+        width: 8px !important;
+        height: 8px !important;
+        min-width: 10px !important;
+        min-height: 10px !important;
+        border-radius: 50% !important;
+    }
+
+    .alarmcard_header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        width: 91%;
+        padding: 0.5vw 0 1vw 0;
+    }
+
+    .alarmcard_info {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 1vw;
+    }
+
+   
+    .alarmcard_img {
+        width: 3.5vw;
+        height: 3.5vw;
+
+        border-radius: 50%;
+
+        object-fit: cover;
+    }
+
+    .alarmcard_text {
+        font-size: min(11px, 1.2vw);
+    }
+
+    .alarmcard_name {
+        display: flex;
+        align-items: flex-end;
+
+        margin: 0;
+    }
+
+    .alarmcard_date {
+        display: flex;
+        align-items: flex-end;
+
+        margin: 0;
+    }
+
+    /* 체크됐을 때 배경/테두리 색상 */
+    .ant-checkbox-checked .ant-checkbox-inner {
+    background-color: #78D900 !important;
+    border-color: #78D900 !important;
+    }
+
+    /* hover 시 색상 */
+    .ant-checkbox-wrapper:hover .ant-checkbox-inner,
+    .ant-checkbox:hover .ant-checkbox-inner {
+    border-color: #78D900 !important;
+    }
+
+    /* 체크 아이콘 색상 (✔) */
+    .ant-checkbox-checked .ant-checkbox-inner::after {
+    border-color: #fff !important; /* 흰색 체크 표시 */
+    }
+    .alarmcard_content {
+        display: flex;
+        gap: 0.3vw;
+
+        width: 91%;
+        height: 7vw;
+
+
+        font-size: min(10px, 1.2vw);
+        white-space: pre-line;
+        text-align: left; 
+
+        background-color: #2e2e2e;
+        border: 1px solid #2a2a2a;
+        border-radius: 8px;
+
+        padding: 12px;
+        box-sizing: border-box;
+
+        cursor: pointer;
+    }
+
+     .inquirycard_layout {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        width: 90%;
+        height: auto;
+        padding: 5px 0;
+
+        background-color: #2e2e2e;
+        border: 1px solid #2a2a2a;
+        border-radius: 15px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    }
+
+    .inquirycard_header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        width: 90%;
+        padding: 10px 0;
+    }
+
+    .inquirycard_title {
+        display: flex;
+        justify-content: flex-start;
+
+        width: 90%;
+
+        font-size: min(18px, 1.2vw);
+
+        cursor: pointer;
+    }
+
+    .inquirycard_icon {
+        display: flex;
+        align-items: center;
+        gap: 0.5vw;
+        font-size: min(20px, 1.8vw);
+        color: #78D900 !important;
+
+        cursor: pointer;
+    }
+
+    .inquirycard_divider {
+        width: 90%;
+        margin: 0 0;
+        
+        border: none;
+        border-top: 1px solid #ffffff; /* 연한 회색 선 */
+        opacity: 0.5;
+
+        cursor: pointer;
+    }
+
+    .inquirycard_info {
+        display: flex;
+        align-items: center;
+        
+        width: 90%;
+        padding: 10px 0;
+        gap: 0.5vw;
+
+        cursor: pointer;
+    }
+
+    .inquirycard_profile {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        width: 80%;
+    }
+
+    .inquirycard_profile_img {
+        width: 3vw;
+        height: 3vw;
+
+        border-radius: 50%;
+
+        object-fit: cover;
+    }
+
+    .inquirycard_text {
+        font-size: min(10px, 1vw);
+    }
+
+    .inquirycard_name {
+        display: flex;
+        align-items: flex-end;
+
+        margin: 0;
+    }
+
+    .inquirycard_date {
+        display: flex;
+        align-items: flex-end;
+
+        margin: 0;
+    }
+
+    .inquirycard_content {
+        flex: 1;
+        width: 90%;
+        background-color: #3d3d3d;
+        border-radius: 12px;
+
+        min-height: 60px;
+        padding: 10px 15px;
+        box-sizing: border-box;
+
+        font-size: min(10px, 1.1vw);
+        text-align: left;
+        margin-bottom: 10px;
+    }
+
 }
 @media (min-width: 1px) and (max-width: 768px) {
     .noticecard_layout {
@@ -1453,5 +2155,374 @@
         font-size: min(13px, 1.5vw);
         white-space: pre-line;
         text-align: left; 
+    }
+
+    /* 전체 FAQ 카드 컨테이너 */
+    .faqcard_layout {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 90%;
+        background-color: #242424;
+        border: 1px solid #2a2a2a;
+        border-radius: 12px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        overflow: hidden; /* border-radius 안 벗어나게 */
+    }
+
+    /* Collapse 전체 */
+    .faqcard_layout .ant-collapse {
+        background: transparent;
+        border: none;
+    }
+
+    /* 각 Panel */
+    .faqcard_layout .ant-collapse-item {
+        border-bottom: 1px solid #333;
+    }
+
+    /* header (질문 부분) */
+    .faqcard_layout .ant-collapse-header {
+        display: flex !important;
+        align-items: center !important;
+        font-size: min(14px, 2vw);
+        font-weight: bold;
+        color: #78D900 !important;
+        padding: 3.5vw 2.5vw !important;
+    }
+
+    /* hover 효과 */
+    .faqcard_layout:hover {
+        background-color: #2a2a2a;
+    }
+
+    /* 화살표 아이콘 */
+    .faqcard_layout .ant-collapse-arrow {
+        color: #78D900;
+        font-size: 14px;
+    }
+
+    /* answer 내용 부분 */
+    .faqcard_layout .ant-collapse-content {
+        background-color: #000000;
+        border-top: none;
+        padding: 1vw 1.2vw !important;
+    }
+
+    .faqcard_layout .ant-collapse-content-box {
+        color: #ddd;
+        font-size: min(14px, 2vw);
+        padding: 12px 16px;
+    }
+
+    .faqcard_header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .faqcard_prefix {
+        font-weight: bold;
+        color: #78D900; /* Q.는 초록 */
+    }
+
+    .faqcard_question {
+        font-weight: bold;
+        color: #ffffff; /* 질문은 흰색 */
+    }
+
+    .faqcard_answer_prefix {
+        font-weight: bold;
+        margin-right: 6px;
+        color: #78D900;
+    }
+
+    .academiccard_layout {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 80%;
+        background-color: #2e2e2e;
+        border: 1px solid #2a2a2a;
+        border-radius: 12px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    .academiccard_index {
+        margin-right: 6px;
+        color: #78d900;
+        font-weight: bold;
+    }
+
+    .academiccard_name {
+        text-align: left;
+        padding-left: 20px;
+        box-sizing: border-box;
+    }
+
+    .academiccard_link {
+    color: #ffffff;
+    text-decoration: none;
+    text-decoration: underline;
+    cursor: pointer;
+    }
+
+    .academiccard_link:hover {
+    text-decoration: underline;
+    color: #aaff00;
+    }
+
+    .academiccard_date {
+        padding-right: 20px;
+    }
+
+    .alarmcard_layout {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        width: 90%;
+        height: auto;
+        padding: 1vw 0 2vw 0;
+
+        background-color: #242424;
+        border: 1px solid #2a2a2a;
+        border-radius: 15px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    }
+
+    .alarmcard_dot {
+        position: absolute;
+        top: 0.1vw;
+        left: 1vw;
+    }
+
+    .alarmcard_dot .ant-badge-status-dot {
+        width: 6px !important;
+        height: 6px !important;
+        min-width: 9px !important;
+        min-height: 9px !important;
+        border-radius: 50% !important;
+    }
+
+    .alarmcard_header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        width: 92%;
+        padding: 1.7vw 0;
+    }
+
+    .alarmcard_info {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 1.5vw;
+    }
+
+   
+    .alarmcard_img {
+        width: 5vw;
+        height: 5vw;
+
+        border-radius: 50%;
+
+        object-fit: cover;
+    }
+
+    .alarmcard_text {
+        font-size: min(10px, 1.5vw);
+    }
+
+    .alarmcard_name {
+        display: flex;
+        align-items: flex-end;
+
+        margin: 0;
+    }
+
+    .alarmcard_date {
+        display: flex;
+        align-items: flex-end;
+
+        margin: 0;
+    }
+
+    /* AlarmCard 전용 체크박스 크기 */
+    .alarmcard_checkbox .ant-checkbox-inner {
+        width: 2.5vw;   /* 원하는 크기 */
+        height: 2.5vw;
+    }
+
+    /* ✔ 체크 표시 위치 & 크기 */
+    .alarmcard_checkbox.ant-checkbox-checked .ant-checkbox-inner::after {
+        width: 6px;
+        height: 12px;
+        left: 30%;
+        top: 45%;
+    }
+
+
+
+    /* 체크됐을 때 배경/테두리 색상 */
+    .ant-checkbox-checked .ant-checkbox-inner {
+    background-color: #78D900 !important;
+    border-color: #78D900 !important;
+    }
+
+    /* hover 시 색상 */
+    .ant-checkbox-wrapper:hover .ant-checkbox-inner,
+    .ant-checkbox:hover .ant-checkbox-inner {
+    border-color: #78D900 !important;
+    }
+
+    /* 체크 아이콘 색상 (✔) */
+    .ant-checkbox-checked .ant-checkbox-inner::after {
+    border-color: #fff !important; /* 흰색 체크 표시 */
+    }
+    .alarmcard_content {
+        display: flex;
+        align-items: center;
+        gap: 0.3vw;
+
+        width: 92%;
+        height: 7vw;
+
+
+        font-size: min(10px, 1.5vw);
+        white-space: pre-line;
+        text-align: left; 
+
+        background-color: #2e2e2e;
+        border: 1px solid #2a2a2a;
+        border-radius: 8px;
+
+        padding: 12px;
+        box-sizing: border-box;
+
+        cursor: pointer;
+    }
+
+     .inquirycard_layout {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        width: 90%;
+        height: auto;
+        padding: 5px 0;
+
+        background-color: #2e2e2e;
+        border: 1px solid #2a2a2a;
+        border-radius: 15px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    }
+
+    .inquirycard_header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        width: 90%;
+        padding: 10px 0;
+    }
+
+    .inquirycard_title {
+        display: flex;
+        justify-content: flex-start;
+
+        width: 90%;
+
+        font-size: min(18px, 1.8vw);
+
+        cursor: pointer;
+    }
+
+    .inquirycard_icon {
+        display: flex;
+        align-items: center;
+        gap: 0.5vw;
+        font-size: min(20px, 2.5vw);
+        color: #78D900 !important;
+
+        cursor: pointer;
+    }
+
+    .inquirycard_divider {
+        width: 90%;
+        margin: 0 0;
+        
+        border: none;
+        border-top: 1px solid #ffffff; /* 연한 회색 선 */
+        opacity: 0.5;
+
+        cursor: pointer;
+    }
+
+    .inquirycard_info {
+        display: flex;
+        align-items: center;
+        
+        width: 90%;
+        padding: 10px 0;
+        gap: 1vw;
+
+        cursor: pointer;
+    }
+
+    .inquirycard_profile {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        width: 80%;
+    }
+
+    .inquirycard_profile_img {
+        width: 4vw;
+        height: 4vw;
+
+        border-radius: 50%;
+
+        object-fit: cover;
+    }
+
+    .inquirycard_text {
+        font-size: min(10px, 1.3vw);
+    }
+
+    .inquirycard_name {
+        display: flex;
+        align-items: flex-end;
+
+        margin: 0;
+    }
+
+    .inquirycard_date {
+        display: flex;
+        align-items: flex-end;
+
+        margin: 0;
+    }
+
+    .inquirycard_content {
+        flex: 1;
+        width: 90%;
+        background-color: #3d3d3d;
+        border-radius: 12px;
+
+        min-height: 50px;
+        padding: 8px 10px;
+        box-sizing: border-box;
+
+        font-size: min(10px, 1.3vw);
+        text-align: left;
+        margin-bottom: 10px;
     }
 }
