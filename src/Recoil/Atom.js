@@ -13,7 +13,7 @@ export const userBriefState = atom({
     student_number: "",
     department: "",
     roleType:"",
-    profileImageUrl: "",
+    profileImage: { url: "" },
   },
 });
 

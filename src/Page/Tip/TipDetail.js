@@ -126,8 +126,7 @@ const TipDetail = () => {
     setIsFetchingComment(true);
     try {
       const data = await fetchTipComments(id, commentPage + 1, 5);
-
-       console.log("댓글 API 응답 data:", data);
+      
       setCommentData(data.content);
       setCommentTotalPages(data.totalPages);
     } catch (error) {

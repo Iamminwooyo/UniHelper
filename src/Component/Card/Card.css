@@ -206,8 +206,8 @@
     }
 
     .subscribecard_profile_img {
-        width: 2vw;
-        height: 2vw;
+        width: min(28px, 2vw);
+        height: min(28px, 2vw);
 
         border-radius: 50%;
 
@@ -252,6 +252,7 @@
     .tipcard_header {
         display: flex;
         justify-content: space-between;
+        align-items: center;
 
         width: 90%;
         padding: 10px 0;
@@ -854,7 +855,7 @@
         margin: 0 0 0 0;
         padding: 20px 0;
 
-        font-size: min(18px, 1.3vw);
+        font-size: min(16px, 1.2vw);
         text-align: left;
 
         cursor: pointer;
@@ -912,8 +913,8 @@
     }
 
     .noticecard_profile_img {
-        width: 3vw;
-        height: 3vw;
+        width: 2.8vw;
+        height: 2.8vw;
 
         border-radius: 50%;
 
@@ -921,7 +922,7 @@
     }
 
     .noticecard_text {
-        font-size: min(13px, 1vw);
+        font-size: min(10px, 1vw);
     }
 
     .noticecard_name {
@@ -942,7 +943,7 @@
         display: flex;
         align-items: center;
         justify-content: flex-end;
-        font-size: max(15px, 1.3vw);
+        font-size: min(15px, 1.8vw);
     }
 
     .custom-dropdown-menu {
@@ -985,7 +986,7 @@
         margin: 0 0 0 0;
         padding: 20px 0;
 
-        font-size: min(14px, 1.5vw);
+        font-size: min(14px, 1.2vw);
         text-align: left;
     }
 
@@ -1041,8 +1042,8 @@
     }
 
     .subscribecard_profile_img {
-        width: 3vw;
-        height: 3vw;
+        width: 2.8vw;
+        height: 2.8vw;
 
         border-radius: 50%;
 
@@ -1050,7 +1051,7 @@
     }
 
     .subscribecard_text {
-        font-size: min(11px, 1.1vw);
+        font-size: min(10px, 1vw);
     }
 
     .subscribecard_name {
@@ -1087,6 +1088,7 @@
     .tipcard_header {
         display: flex;
         justify-content: space-between;
+        align-items: center;
 
         width: 90%;
         padding: 10px 0;
@@ -1693,7 +1695,7 @@
         margin: 0 0 0 0;
         padding: 20px 0;
 
-        font-size: min(18px, 2vw);
+        font-size: min(16px, 1.9vw);
         text-align: left;
 
         cursor: pointer;
@@ -1718,7 +1720,7 @@
         min-height: 100px;
         margin: 0 0;
 
-        font-size: min(12px, 1.7vw);
+        font-size: min(12px, 1.6vw);
         white-space: pre-line;
         text-align: left; 
 
@@ -1751,8 +1753,8 @@
     }
 
     .noticecard_profile_img {
-        width: 4.5vw;
-        height: 4.5vw;
+        width: 4.2vw;
+        height: 4.2vw;
 
         border-radius: 50%;
 
@@ -1760,7 +1762,7 @@
     }
 
     .noticecard_text {
-        font-size: min(13px, 1.7vw);
+        font-size: min(13px, 1.5vw);
     }
 
     .noticecard_name {
@@ -1781,7 +1783,7 @@
         display: flex;
         align-items: center;
         justify-content: flex-end;
-        font-size: max(17px, 1.5vw);
+        font-size: min(17px, 2.3vw);
     }
 
     .custom-dropdown-menu {
@@ -1925,6 +1927,7 @@
     .tipcard_header {
         display: flex;
         justify-content: space-between;
+        align-items: center;
 
         width: 90%;
         padding: 10px 0;
@@ -1936,8 +1939,7 @@
 
         width: 90%;
 
-        font-size: max(13px, 2vw);
-
+        font-size: max(12px, 1.8vw);
         cursor: pointer;
     }
 
@@ -1987,7 +1989,7 @@
     }
 
     .tipcard_text {
-        font-size: min(13px, 1.7vw);
+        font-size: min(11px, 1.6vw);
     }
 
     .tipcard_name {
@@ -2011,7 +2013,7 @@
     }
 
     .tipcard_tag_item {
-        font-size: min(13px, 1.7vw);
+        font-size: min(11px, 1.6vw);
     }
 
     .tipcard_bookmark {
@@ -2027,7 +2029,7 @@
         min-height: 80px;
         margin: 0 0;
 
-        font-size: min(12px, 1.7vw);
+        font-size: min(11px, 1.5vw);
         white-space: pre-line;
         text-align: left; 
 
@@ -2070,7 +2072,7 @@
         align-items: center;
         gap: 5px;
 
-        font-size: max(12px, 1.7vw);
+        font-size: max(11px, 1.5vw);
     }
 
     .commentcard_layout {

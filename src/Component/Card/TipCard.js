@@ -194,14 +194,14 @@ const TipCard = ({
                 style={{cursor:'pointer'}}
                 onClick={(e) => e.stopPropagation()}
               >
-                <HiDotsVertical />
+                <HiDotsVertical className="tipcard_icon"/>
               </div>
             </Dropdown>
           )}
 
           {!isOwner && isTip && role === "MANAGER" && (
             <MdDeleteOutline
-              className="tipcard_icon cursor-pointer"
+              style={{cursor:'pointer'}}
               onClick={(e) => {
                 e.stopPropagation();
                 onDelete?.(id);

@@ -196,9 +196,8 @@
     }
 
     .academic_chat_avatar {
-        width: 1.5vw;
-        height: 1.5vw;
-        border-radius: 50%;
+        width: min(30px, 2.5vw);
+        height: min(30px, 2.5vw);
         margin-right: 8px;
         object-fit: cover;
     }
@@ -700,9 +699,8 @@
     }
 
     .academic_chat_avatar {
-        width: 1.5vw;
-        height: 1.5vw;
-        border-radius: 50%;
+        width: min(30px, 3.5vw);
+        height: min(30px, 3.5vw);
         margin-right: 8px;
         object-fit: cover;
     }
@@ -1204,10 +1202,9 @@
     }
 
     .academic_chat_avatar {
-        width: 1.5vw;
-        height: 1.5vw;
-        border-radius: 50%;
-        margin-right: 8px;
+        width: min(40px, 4vw);
+        height: min(40px, 4vw);
+        margin-right: 1.5vw;
         object-fit: cover;
     }
 
