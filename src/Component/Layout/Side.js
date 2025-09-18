@@ -14,7 +14,7 @@ const Side = () => {
   const user = useRecoilValue(userBriefState);
 
   const isMobile = useMediaQuery({ maxWidth: 768 });
-  
+
   const menusByPath = [
     {
       match: (p) => p.startsWith("/user"),
@@ -83,7 +83,7 @@ const Side = () => {
       {!isMobile && (
         <section className="side_profile">
           <img
-            src={user.profileImageUrl ? user.profileImageUrl : "/image/profile.png"}
+            src={user.profileImage?.url ? user.profileImage.url : "/image/profile.png"}
             alt="profile"
             className="side_profile_img" 
           />

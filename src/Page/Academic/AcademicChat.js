@@ -138,8 +138,8 @@ const AcademicChat = () => {
         <div className="academic_chat_warning">
           <Collapse>
             <Panel header="주의사항" key="1">
-              <p>이 챗봇은 학사 관련 기본 QnA를 제공합니다.</p>
-              <p>정확한 정보는 학사 포털을 반드시 확인하세요.</p>
+              <p>이 챗봇은 매 학기 종합정보서비스 종합강의시간표를 기준으로 답변을 제공합니다.</p>
+              <p>각 질문은 개별로 전에 했던 대화 내용이 이어지지 않습니다.</p>
             </Panel>
           </Collapse>
         </div>

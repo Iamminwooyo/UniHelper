@@ -15,6 +15,25 @@ export const departments = [
   "무전공",
 ];
 
+// 부서 리스트
+export const departmentsStaff = [
+  "총장 비서실","감사실",
+  "부총장실","기획처",
+  "교무처","교육혁신처",
+  "학생처","사무처",
+  "국제교류교육원","입학관리실",
+  "기관생명윤리위원회","중앙도서관",
+  "생활관","체육지원실",
+  "신문방송국","박물관",
+  "산학협력단","스포츠-웰니스연구센터",
+  "정보관리실","예비군대대",
+  "글로벌사회공헌원","단과대학 교학과",
+  "대학원 교학과","총학생회",
+  "무도대학 학생회","체육과학대학 학생회",
+  "문화예술대학 학생회","인문사회융합대학 학생회",
+  "AI바이오융합대학 학생회",
+];
+
 // 학기 리스트 (1학년 1학기 ~ 4학년 2학기)
 export const semesters = [
   "1학년 1학기",
@@ -28,7 +47,7 @@ export const semesters = [
 ];
 
 // ✅ 더미 사용자 데이터
-export const userData = {
+export const gradeData = {
   name: "정민기",
   department: "컴퓨터과학과",
   studentId: "202301111",
@@ -51,32 +70,3 @@ export const userData = {
     },
   },
 };
-
-
-// ✅ 더미 알림 데이터
-export const alarmData = [
-  {
-    id: 1,
-    noticeId: 1,
-    name: "학사과",
-    date: "2025-09-04 10:23",
-    content: "2025학년도 2학기 수강신청 안내 공지가 등록되었습니다.",
-    isRead: false,   // ⬅️ 아직 안 읽음
-  },
-  {
-    id: 2,
-    noticeId: 2,
-    name: "컴퓨터공학과",
-    date: "2025-09-03 18:11",
-    content: "졸업논문 설명회 일정이 공지되었습니다.",
-    isRead: true,    // ⬅️ 읽음 처리됨
-  },
-  {
-    id: 3,
-    noticeId: 3,
-    name: "학생지원팀",
-    date: "2025-09-02 14:40",
-    content: "장학금 신청 마감일이 다가오고 있습니다.",
-    isRead: false,
-  },
-];

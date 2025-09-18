@@ -477,6 +477,15 @@
       opacity: 0.3;
     }
 
+    .custommodal_upload_status {
+      display: flex;
+      align-items: center;
+      color: #78D900;
+      font-size: 13px;
+      gap: 0.5vw;
+      padding: 10px 0;
+    }
+
     .custommodal_chat {
       width: 90%;
       display: flex;

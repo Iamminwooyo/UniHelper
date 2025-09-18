@@ -61,3 +61,18 @@ export const reissueToken = async (accessToken, refreshToken) => {
   const response = await axios.post("/auth/reissue", { accessToken, refreshToken });
   return response.data;
 };
+
+// 계정 이미지 API
+export const fetchImagePreview = async (filename) => {
+  const token = sessionStorage.getItem("accessToken");
+  if (!token) throw new Error("로그인이 필요합니다.");
+
+  const safeFilename = filename.replace(/^\/files\//, "").replace(/ /g, "%20");
+
+  const response = await axios.get(`/notices/image-preview?filename=${safeFilename}`, {
+    responseType: "blob",
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  return response.data;
+};

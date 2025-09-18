@@ -4,7 +4,7 @@ import { useSetRecoilState } from "recoil";
 import { AlarmCountState } from "../../Recoil/Atom";
 import AlarmCard from "../../Component/Card/AlarmCard";
 import { useNavigate } from "react-router-dom";
-import { fetchAlarm, markAlarmsRead, deleteAlarms, fetchUnreadAlarmCount } from "../../API/UserApi";
+import { fetchAlarm, markAlarmsRead, deleteAlarms, fetchUnreadAlarmCount } from "../../API/UserAPI";
 import TextModal from "../../Component/Modal/TextModal";
 import { Checkbox, message } from "antd";
 

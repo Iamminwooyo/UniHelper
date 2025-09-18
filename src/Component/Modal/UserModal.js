@@ -1,8 +1,11 @@
 import "./Modal.css";
-import { departments, semesters } from "../../Data/Userdata";
-import { Modal, Input, Button, Select, Upload, Image } from "antd";
+import { useRecoilValue } from "recoil";
+import { userBriefState } from "../../Recoil/Atom";
+import { departments, departmentsStaff, semesters } from "../../Data/Userdata";
+import { uploadCreditsFile } from "../../API/UserAPI";
+import { Modal, Input, Button, Select, Upload, Image, message, Spin } from "antd";
 import { useEffect, useState } from "react";
-import { UploadOutlined, PlusOutlined } from "@ant-design/icons";
+import { UploadOutlined, PlusOutlined, LoadingOutlined } from "@ant-design/icons";
 
 const { Option } = Select;
 
@@ -15,27 +18,20 @@ const getBase64 = (file) =>
   });
 
 const UserModal = ({ open, onCancel, initialData = null, mode, onSuccess }) => {
-  // ------------------ 상태 ------------------
-  const [name, setName] = useState(initialData?.name || "");
-  const [studentId, setStudentId] = useState(initialData?.studentId || "");
-  const [department, setDepartment] = useState(initialData?.department || "");
-  const [semester, setSemester] = useState(initialData?.semester || "");
-  const [subType, setSubType] = useState(initialData?.subType || "부전공");
-  const [subMajor, setSubMajor] = useState(initialData?.subMajor || "");
+  const [isUploading, setIsUploading] = useState(false);
 
-  // profileImage -> fileList로 통합
-  const [fileList, setFileList] = useState(
-    initialData?.profileImage
-      ? [
-          {
-            uid: "-1",
-            name: "profile.png",
-            status: "done",
-            url: initialData.profileImage,
-          },
-        ]
-      : []
-  );
+  const userBrief = useRecoilValue(userBriefState);
+  const roleType = userBrief.roleType;
+
+  // ------------------ 상태 ------------------
+  const [username, setUsername] = useState("");
+  const [studentNumber, setStudentNumber] = useState("");
+  const [department, setDepartment] = useState("");
+  const [gradeLabel, setGradeLabel] = useState("");
+  const [subType, setSubType] = useState("부전공");
+  const [subMajor, setSubMajor] = useState("");
+
+  const [fileList, setFileList] = useState([]);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
 
@@ -72,18 +68,30 @@ const UserModal = ({ open, onCancel, initialData = null, mode, onSuccess }) => {
       }
 
       if (mode === "profile" && initialData) {
-        setName(initialData.name || "");
-        setStudentId(initialData.studentId || "");
+        setUsername(initialData.username || "");
+        setStudentNumber(initialData.studentNumber || "");
         setDepartment(initialData.department || "");
-        setSemester(initialData.semester || "");
+        setGradeLabel(initialData.gradeLabel || "");
+
+        if (initialData.minor) {
+          setSubType("부전공");
+          setSubMajor(initialData.minor);
+        } else if (initialData.doubleMajor) {
+          setSubType("복수전공");
+          setSubMajor(initialData.doubleMajor);
+        } else {
+          setSubType("부전공");
+          setSubMajor("");
+        }
+
         setFileList(
-          initialData.profileImage
+          initialData.profileUrl
             ? [
                 {
                   uid: "-1",
                   name: "profile.png",
                   status: "done",
-                  url: initialData.profileImage,
+                  url: initialData.profileUrl,
                 },
               ]
             : []
@@ -104,6 +112,7 @@ const UserModal = ({ open, onCancel, initialData = null, mode, onSuccess }) => {
             name: file.name,
             status: "done",
             url,
+            originFileObj: file,
           },
         ]);
         onSuccess && onSuccess("ok");
@@ -119,43 +128,80 @@ const UserModal = ({ open, onCancel, initialData = null, mode, onSuccess }) => {
     setPreviewOpen(true);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (mode === "profile") {
       const data = {
-        name,
-        studentId,
+        username,
+        studentNumber: roleType === "STUDENT" ? studentNumber : "",
         department,
-        semester,
-        subType,
-        subMajor,
-        profileImage: fileList[0]?.url || null,
+        gradeLabel: roleType === "STUDENT" ? gradeLabel : "",
+        minor: roleType === "STUDENT" && subType === "부전공" ? subMajor : "",
+        doubleMajor: roleType === "STUDENT" && subType === "복수전공" ? subMajor : "",
+        profileImageFile: fileList[0]?.originFileObj || null,
       };
       console.log("제출 데이터:", data);
       if (onSuccess) onSuccess(data);
       onCancel();
     }
 
-    if (mode === "grade") {
-      if (step === 1) {
-        setStep(2);
-        return;
+     if (mode === "grade") {
+        if (step === 1) {
+          if (attachmentFiles.length === 0) {
+            message.error("파일을 선택해주세요.");
+            return;
+          }
+
+          const formData = new FormData();
+          formData.append("file", attachmentFiles[0].originFileObj);
+
+          try {
+            setIsUploading(true); // 🔒 세마포어 ON
+            const result = await uploadCreditsFile(formData); // API 호출
+            console.log("📂 업로드 응답:", result);
+
+           setGradeData({
+            generalRequired: result["교양 필수"] ?? "",
+            basicMajor: result["기초전공"] ?? "",
+            major: result["단일전공자 최소전공이수학점"] ?? "",
+            subMinor: result["부전공 기초전공"] ?? result["복수전공 기초전공"] ?? "",
+            linkedMajor: result["부전공 최소전공이수학점"] ?? result["복수전공 최소전공이수학점"] ?? "",
+            totalCredits: result["졸업학점"] ?? "",
+            acquiredCredits: result["취득학점"] ?? "",
+            transferCredits: result["편입인정학점"] ?? "",
+            gpa: result["학점평점"] ?? "",
+          });
+
+            setStep(2);
+          } catch (err) {
+            console.error("❌ 업로드 실패:", err);
+            if (err.response?.status === 401) {
+              message.error("인증이 만료되었습니다. 다시 로그인해주세요.");
+            } else {
+              message.error("파일 업로드 중 오류가 발생했습니다.");
+            }
+          } finally {
+            setIsUploading(false); // 🔓 세마포어 OFF
+          }
+          return;
+        }
+
+        if (step === 2) {
+          const data = { ...gradeData };
+          if (onSuccess) onSuccess(data);
+          setStep(1);
+          onCancel();
+          }
       }
-      if (step === 2) {
-        const data = { ...gradeData, attachmentFiles };
-        console.log("제출 데이터:", data);
-        if (onSuccess) onSuccess(data);
-        setStep(1);
-        onCancel();
-      }
-    }
   };
+
   return (
     <Modal
       open={open}
-      onCancel={onCancel}
+      onCancel={isUploading ? null : onCancel} 
       footer={null}
       centered
-      closable={false}
+      closable={!isUploading} 
+      maskClosable={!isUploading} 
       wrapClassName="custommodal_wrap"
     >
       <section className="custommodal_layout">
@@ -166,7 +212,7 @@ const UserModal = ({ open, onCancel, initialData = null, mode, onSuccess }) => {
         {/* ---------------- Profile 모드 ---------------- */}
         {mode === "profile" && (
           <>
-            {/* 프로필 이미지 업로드 (서클 + 삭제 + 미리보기) */}
+            {/* 프로필 이미지 업로드 */}
             <div className="custommodal_input_group">
               <p className="custommodal_input_label">프로필 이미지</p>
               <Upload
@@ -200,23 +246,26 @@ const UserModal = ({ open, onCancel, initialData = null, mode, onSuccess }) => {
               <p className="custommodal_input_label">이름</p>
               <Input
                 placeholder="이름"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 maxLength={100}
+                disabled
               />
             </div>
 
-            {/* 학과 */}
-            <div className="custommodal_input_group" style={{ marginTop: 16 }}>
-              <p className="custommodal_input_label">학과</p>
+            {/* 학과 or 부서 */}
+            <div className="custommodal_input_group" style={{ marginTop: 8 }}>
+              <p className="custommodal_input_label">
+                {roleType === "STUDENT" ? "학과" : "부서"}
+              </p>
               <Select
-                placeholder="학과"
+                placeholder={roleType === "STUDENT" ? "학과" : "부서"}
                 value={department || undefined}
                 onChange={(value) => setDepartment(value)}
                 style={{ width: "100%" }}
                 getPopupContainer={(triggerNode) => triggerNode.parentNode}
               >
-                {departments.map((dep) => (
+                {(roleType === "STUDENT" ? departments : departmentsStaff).map((dep) => (
                   <Option key={dep} value={dep}>
                     {dep}
                   </Option>
@@ -224,64 +273,69 @@ const UserModal = ({ open, onCancel, initialData = null, mode, onSuccess }) => {
               </Select>
             </div>
 
-            {/* 학기 */}
-            <div className="custommodal_input_group" style={{ marginTop: 16 }}>
-              <p className="custommodal_input_label">학기</p>
-              <Select
-                placeholder="학기"
-                value={semester || undefined}
-                onChange={(value) => setSemester(value)}
-                style={{ width: "100%" }}
-                getPopupContainer={(triggerNode) => triggerNode.parentNode}
-              >
-                {semesters.map((sem) => (
-                  <Option key={sem} value={sem}>
-                    {sem}
-                  </Option>
-                ))}
-              </Select>
-            </div>
+            {/* STUDENT 전용 필드 */}
+            {roleType === "STUDENT" && (
+              <>
+                {/* 학기 */}
+                <div className="custommodal_input_group" style={{ marginTop: 16 }}>
+                  <p className="custommodal_input_label">학기</p>
+                  <Select
+                    placeholder="학기"
+                    value={gradeLabel || undefined}
+                    onChange={(value) => setGradeLabel(value)}
+                    style={{ width: "100%" }}
+                    getPopupContainer={(triggerNode) => triggerNode.parentNode}
+                  >
+                    {semesters.map((sem) => (
+                      <Option key={sem} value={sem}>
+                        {sem}
+                      </Option>
+                    ))}
+                  </Select>
+                </div>
 
-            {/* 학번 */}
-            <div className="custommodal_input_group" style={{ marginTop: 16 }}>
-              <p className="custommodal_input_label">학번</p>
-              <Input
-                placeholder="학번"
-                value={studentId}
-                onChange={(e) => setStudentId(e.target.value)}
-                maxLength={15}
-              />
-            </div>
+                {/* 학번 */}
+                <div className="custommodal_input_group" style={{ marginTop: 16 }}>
+                  <p className="custommodal_input_label">학번</p>
+                  <Input
+                    placeholder="학번"
+                    value={studentNumber}
+                    onChange={(e) => setStudentNumber(e.target.value)}
+                    maxLength={15}
+                  />
+                </div>
 
-            {/* 부/복수 전공 */}
-            <div className="custommodal_input_group" style={{ marginTop: 16 }}>
-              <p className="custommodal_input_label">부/복수 전공</p>
-              <div style={{ display: "flex", gap: "10px" }}>
-                <Select
-                  placeholder="부/복수"
-                  value={subType}
-                  onChange={(value) => setSubType(value)}
-                  style={{ width: "40%" }}
-                  getPopupContainer={(triggerNode) => triggerNode.parentNode}
-                >
-                  <Option value="부전공">부전공</Option>
-                  <Option value="복수전공">복수전공</Option>
-                </Select>
-                <Select
-                  placeholder="학과"
-                  value={subMajor || undefined}
-                  onChange={(value) => setSubMajor(value)}
-                  style={{ width: "60%" }}
-                  getPopupContainer={(triggerNode) => triggerNode.parentNode}
-                >
-                  {departments.map((dep) => (
-                    <Option key={dep} value={dep}>
-                      {dep}
-                    </Option>
-                  ))}
-                </Select>
-              </div>
-            </div>
+                {/* 부/복수 전공 */}
+                <div className="custommodal_input_group" style={{ marginTop: 16 }}>
+                  <p className="custommodal_input_label">부/복수 전공</p>
+                  <div style={{ display: "flex", gap: "10px" }}>
+                    <Select
+                      placeholder="부/복수"
+                      value={subType}
+                      onChange={(value) => setSubType(value)}
+                      style={{ width: "40%" }}
+                      getPopupContainer={(triggerNode) => triggerNode.parentNode}
+                    >
+                      <Option value="부전공">부전공</Option>
+                      <Option value="복수전공">복수전공</Option>
+                    </Select>
+                    <Select
+                      placeholder="학과"
+                      value={subMajor || undefined}
+                      onChange={(value) => setSubMajor(value)}
+                      style={{ width: "60%" }}
+                      getPopupContainer={(triggerNode) => triggerNode.parentNode}
+                    >
+                      {departments.map((dep) => (
+                        <Option key={dep} value={dep}>
+                          {dep}
+                        </Option>
+                      ))}
+                    </Select>
+                  </div>
+                </div>
+              </>
+            )}
           </>
         )}
 
@@ -296,11 +350,26 @@ const UserModal = ({ open, onCancel, initialData = null, mode, onSuccess }) => {
               beforeUpload={() => false}
               multiple={false}
               accept=".pdf"
+              disabled={isUploading} 
             >
-              <Button icon={<UploadOutlined />} className="custommodal_file_upload_button">
+              <Button
+                icon={<UploadOutlined />}
+                className="custommodal_file_upload_button"
+                disabled={isUploading}
+              >
                 파일 선택
               </Button>
             </Upload>
+
+            {isUploading && (
+              <div className="custommodal_upload_status">
+                <Spin
+                  indicator={<LoadingOutlined style={{ color: "#78d900" }} spin />}
+                  size="small"
+                />
+                <span style={{ marginLeft: 8 }}>이수구분표 업로드 중...</span>
+              </div>
+            )}
           </div>
         )}
 
@@ -315,11 +384,17 @@ const UserModal = ({ open, onCancel, initialData = null, mode, onSuccess }) => {
             ["총 이수학점", "totalCredits"],
             ["평점", "gpa"],
           ].map(([label, key]) => (
-            <div className="custommodal_input_group" style={{ marginTop: 16 }} key={key}>
+            <div
+              className="custommodal_input_group"
+              style={{ marginTop: 16 }}
+              key={key}
+            >
               <p className="custommodal_input_label">{label}</p>
               <Input
                 value={gradeData[key]}
-                onChange={(e) => setGradeData({ ...gradeData, [key]: e.target.value })}
+                onChange={(e) =>
+                  setGradeData({ ...gradeData, [key]: e.target.value })
+                }
               />
             </div>
           ))}
@@ -327,10 +402,15 @@ const UserModal = ({ open, onCancel, initialData = null, mode, onSuccess }) => {
 
       {/* 버튼 영역 */}
       <section className="custommodal_footer">
-        <Button type="primary" className="custommodal_button_ok" onClick={handleSubmit}>
+        <Button
+          type="primary"
+          className="custommodal_button_ok"
+          onClick={handleSubmit}
+          disabled={isUploading}
+        >
           {mode === "grade" && step === 1 ? "다음" : "확인"}
         </Button>
-        <Button className="custommodal_button_cancle" onClick={onCancel}>
+        <Button className="custommodal_button_cancle" onClick={onCancel} disabled={isUploading}>
           취소
         </Button>
       </section>

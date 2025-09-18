@@ -5,7 +5,7 @@ import { useMediaQuery } from 'react-responsive';
 import { useSetRecoilState } from "recoil";
 import { userBriefState } from "../../Recoil/Atom";
 import PasswordModal from "../../Component/Modal/PasswordModal";
-import { login, fetchUserBrief } from "../../API/AccountAPI";
+import { login, fetchUserBrief, fetchImagePreview } from "../../API/AccountAPI";
 import { Input, Button, message } from "antd";
 
 const Login = () => {
@@ -42,7 +42,50 @@ const Login = () => {
       sessionStorage.setItem("refreshToken", response.refreshToken);
 
       const briefRes = await fetchUserBrief(response.accessToken);
-      setUserBrief(briefRes);
+
+      // let profileImageObj = { url: "" };
+      // if (briefRes.profileImage?.url) {
+      //   try {
+      //     const blob = await fetchImagePreview(briefRes.profileImage.url);
+      //     const url = URL.createObjectURL(blob);
+      //     profileImageObj = { url };
+      //   } catch (err) {
+      //     console.error("❌ 프로필 이미지 불러오기 실패:", err);
+      //     profileImageObj = { url: "/image/profile.png" };
+      //   }
+      // }
+
+      // setUserBrief({
+      //   userId: briefRes.userId,
+      //   username: briefRes.username,
+      //   student_number: briefRes.studentNumber,
+      //   department: briefRes.department,
+      //   roleType: briefRes.roleType,
+      //   profileImage: profileImageObj,
+      // });
+
+      const rawUrl = briefRes.profileImage?.url;
+      const cleanUrl = rawUrl
+        ? rawUrl
+            .replace("Localhost", "localhost")
+            .replace("Files", "files")
+            .replace("proFiles", "profiles")
+        : "/image/profile.png";
+
+      console.log("🔎 원본 URL:", rawUrl);
+      console.log("✅ 교정된 URL:", cleanUrl);
+
+      setUserBrief({
+        userId: briefRes.userId,
+        username: briefRes.username,
+        student_number: briefRes.student_number,
+        department: briefRes.department,
+        roleType: briefRes.roleType,
+        profileImage: {
+          url: cleanUrl,
+        },
+      });
+
 
       message.success("로그인 성공!");
       navigate("/");
