@@ -50,6 +50,55 @@ export const fetchChatHistoryDetail = async (id) => {
   return response.data;
 };
 
+// 폴더 목록 조회 API
+export const fetchCollections = async () => {
+  const token = sessionStorage.getItem("accessToken");
+  if (!token) throw new Error("로그인이 필요합니다.");
+
+  const response = await axios.get("/admin/processing/collections", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
+
+  return response.data;
+};
+
+// 파일 목록 조회
+export const fetchFileTree = async () => {
+  const token = sessionStorage.getItem("accessToken");
+  if (!token) throw new Error("로그인이 필요합니다.");
+
+  const response = await axios.get("/admin/processing/files/tree", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
+
+  return response.data; 
+};
+
+// 파일 업로드 API
+export const uploadFiles = async (formData, collectionName) => {
+  const token = sessionStorage.getItem("accessToken");
+  if (!token) throw new Error("로그인이 필요합니다.");
+
+  const response = await axios.post(
+    `/admin/processing/files?collection_name=${encodeURIComponent(collectionName)}`,
+    formData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+
+  return response.data;
+};
+
 // 문의 목록 조회 API
 export const fetchInquiries = async (page, size) => {
   const token = sessionStorage.getItem("accessToken");
@@ -101,6 +150,19 @@ export const deleteInquiries = async (ids) => {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
+  });
+
+  return response.data;
+};
+
+// 학사정보 파일 다운로드 API
+export const downloadFileById = async (id) => {
+  const token = sessionStorage.getItem("accessToken");
+  if (!token) throw new Error("로그인이 필요합니다.");
+
+  const response = await axios.get(`/admin/processing/files/${id}/download`, {
+    headers: { Authorization: `Bearer ${token}` },
+    responseType: "blob",
   });
 
   return response.data;

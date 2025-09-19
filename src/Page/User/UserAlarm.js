@@ -38,26 +38,19 @@ const UserAlarm = () => {
     try {
       const data = await fetchAlarm({ page: currentPage, size: pageSize });
 
-      
-    // ✅ 원본 데이터 확인
-    console.log("📥 알림 API 원본:", data);
+      const mapped = (data.content || []).map((alarm) => ({
+        id: alarm.notificationId, 
+        noticeId: alarm.noticeId,
+        name: alarm.department,
+        date: alarm.createdAt,
+        content: alarm.noticeTitle,
+        isRead: alarm.read,
+        selected: false,
+      }));
 
-    const mapped = (data.content || []).map((alarm) => ({
-      id: alarm.notificationId, 
-      noticeId: alarm.noticeId,
-      name: alarm.department,
-      date: alarm.createdAt,
-      content: alarm.noticeTitle,
-      isRead: alarm.read,
-      selected: false, // ✅ 기본값 추가
-    }));
-
-    // ✅ 변환된 데이터 확인
-    console.log("🔄 변환된 알림 데이터:", mapped);
       setAlarms(mapped);
       setTotalPages(data.totalPages || 0);
     } catch (error) {
-      console.error("❌ 알림 불러오기 실패:", error);
       message.error("알림을 불러오는데 실패했습니다.");
     } finally {
       setFetchingAlarm(false);
@@ -65,6 +58,7 @@ const UserAlarm = () => {
     }
   }, [currentPage, pageSize]);
 
+  // 렌더링 함수
   useEffect(() => {
     loadAlarms();
   }, [loadAlarms]);
@@ -75,12 +69,11 @@ const UserAlarm = () => {
       await markAlarmsRead([id]);
       navigate(`/notice/${noticeId}`);
     } catch (error) {
-      console.error("❌ 개별 읽음 처리 실패:", error);
       message.error("읽음 처리 중 오류가 발생했습니다.");
     }
   };
 
-  // 개별 선택 토글
+  // 개별 선택 토글 함수
   const handleCheck = (id) => {
     setAlarms((prev) =>
       prev.map((alarm) =>
@@ -89,35 +82,35 @@ const UserAlarm = () => {
     );
   };
 
-  // 전체선택 토글
+  // 전체 선택 토글 함수
   const handleSelectAll = (e) => {
     const checked = e.target.checked;
     setAlarms((prev) => prev.map((alarm) => ({ ...alarm, selected: checked })));
   };
 
-  // ✅ 읽음 처리
+  // 읽음 처리 함수
   const handleMarkRead = () => {
     const selectedIds = alarms.filter((a) => a.selected).map((a) => a.id);
     if (selectedIds.length === 0) {
-      message.warning("읽음 처리할 알림을 선택해주세요.");
+      message.error("읽음 처리할 알림을 선택해주세요.");
       return;
     }
-    setModalMode("alarmread"); // 모달 모드 설정
+    setModalMode("alarmread");
     setModalOpen(true);
   };
 
-  // ✅ 삭제 처리
+  // 삭제 처리 함수
   const handleDelete = () => {
     const selectedIds = alarms.filter((a) => a.selected).map((a) => a.id);
     if (selectedIds.length === 0) {
-      message.warning("삭제할 알림을 선택해주세요.");
+      message.error("삭제할 알림을 선택해주세요.");
       return;
     }
-    setModalMode("alarmdelete"); // 모달 모드 설정
+    setModalMode("alarmdelete");
     setModalOpen(true);
   };
 
-  // ✅ 모달 확인 시 실행될 동작
+  // 모달 확인 함수
   const handleConfirm = async () => {
     const selectedIds =
       modalMode === "alarmread"
@@ -151,7 +144,6 @@ const UserAlarm = () => {
       setUnreadCount(count);
 
     } catch (error) {
-      console.error("❌ 처리 실패:", error);
       message.error("알림 처리 중 오류가 발생했습니다.");
     } finally {
       setModalOpen(false);
@@ -189,7 +181,6 @@ const UserAlarm = () => {
           </div>
         </div>
 
-        {/* 알림 목록 */}
         {fetchingAlarm ? (
           <div className="user_alarm_empty">불러오는 중...</div>
         ) : alarms.length === 0 ? (

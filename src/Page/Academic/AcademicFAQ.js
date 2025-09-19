@@ -14,7 +14,7 @@ const AcademicFAQ = () => {
   const handleOpen = () => setIsModalOpen(true);
   const handleClose = () => setIsModalOpen(false);
 
-  // 문의 등록
+  // 문의 등록 함수
   const handleSubmit = async (data) => {
     if (isInquirySubmitting) return; 
     setIsInquirySubmitting(true);

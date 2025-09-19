@@ -12,10 +12,9 @@ const User = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState(null);
 
-  // 사용자 정보 상태
+
   const [userData, setUserData] = useState(null);
 
-  // 사용자 정보 패칭 상태
   const [isUserInfoFetching, setIsUserInfoFetching] = useState(false);
   const isUserInfoFetchingRef = useRef(false);
 
@@ -24,7 +23,6 @@ const User = () => {
   const [credits, setCredits] = useState(null);
   const [isCreditsFetching, setIsCreditsFetching] = useState(false);
 
-  // 학점 탭
   const [activeTab, setActiveTab] = useState("major");
 
   const { roleType } = useRecoilValue(userBriefState);
@@ -32,6 +30,7 @@ const User = () => {
 
   const isMobile = useMediaQuery({ maxWidth: 768 });
 
+  // 렌더링 함수
   useEffect(() => {
     const savedRoleType = sessionStorage.getItem("roleType");
     if (savedRoleType && !roleType) {
@@ -42,9 +41,9 @@ const User = () => {
     }
   }, [setUserBrief, roleType]);
 
-  // 사용자 정보 불러오기
+  // 사용자 정보 조회 함수
   const loadUserData = useCallback(async () => {
-    if (isUserInfoFetchingRef.current) return; // 중복 호출 방지
+    if (isUserInfoFetchingRef.current) return;
     isUserInfoFetchingRef.current = true;
     setIsUserInfoFetching(true);
 
@@ -79,7 +78,6 @@ const User = () => {
 
     try {
       const data = await fetchMyPageCredits();
-      console.log("📊 학점 API 응답:", data);
       setCredits(data);
     } catch (err) {
       console.error("❌ 학점 정보 불러오기 실패:", err);
@@ -88,17 +86,19 @@ const User = () => {
     }
   }, []);
 
+  // 렌더링 함수
   useEffect(() => {
     loadUserData();
     loadCredits();
   }, [loadUserData, loadCredits]);
 
-  // 모달 제어
+  // 모달 열기 함수
   const handleOpenModal = (mode) => {
     setModalMode(mode);
     setIsModalOpen(true);
   };
 
+  // 모달 닫기 함수
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setModalMode(null);
@@ -111,7 +111,6 @@ const User = () => {
 
     try {
       if (modalMode === "profile") {
-        // 🔹 프로필 수정
         const formData = new FormData();
         formData.append("payload", JSON.stringify({
           username: data.username,
@@ -141,7 +140,6 @@ const User = () => {
       }
 
       if (modalMode === "grade") {
-        // 🔹 학점 수정
         const payload = {
           "전공": Number(data.major) || 0,
           "기초전공": Number(data.basicMajor) || 0,
@@ -152,14 +150,11 @@ const User = () => {
           "평점": Number(data.gpa) || 0,
         };
 
-        console.log("📤 PUT /credits payload:", payload);
-
         await updateCredits(payload);
         message.success("학점 정보가 수정되었습니다.");
         await loadCredits();
       }
     } catch (err) {
-      console.error("❌ 수정 실패:", err);
       message.error("수정 중 오류가 발생했습니다.");
     } finally {
       isUpdatingRef.current = false;
@@ -174,7 +169,6 @@ const User = () => {
 
       <section className="user_body">
         <div className="user_info">
-          {/* 사용자 정보 */}
           <div className="user_profile">
             <div className="user_profile_title">
               <h3>사용자 정보</h3>
@@ -281,7 +275,6 @@ const User = () => {
             </div>
           </div>
 
-          {/* 학점 정보 */}
           <div className="user_grade">
             <div className="user_grade_title">
               <h3>학점 정보</h3>
@@ -293,7 +286,6 @@ const User = () => {
               )}
             </div>
 
-            {/* 탭 */}
             <div className="user_grade_tab">
               <button
                 className={activeTab === "major" ? "active" : ""}
@@ -315,7 +307,6 @@ const User = () => {
               </button>
             </div>
 
-            {/* 내용 */}
             <div className="user_grade_container">
               {isCreditsFetching ? (
                 <p className="user_grade_empty">불러오는 중...</p>
@@ -338,7 +329,6 @@ const User = () => {
                 ) : (
                   <>
                     <div className="user_grade_box">
-                      {/* 전공 / 부전공 / 복수전공 */}
                       <div className="user_grade_row">
                         <span className="user_grade_label">
                           {activeTab === "major"
@@ -356,7 +346,6 @@ const User = () => {
                         </span>
                       </div>
 
-                      {/* 기초전공 */}
                       <div className="user_grade_row">
                         <span className="user_grade_label">기초전공</span>
                         <span className="user_grade_value">
@@ -368,7 +357,6 @@ const User = () => {
                         </span>
                       </div>
 
-                      {/* 교양필수 */}
                       <div className="user_grade_row">
                         <span className="user_grade_label">교양필수</span>
                         <span className="user_grade_value">
