@@ -25,7 +25,7 @@ const Side = () => {
     },
     {
       match: (p) => p.startsWith("/academic"),
-      items: (user.roleType === "MANAGER") 
+      items: (user.roleType === "ADMIN") 
       ? [
           { name: "학사정보 챗봇", link: "/academic/chat" },
           { name: "학사정보 관리", link: "/academic/management" },

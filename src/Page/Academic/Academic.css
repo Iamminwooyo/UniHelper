@@ -278,7 +278,7 @@
         gap: 0.8vw;
 
         overflow-y: auto;
-        max-height: 400px;
+        height: 400px;
     }
 
    /* 크롬, 사파리, 엣지용 */
@@ -331,6 +331,16 @@
         background-color: #78d900 !important;
     }
 
+    .academic_history_empty {
+        flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      color: #666;
+      font-size: min(20px, 1.2vw);
+    }
+
     .academic_management_body {
         flex: 1;
         display: flex;
@@ -361,6 +371,7 @@
     }
 
     .academic_management_file {
+        flex: 1;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -468,6 +479,7 @@
 
 
     .academic_management_inquiry {
+        flex: 1;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -493,11 +505,53 @@
     }
 
     .academic_inquiry_list {
+        flex: 1;
         display: flex;
         flex-direction: column;
         align-items: center;
         width: 100%;  
         gap: 20px;
+    }
+
+     .academic_inquiry_page_wrap {
+        margin-top: auto;
+        text-align: center;
+        padding: 20px 0;
+    }
+
+    .academic_inquiry_page_button {
+        margin: 0 6px;
+        padding: 4px 8px;
+        background: none;
+        border: none;
+        color: white;      /* 기본 흰색 글씨 */
+        cursor: pointer;
+        font-size: min(18px, 1.5vw);
+        transition: color 0.3s;
+    }
+
+    .academic_inquiry_page_button:hover:not(:disabled) {
+        color: #78D900;   /* 호버 시 초록색 */
+    }
+
+    .academic_inquiry_page_button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .academic_inquiry_page_button.active {
+        color: #78D900;   /* 선택된 페이지 번호는 초록색, 배경 없음 */
+        pointer-events: none;
+    }
+
+    .academic_inquiry_empty {
+        flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      color: #666;
+      font-size: min(20px, 1.2vw);
     }
  }
  @media (min-width: 769px) and (max-width: 1240px) {
@@ -781,7 +835,7 @@
         gap: 0.8vw;
 
         overflow-y: auto;
-        max-height: 400px;
+        height: 400px;
     }
 
    /* 크롬, 사파리, 엣지용 */
@@ -834,6 +888,16 @@
         background-color: #78d900 !important;
     }
 
+    .academic_history_empty {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        color: #666;
+        font-size: min(20px, 1.5vw);
+    }
+
     .academic_management_body {
         flex: 1;
         display: flex;
@@ -864,6 +928,7 @@
     }
 
     .academic_management_file {
+        flex: 1;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -971,6 +1036,7 @@
 
 
     .academic_management_inquiry {
+        flex: 1;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -996,11 +1062,53 @@
     }
 
     .academic_inquiry_list {
+        flex: 1;
         display: flex;
         flex-direction: column;
         align-items: center;
         width: 100%;  
         gap: 20px;
+    }
+
+     .academic_inquiry_page_wrap {
+        margin-top: auto;
+        text-align: center;
+        padding: 20px 0;
+    }
+
+    .academic_inquiry_page_button {
+        margin: 0 6px;
+        padding: 4px 8px;
+        background: none;
+        border: none;
+        color: white;      /* 기본 흰색 글씨 */
+        cursor: pointer;
+        font-size: min(16px, 1.6vw);
+        transition: color 0.3s;
+    }
+
+    .academic_inquiry_page_button:hover:not(:disabled) {
+        color: #78D900;   /* 호버 시 초록색 */
+    }
+
+    .academic_inquiry_page_button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .academic_inquiry_page_button.active {
+        color: #78D900;   /* 선택된 페이지 번호는 초록색, 배경 없음 */
+        pointer-events: none;
+    }
+    
+    .academic_inquiry_empty {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        color: #666;
+        font-size: min(20px, 1.5vw);
     }
  }
  @media (min-width: 1px) and (max-width: 768px) {
@@ -1284,7 +1392,7 @@
         gap: 0.8vw;
 
         overflow-y: auto;
-        max-height: 350px;
+        height: 350px;
     }
 
    /* 크롬, 사파리, 엣지용 */
@@ -1335,6 +1443,16 @@
 
     .academic_chat_loader .ant-spin-dot-item {
         background-color: #78d900 !important;
+    }
+
+    .academic_history_empty {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        color: #666;
+        font-size: max(11px, 1.2vw);
     }
 
     .academic_management_body {
@@ -1479,6 +1597,7 @@
         gap: 30px;
 
         width: 90%;
+        min-height: 200px;
         padding: 30px 0;
 
         background-color: #242424;
@@ -1498,10 +1617,52 @@
     }
 
     .academic_inquiry_list {
+        flex: 1;
         display: flex;
         flex-direction: column;
         align-items: center;
         width: 100%;  
         gap: 20px;
+    }
+
+     .academic_inquiry_page_wrap {
+        margin-top: auto;
+        text-align: center;
+        padding: 20px 0 0 0;
+    }
+
+    .academic_inquiry_page_button {
+        margin: 0 6px;
+        padding: 4px 8px;
+        background: none;
+        border: none;
+        color: white;      /* 기본 흰색 글씨 */
+        cursor: pointer;
+        font-size: max(11px, 2.5vw);
+        transition: color 0.3s;
+    }
+
+    .academic_inquiry_page_button:hover:not(:disabled) {
+        color: #78D900;   /* 호버 시 초록색 */
+    }
+
+    .academic_inquiry_page_button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .academic_inquiry_page_button.active {
+        color: #78D900;   /* 선택된 페이지 번호는 초록색, 배경 없음 */
+        pointer-events: none;
+    }
+
+    .academic_inquiry_empty {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        color: #666;
+        font-size: max(11px, 1.2vw);
     }
  }

@@ -21,3 +21,8 @@ export const AlarmCountState = atom({
   key: "UnreadAlarmCountState",
   default: 0,
 });
+
+export const askingState = atom({
+  key: "askingState",
+  default: false,
+});
