@@ -564,7 +564,7 @@
   .join_layout {
     display: flex;
 
-    height: max(500px, 80vw);
+    height: max(450px, 80vw);
     min-width: 70vw; 
     padding: 3vw;
 

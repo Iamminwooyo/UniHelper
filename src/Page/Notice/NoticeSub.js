@@ -2,14 +2,17 @@ import "./Notice.css";
 import Masonry from "react-masonry-css";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { useMediaQuery } from "react-responsive";
 import { useRecoilValue } from "recoil"
 import SearchBar from "../../Component/Search/Search";
 import NoticeCard from "../../Component/Card/NoticeCard";
 import TextModal from "../../Component/Modal/TextModal";
 import { userBriefState } from "../../Recoil/Atom";
 import { fetchSubscribedAuthors, fetchSubscribedNotices, fetchAuthorNotices, fetchNoticeImagePreview, unsubscribeAuthor } from "../../API/NoticeAPI";
-import { message } from "antd";
+import { message, Drawer, Button } from "antd";
 import { IoBookmark } from "react-icons/io5";
+import { MenuOutlined } from "@ant-design/icons";
+
 
 const NoticeSub = () => {
   const [keyword, setKeyword] = useState("");
@@ -34,11 +37,15 @@ const NoticeSub = () => {
   const [selectedAuthorId, setSelectedAuthorId] = useState(null);
   const [selectedAuthorName, setSelectedAuthorName] = useState("");
 
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+
   const user = useRecoilValue(userBriefState);
 
   const imageCacheRef = useRef(new Map());
 
   const navigate = useNavigate();
+
+  const isMobile = useMediaQuery({ maxWidth: 768 });
 
   // 이미지 함수
   const withPreviewUrls = useCallback(async (list) => {
@@ -216,7 +223,10 @@ const NoticeSub = () => {
     setIsModalOpen(false);
   }  
 
-  return (
+  const openDrawer = () => setIsDrawerOpen(true);
+  const closeDrawer = () => setIsDrawerOpen(false);
+
+   return (
     <main className="subscribe_layout">
       <section className="subscribe_header">
         <h2 className="subscribe_header_title">구독 관리</h2>
@@ -224,104 +234,204 @@ const NoticeSub = () => {
       </section>
 
       <section className="subscribe_body">
-        <div className="subscribe_text">
-          <p className="subscribe_title">구독 목록</p>
-          {isFetchingListes ? (
-            <p className="subscribe_empty">불러오는 중...</p>
-          ) : SubListes.length > 0 ? (
-            SubListes.map((org) => (
-              <div
-                className={`subscribe_list ${selectedOrg === org.authorName ? "active" : ""}`}
-                key={org.authorId}
-                onClick={() => handleOrgClick(org.authorName, org.authorId)}
-              >
-                <div className="subscribe_profile">
-                  <img src="/image/profile.png" alt={org.authorName} className="subscribe_profile_img" />
-                  <p className="subscribe_name">{org.authorName}</p>
-                </div>
-                <div className="subscribe_icon">
-                  <IoBookmark
-                    color="#78D900"
-                    style={{ cursor: "pointer" }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      openModal(org.authorId, org.authorName);
-                    }}
-                  />
-                </div>
+  {/* PC 전용 */}
+  {!isMobile ? (
+    <>
+      {/* 구독 목록 */}
+      <div className="subscribe_text">
+        <p className="subscribe_title">구독 목록</p>
+        {isFetchingListes ? (
+          <p className="subscribe_empty">불러오는 중...</p>
+        ) : SubListes.length > 0 ? (
+          SubListes.map((org) => (
+            <div
+              className={`subscribe_list ${selectedOrg === org.authorName ? "active" : ""}`}
+              key={org.authorId}
+              onClick={() => handleOrgClick(org.authorName, org.authorId)}
+            >
+              <div className="subscribe_profile">
+                <img src="/image/profile.png" alt={org.authorName} className="subscribe_profile_img" />
+                <p className="subscribe_name">{org.authorName}</p>
               </div>
-            ))
-          ) : (
-            <p className="subscribe_empty">구독 목록이 없습니다.</p>
-          )}
-        </div>
+              <div className="subscribe_icon">
+                <IoBookmark
+                  color="#78D900"
+                  style={{ cursor: "pointer" }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    openModal(org.authorId, org.authorName);
+                  }}
+                />
+              </div>
+            </div>
+          ))
+        ) : (
+          <p className="subscribe_empty">구독 목록이 없습니다.</p>
+        )}
+      </div>
 
-        <div className="subscribe_posts_wrapper">
-          {isFetchingNotices || isFetchingAuthor ? (
-            <div className="notice_empty">불러오는 중...</div>
-          ) : SubNotices.length > 0 ? (
-            <>
-              <Masonry
-                breakpointCols={{ default: 3, 1241: 2 }}
-                className="subscribe_post"
-                columnClassName="subscribe_post_column"
-              >
-                {SubNotices.map((post) => (
-                  <NoticeCard
-                    key={post.id}
-                    id={post.id}
-                    authorid={post.authorId}
-                    title={post.title}
-                    profile={post.profile}
-                    name={post.authorName}
-                    createdAt={post.createdAt}
-                    updatedAt={post.updatedAt}
-                    images={post.previewUrl ?? null} 
-                    content={post.text}
-                    bookmarked={post.bookmarked}
-                    Type="bookmark"
-                    isOwner={user.userId === post.authorId}
-                    role={user.roleType} 
-                    onClick={() => navigateToDetail(post.id)}
-                  />
+      {/* 공지사항 목록 (PC Masonry) */}
+      <div className="subscribe_posts_wrapper">
+        {isFetchingNotices || isFetchingAuthor ? (
+          <div className="notice_empty">불러오는 중...</div>
+        ) : SubNotices.length > 0 ? (
+          <>
+            <Masonry
+              breakpointCols={{ default: 3, 1241: 2 }}
+              className="subscribe_post"
+              columnClassName="subscribe_post_column"
+            >
+              {SubNotices.map((post) => (
+                <NoticeCard
+                  key={post.id}
+                  id={post.id}
+                  authorid={post.authorId}
+                  title={post.title}
+                  profile={post.profile}
+                  name={post.authorName}
+                  createdAt={post.createdAt}
+                  updatedAt={post.updatedAt}
+                  images={post.previewUrl ?? null}
+                  content={post.text}
+                  bookmarked={post.bookmarked}
+                  Type="bookmark"
+                  isOwner={user.userId === post.authorId}
+                  role={user.roleType}
+                  onClick={() => navigateToDetail(post.id)}
+                />
+              ))}
+            </Masonry>
+            {/* 페이지네이션 */}
+            {totalPages > 1 && (
+              <div className="notice_page_wrap" style={{ textAlign: "center" }}>
+                <button onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))} disabled={currentPage === 1} className="notice_page_button">
+                  &lt;
+                </button>
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+                  <button
+                    key={pageNum}
+                    onClick={() => setCurrentPage(pageNum)}
+                    className={`notice_page_button ${currentPage === pageNum ? "active" : ""}`}
+                  >
+                    {pageNum}
+                  </button>
                 ))}
-              </Masonry>
+                <button onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))} disabled={currentPage === totalPages} className="notice_page_button">
+                  &gt;
+                </button>
+              </div>
+            )}
+          </>
+        ) : (
+          <div className="notice_empty">공지사항이 존재하지 않습니다.</div>
+        )}
+      </div>
+    </>
+  ) : (
+    <>
+      {/* 모바일 전용 버튼 */}
+      <div className="subscribe_panel_wrap">
+        <div className="subscribe_panel_button" onClick={openDrawer}>구독 목록</div>
+        {/* <MenuOutlined className="subscribe_panel_button" onClick={openDrawer} /> */}
+      </div>
 
-              {totalPages > 1 && (
-                <div className="notice_page_wrap" style={{ textAlign: "center" }}>
-                  <button
-                    onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-                    disabled={currentPage === 1}
-                    className="notice_page_button"
-                  >
-                    &lt;
-                  </button>
-
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
-                    <button
-                      key={pageNum}
-                      onClick={() => setCurrentPage(pageNum)}
-                      className={`notice_page_button ${currentPage === pageNum ? "active" : ""}`}
-                    >
-                      {pageNum}
-                    </button>
-                  ))}
-
-                  <button
-                    onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
-                    disabled={currentPage === totalPages}
-                    className="notice_page_button"
-                  >
-                    &gt;
-                  </button>
-                </div>
-              )}
-            </>
-          ) : (
-            <div className="notice_empty">공지사항이 존재하지 않습니다.</div>
-          )}
+      {isDrawerOpen && (
+        <div className="subscribe_mask" onClick={closeDrawer}></div>
+      )}
+      <div className={`subscribe_panel ${isDrawerOpen ? "open" : ""}`}>
+        <div className="subscribe_panel_header">
+          <p className="subscribe_title">구독 목록</p>
         </div>
-      </section>
+        {isFetchingListes ? (
+          <p className="subscribe_empty">불러오는 중...</p>
+        ) : SubListes.length > 0 ? (
+          SubListes.map((org) => (
+            <div
+              className={`subscribe_list ${selectedOrg === org.authorName ? "active" : ""}`}
+              key={org.authorId}
+              onClick={() => {
+                handleOrgClick(org.authorName, org.authorId);
+              }}
+            >
+              <div className="subscribe_profile">
+                <img src="/image/profile.png" alt={org.authorName} className="subscribe_profile_img" />
+                <p className="subscribe_name">{org.authorName}</p>
+              </div>
+              <div className="subscribe_icon">
+                <IoBookmark
+                  color="#78D900"
+                  style={{ cursor: "pointer" }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    openModal(org.authorId, org.authorName);
+                  }}
+                />
+              </div>
+            </div>
+          ))
+        ) : (
+          <p className="subscribe_empty">구독 목록이 없습니다.</p>
+        )}
+      </div>
+
+      {/* 모바일 공지사항 목록 (Notice 처럼 Masonry) */}
+      {isFetchingNotices || isFetchingAuthor ? (
+        <div className="notice_empty">불러오는 중...</div>
+      ) : SubNotices.length > 0 ? (
+        <>
+          <Masonry
+            breakpointCols={{ default: 3, 768: 2 }}
+            className="notice_post"
+            columnClassName="notice_post_column"
+          >
+            {SubNotices.map((post) => (
+              <NoticeCard
+                key={post.id}
+                id={post.id}
+                authorid={post.authorId}
+                title={post.title}
+                profile={post.profile}
+                name={post.authorName}
+                createdAt={post.createdAt}
+                updatedAt={post.updatedAt}
+                images={post.previewUrl ?? null}
+                content={post.text}
+                bookmarked={post.bookmarked}
+                Type="bookmark"
+                isOwner={user.userId === post.authorId}
+                role={user.roleType}
+                onClick={() => navigateToDetail(post.id)}
+              />
+            ))}
+          </Masonry>
+          {/* 페이지네이션 */}
+          {totalPages > 1 && (
+            <div className="notice_page_wrap" style={{ textAlign: "center" }}>
+              <button onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))} disabled={currentPage === 1} className="notice_page_button">
+                &lt;
+              </button>
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+                <button
+                  key={pageNum}
+                  onClick={() => setCurrentPage(pageNum)}
+                  className={`notice_page_button ${currentPage === pageNum ? "active" : ""}`}
+                >
+                  {pageNum}
+                </button>
+              ))}
+              <button onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))} disabled={currentPage === totalPages} className="notice_page_button">
+                &gt;
+              </button>
+            </div>
+          )}
+        </>
+      ) : (
+        <div className="notice_empty">공지사항이 존재하지 않습니다.</div>
+      )}
+    </>
+  )}
+</section>
+
 
       {isModalOpen && (
         <TextModal

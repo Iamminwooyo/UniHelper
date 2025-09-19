@@ -101,6 +101,11 @@
       margin-bottom: 20px;
     }
 
+    .user_profile_img_text {
+      font-weight: bold;
+      font-size: 1vw;
+    }
+
     .user_profile_img {
       width: 7vw;
       height: 7vw;
@@ -475,6 +480,11 @@
       margin-bottom: 20px;
     }
 
+    .user_profile_img_text {
+      font-weight: bold;
+      font-size: 1.2vw;
+    }
+
     .user_profile_img {
       width: 7vw;
       height: 7vw;
@@ -759,27 +769,25 @@
 }
 @media (min-width: 1px) and (max-width: 768px) {
     .user_layout {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
 
-    width: 100%;
+      width: 100%;
 
-    color: #ffffff;
+      color: #ffffff;
 
-    border-radius: 20px;
-  }
+      border-radius: 20px;
+    }
 
   .user_header {
-        flex: 0.2;
         display: flex;
         justify-content: space-between;
         align-items: center;
 
         width: 98%;
-        max-height: 62px;
         padding: 0 0 3vw 0; 
     }
 
@@ -788,7 +796,7 @@
 
         margin: 0;
 
-        font-size: 3vw;
+        font-size: max(13px, 3vw);
     }
 
     .user_body {
@@ -806,34 +814,37 @@
 
     .user_info {
       display: flex;
+      flex-direction: column;
+      align-items: center;
       width: 90%;
-      gap: 1.5vw;
+      gap: 3vw;
     }
 
     .user_profile {
+      width: 80%;
       display: flex;
       flex-direction: column;
-      flex: 1.3;
+      align-items: center;
       border-radius: 12px;
       padding: 3vw 2.5vw;
       background-color: #242424;
     }
 
     .user_profile_title{
+      width: 85%;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 15px;
     }
 
     .user_profile_title h3 {
       margin: 0;
-      font-size: 2.3vw;
+      font-size: max(12px, 2.3vw);
       color: #78D900;
     }
 
     .user_icon {
-      font-size: 2.3vw;
+      font-size: max(12px, 2.3vw);
       cursor: pointer;
     }
 
@@ -841,13 +852,38 @@
       color:#78D900;
     }
 
-    .user_profile_container{
+    .user_profile_container {
+      width: 80%;
+      min-height: 100px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       gap: 15px;
       margin-top: 6vw;
+    }
+
+    .user_profile_mobile {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      gap: 15px;
+    }
+
+    .user_profile_img_wrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .user_profile_img_text {
+      font-weight: bold;
+      font-size: max(8.5px, 1.8vw);
     }
 
     .user_profile_img {
@@ -857,49 +893,72 @@
       margin-bottom: 20px;
     }
 
+    .user_profile_details {
+      flex: 1.5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3vw;
+    }
+
     .user_profile_row {
-      width: 95%;
+      width: 100%;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 1vw;
     }
 
     .user_profile_label {
       font-weight: bold;
-      font-size: 1.8vw;
+      font-size: max(8.5px, 1.8vw);
       flex: 1;
     }
 
     .user_profile_value {
+      flex: 2;
+      font-size: max(8px, 1.8vw);
+    }
+
+    .user_profile_empty {
       flex: 1;
-      font-size: 1.5vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      color: #666;
+      font-size: max(11px, 1.2vw);
     }
 
 
     .user_grade {
-      flex: 2;
+      width: 80%;
       display: flex;
       flex-direction: column;
+      align-items: center;
       border-radius: 12px;
       padding: 3vw 2.5vw;
       background-color: #242424;
+      gap: 30px;
     }
 
     .user_grade_title {
+      width: 85%;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 15px;
     }
 
     .user_grade_title h3 {
       margin: 0;
-      font-size: 2.3vw;
+      font-size: max(12px, 2.3vw);
       color: #78D900;
     }
 
     /* 학점 정보 */
     .user_grade_tab {
+      width: 85%;
       display: flex;
       flex: 1;
       align-items: center;
@@ -915,7 +974,7 @@
       color: #ddd;
       cursor: pointer;
 
-      font-size: min(12px, 1.8vw);
+      font-size: max(9px, 1.8vw);
     }
 
     .user_grade_tab button:hover {
@@ -927,6 +986,8 @@
     }
 
     .user_grade_container {
+      width: 85%;
+      min-height: 100px;
       flex: 2;
       display: flex;
       flex-direction: column;
@@ -936,6 +997,8 @@
     .user_grade_box {
       display: flex;
       justify-content: space-between;
+      padding-top: 10px;
+
     }
 
     .user_grade_row {
@@ -950,15 +1013,16 @@
     .user_grade_label {
       font-weight: bold;
       flex: 1;
-      font-size: 1.8vw;
+      font-size: max(8.5px, 1.8vw);
     }
 
     .user_grade_value {
       flex: 1;
-      font-size: 1.5vw;
+      font-size: max(8px, 1.8vw);
     }
 
     .user_grade_summary {
+      padding-bottom: 10px;
       display: flex;
       justify-content: space-around;
       font-weight: bold;
@@ -977,13 +1041,13 @@
     .user_summary_label {
       font-weight: bold;
       flex: 1;
-      font-size: 1.5vw;
+      font-size: max(8.5px, 1.8vw);
     }
 
     .user_summary_value {
       font-weight: 400;
       flex: 1;
-      font-size: 1.2vw;
+      font-size: max(8px, 1.8vw);
     }
 
      .user_grade_empty {
@@ -993,7 +1057,7 @@
         align-items: center;
 
         color: #666;
-        font-size: min(20px, 2vw);
+        font-size: max(11px, 2vw);
     }
 
     .user_alarm_body {
@@ -1004,6 +1068,7 @@
         gap: 20px;
 
         width: 100%;
+        min-height: 300px;
         padding: 20px 0;
 
         background-color: #1b1b1b;
@@ -1023,14 +1088,14 @@
     .user_alarm_check {
       display: flex;
       align-items: center;
-      gap: 1vw;
+      gap: 1.5vw;
     }
 
 
     /* 전체선택 체크박스 크기 */
     .user_alarm_checkbox .ant-checkbox-inner {
-      width: 2.5vw;
-      height: 2.5vw;
+      width: min(16px, 4vw);
+      height: min(16px, 4vw);
     }
 
     /* ✔ 체크 아이콘 위치 & 크기 */
@@ -1042,13 +1107,15 @@
     }
 
     .user_alarm_check_text {
-      font-size: min(11px, 2vw);
+      display: flex;
+      align-items: center;
+      font-size: max(9px, 1.5vw);
     }
 
     .user_alarm_button {
       display: flex;
       justify-content: space-between;
-      gap: 1vw;
+      gap: 2vw;
     }
 
     .user_alarm_read {
@@ -1056,9 +1123,9 @@
       align-items: center;
       justify-content: center;
       background-color: #78D900;
-      padding: 1vw 2vw;
+      padding: min(8px, 1.2vw) min(12px, 2.2vw);
       border-radius: 6px;
-      font-size: min(10px, 1.8vw);
+      font-size: max(9px, 1.5vw);
       cursor: pointer;
     }
 
@@ -1072,9 +1139,9 @@
       justify-content: center;
       background-color: #ffffff;
       color: #000;
-      padding: 1vw 2vw;
+      padding: min(8px, 1.2vw) min(12px, 2.2vw);
       border-radius: 6px;
-      font-size: min(10px, 1.8vw);
+      font-size: max(9px, 1.5vw);
       cursor: pointer;
     }
 
@@ -1115,7 +1182,7 @@
         align-items: center;
 
         color: #666;
-        font-size: min(20px, 2vw);
+        font-size: max(11px, 2vw);
     }
 
     .user_alarm_page_wrap {
@@ -1131,7 +1198,7 @@
         border: none;
         color: white;      /* 기본 흰색 글씨 */
         cursor: pointer;
-        font-size: min(15px, 2.5vw);
+        font-size: max(11px, 2.5vw);
         transition: color 0.3s;
     }
 

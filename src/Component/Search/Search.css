@@ -57,15 +57,15 @@
     display: flex;
     align-items: center;
     
-    width: 30%;
-    height: 4vw;
+    width: 40%;
+    height: max(20px, 4vw);
     
     background-color: white;
     border-radius: 0.5vw;
   }
 
   .searchbar_icon {
-    font-size: min(20px, 1.7vw);
+    font-size: max(11px, 1.7vw);
     color: #888;
     margin: 0 10px;
   }
@@ -76,6 +76,6 @@
     outline: none;
 
     max-width: 70%;
-    font-size: min(20px, 1.7vw);
+    font-size: max(11px, 1.7vw);
   }
 }

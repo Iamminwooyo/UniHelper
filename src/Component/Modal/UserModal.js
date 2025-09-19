@@ -28,7 +28,7 @@ const UserModal = ({ open, onCancel, initialData = null, mode, onSuccess }) => {
   const [studentNumber, setStudentNumber] = useState("");
   const [department, setDepartment] = useState("");
   const [gradeLabel, setGradeLabel] = useState("");
-  const [subType, setSubType] = useState("부전공");
+  const [subType, setSubType] = useState(null);
   const [subMajor, setSubMajor] = useState("");
 
   const [fileList, setFileList] = useState([]);
@@ -80,7 +80,7 @@ const UserModal = ({ open, onCancel, initialData = null, mode, onSuccess }) => {
           setSubType("복수전공");
           setSubMajor(initialData.doubleMajor);
         } else {
-          setSubType("부전공");
+          setSubType(null);
           setSubMajor("");
         }
 
@@ -135,8 +135,8 @@ const UserModal = ({ open, onCancel, initialData = null, mode, onSuccess }) => {
         studentNumber: roleType === "STUDENT" ? studentNumber : "",
         department,
         gradeLabel: roleType === "STUDENT" ? gradeLabel : "",
-        minor: roleType === "STUDENT" && subType === "부전공" ? subMajor : "",
-        doubleMajor: roleType === "STUDENT" && subType === "복수전공" ? subMajor : "",
+        minor: roleType === "STUDENT" && subType === "부전공" ? subMajor : null,
+        doubleMajor: roleType === "STUDENT" && subType === "복수전공" ? subMajor : null,
         profileImageFile: fileList[0]?.originFileObj || null,
       };
       console.log("제출 데이터:", data);
@@ -200,7 +200,7 @@ const UserModal = ({ open, onCancel, initialData = null, mode, onSuccess }) => {
       onCancel={isUploading ? null : onCancel} 
       footer={null}
       centered
-      closable={!isUploading} 
+      closable={false} 
       maskClosable={!isUploading} 
       wrapClassName="custommodal_wrap"
     >
@@ -308,14 +308,22 @@ const UserModal = ({ open, onCancel, initialData = null, mode, onSuccess }) => {
                 {/* 부/복수 전공 */}
                 <div className="custommodal_input_group" style={{ marginTop: 16 }}>
                   <p className="custommodal_input_label">부/복수 전공</p>
-                  <div style={{ display: "flex", gap: "10px" }}>
+                  <div style={{ display: "flex", flexDirection:'column'}}>
                     <Select
                       placeholder="부/복수"
-                      value={subType}
-                      onChange={(value) => setSubType(value)}
-                      style={{ width: "40%" }}
+                      value={subType ?? undefined} 
+                      onChange={(value) => {
+                        if (value === "") {
+                          setSubType(null);
+                          setSubMajor("");
+                        } else {
+                          setSubType(value);
+                        }
+                      }}
+                      style={{ width: "100%" }}
                       getPopupContainer={(triggerNode) => triggerNode.parentNode}
                     >
+                      <Option value="">없음</Option> 
                       <Option value="부전공">부전공</Option>
                       <Option value="복수전공">복수전공</Option>
                     </Select>
@@ -323,7 +331,8 @@ const UserModal = ({ open, onCancel, initialData = null, mode, onSuccess }) => {
                       placeholder="학과"
                       value={subMajor || undefined}
                       onChange={(value) => setSubMajor(value)}
-                      style={{ width: "60%" }}
+                      style={{ width: "100%", marginTop:"10px" }}
+                      disabled={!subType}   
                       getPopupContainer={(triggerNode) => triggerNode.parentNode}
                     >
                       {departments.map((dep) => (

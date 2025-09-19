@@ -156,6 +156,13 @@
       opacity: 0.3;
     }
 
+    .custommodal_input_group .ant-input-affix-wrapper.ant-input-password {
+      border-radius: 6px !important;
+      overflow: hidden;   /* 내부도 radius 안으로 잘리게 */
+      border: none !important; /* 기본 border 제거 */
+      background-color: #3a3a3a;
+    }
+
     .custommodal_input_group .ant-input-password {
       height: 42px !important;
       font-size: 13px;
@@ -701,7 +708,7 @@
     .custommodal_input_group .ant-input:not(textarea),
     .custommodal_input_group .ant-btn,
     .custommodal_input_group .ant-input-affix-wrapper{
-      height: min(35px,4.5vw) !important;
+      height: min(38px,4.5vw) !important;
       font-size: max(12px,0.9vw) !important; 
 
       padding: 0 12px !important;
@@ -713,7 +720,7 @@
     }
 
     .custommodal_input_group textarea.ant-input {
-      min-height: min(35px,4.5vw) !important;
+      min-height: min(38px,4.5vw) !important;
       font-size: max(12px,0.9vw) !important; 
       padding: 8px 12px 0 12px;
       background-color: #3a3a3a !important;
@@ -727,8 +734,15 @@
       opacity: 0.3;
     }
 
+    .custommodal_input_group .ant-input-affix-wrapper.ant-input-password {
+      border-radius: 6px !important;
+      overflow: hidden;   /* 내부도 radius 안으로 잘리게 */
+      border: none !important; /* 기본 border 제거 */
+      background-color: #3a3a3a;
+    }
+
     .custommodal_input_group .ant-input-password {
-      height: min(35px,4.5vw) !important;
+      height: min(38px,4.5vw) !important;
       font-size: max(12px,0.9vw) !important; 
       padding: 0 12px 0 0 !important;
       background-color: #3a3a3a;
@@ -743,7 +757,7 @@
 
       /* single 모드 - Select 박스 */
   .custommodal_input_group .ant-select-single .ant-select-selector {
-    min-height: min(35px,4.5vw) !important;
+    min-height: min(38px,4.5vw) !important;
     font-size: max(12px,0.9vw) !important; 
     display: flex !important;
     align-items: center !important;
@@ -801,7 +815,7 @@
 
 
     .custommodal_input_group .ant-select-multiple .ant-select-selector {
-      min-height: min(35px,4.5vw) !important;
+      min-height: min(38px,4.5vw) !important;
       font-size: max(12px,0.9vw) !important; 
       padding: 4px 0 0 6px!important;
       display: flex !important;
@@ -851,7 +865,7 @@
     }
 
     .custommodal_input_button.ant-btn {
-      height: min(35px,4.5vw) !important;
+      height: min(38px,4.5vw) !important;
       font-size: max(12px,0.9vw) !important; 
       padding: 0 16px;
 
@@ -1025,7 +1039,7 @@
       justify-content: flex-start;
 
       width: 100%;
-      height: 38px;
+      height: min(38px,4.5vw) !important;
 
       font-size: max(12px,0.9vw) !important; 
       color: white !important;
@@ -1197,8 +1211,8 @@
   }
 
   .custommodal_title {
-      margin: 20px 0 20px 15px;
-      font-size: min(16px, 3vw);
+      margin: 20px 0 30px 0;
+      font-size: min(20px, 3.8vw);
       align-self: flex-start;
       color: #78D900;
   }
@@ -1224,13 +1238,13 @@
   .custommodal_text {
     text-align: left;
     color: #ffffff;
-    font-size: min(10px,2vw) !important; 
+    font-size: min(10px, 2.5vw) !important;
   }
 
   .custommodal_notice {
     color: white;
     margin-top: 10px;
-    font-size: min(10px,2vw) !important; 
+    font-size: min(10px, 2.5vw) !important;
   }
 
   .custommodal_course_list {
@@ -1240,14 +1254,14 @@
 
   .custommodal_course_item {
     padding: 2px 0;
-    font-size: min(10px,2vw) !important; 
+    font-size: min(10px, 2.5vw) !important;
   }
 
   .custommodal_warning {
     color: red;
     font-weight: bold;
     margin-top: 10px;
-    font-size: min(10px,2vw) !important; 
+    font-size: max(10px,2vw) !important; 
   }
 
   .custommodal_input_group {
@@ -1263,14 +1277,14 @@
       margin: 0 0 0.8vw 0;
 
       color: #ffffff;
-      font-size: min(10px, 2vw);
+      font-size: min(10px, 2.5vw);
     }
 
     .custommodal_input_group .ant-input:not(textarea),
     .custommodal_input_group .ant-btn
     .custommodal_input_group .ant-input-affix-wrapper {
-      height: min(30px,8vw) !important;
-      font-size: min(9px,1.8vw) !important;
+      height: min(35px,8vw) !important;
+      font-size: min(10px, 2.5vw) !important;
 
       padding: 0 12px !important;
       background-color: #3a3a3a;
@@ -1281,8 +1295,8 @@
     }
 
     .custommodal_input_group textarea.ant-input {
-      min-height: min(30px,8vw) !important;
-      font-size: min(9px,1.8vw) !important; 
+      height: min(35px,8vw) !important;
+      font-size: min(10px, 2.5vw) !important;
       padding: 8px 12px 0 12px;
       background-color: #3a3a3a !important;
       color: white !important;
@@ -1295,13 +1309,19 @@
       opacity: 0.3;
     }
 
+    .custommodal_input_group .ant-input-affix-wrapper.ant-input-password {
+      border-radius: 6px !important;
+      overflow: hidden;   /* 내부도 radius 안으로 잘리게 */
+      border: none !important; /* 기본 border 제거 */
+      background-color: #3a3a3a;
+    }
+
     .custommodal_input_group .ant-input-password {
-      height: min(30px,8vw) !important;
-      font-size: min(9px,1.8vw) !important; 
+      height: min(35px,8vw) !important;
+      font-size: min(10px, 2.5vw) !important;
       padding: 0 12px 0 0 !important;
       background-color: #3a3a3a;
       color: rgb(255, 255, 255);
-      border: none;
     }
 
     .custommodal_input_group .ant-input-password-icon {
@@ -1312,9 +1332,9 @@
 
       /* single 모드 - Select 박스 */
     .custommodal_input_group .ant-select-single .ant-select-selector {
-      height: min(30px,8vw) !important;
-      font-size: min(9px,1.8vw) !important;
-
+      height: min(35px,8vw) !important;
+      font-size: min(10px, 2.5vw) !important;
+      
       display: flex !important;
       align-items: center !important;
       background-color: #3a3a3a !important;
@@ -1337,6 +1357,7 @@
       color: #ffffff !important;
       display: flex;
       align-items: center;
+      font-size: min(10px, 2.5vw) !important;
     }
 
     /* 드롭다운 화살표 */
@@ -1353,11 +1374,13 @@
   background-color: #3a3a3a !important;
   border: none !important;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45) !important;
+  font-size: min(10px, 2.5vw) !important;
 }
 
 .custommodal_input_group .ant-select-item-option {
   display: flex;
   align-items: center;           /* 텍스트 수직 정렬 */
+  font-size: min(10px, 2.5vw) !important;
 
 }
 
@@ -1365,7 +1388,7 @@
 .custommodal_input_group .ant-select-item {
   background-color: #3a3a3a !important;
   color: #ffffff !important;
-  font-size: min(9px,1.8vw) !important;
+  font-size: min(10px, 2.5vw) !important;
 }
 
 /* hover 시 */
@@ -1376,8 +1399,8 @@
 }
 
      .custommodal_input_group .ant-select-multiple .ant-select-selector {
-      min-height: min(30px,8vw) !important;
-      font-size: min(9px,1.8vw) !important; 
+      min-height: min(35px,8vw) !important;
+      font-size: min(10px, 2.5vw) !important;
       padding: 4px 0 0 6px!important;
       display: flex !important;
       align-items: center !important;
@@ -1426,8 +1449,8 @@
     }
 
     .custommodal_input_button.ant-btn {
-      height: min(30px,8vw) !important;
-      font-size: min(9px,1.8vw) !important; 
+      height: min(35px,8vw) !important;
+      font-size: min(10px, 2.5vw) !important;
       padding: 0 10px;
 
       background-color: #78D900;
@@ -1454,10 +1477,10 @@
     }
 
     .custommodal_button_ok.ant-btn {
-      margin-top: 38px;
+      margin-top: 25px;
       height: min(25px,8vw) !important;
-      font-size: min(9px,1.8vw) !important; 
-      padding: 0 12px;
+      font-size: min(10px, 2.3vw) !important;
+      padding: 0 10px;
 
       background-color: #78D900;
       border: none;
@@ -1471,10 +1494,10 @@
     }
 
     .custommodal_button_cancle.ant-btn {
-      margin-top: 38px;
+      margin-top: 25px;
       height: min(25px,8vw) !important;
-      font-size: min(9px,1.8vw) !important; 
-      padding: 0 12px;
+      font-size: min(10px, 2.3vw) !important; 
+      padding: 0 10px;
 
       background-color: #ffffff;
       border: none;
@@ -1490,7 +1513,7 @@
 
     .custommodal_input_message {
       min-height: 1.5em; /* 메시지 높이 고정 */
-      font-size: 0.65rem;
+      font-size: min(10px, 2.5vw) !important;
       margin: 0;
       color: #78D900; /* 기본 성공 색 */
     }
@@ -1513,8 +1536,8 @@
     .custommodal_upload_circle .ant-upload {
       border-radius: 50%;
       background-color: #3a3a3a;
-      width: min(70px, 15vw) !important;
-      height: min(70px, 15vw) !important;
+      width: min(80px, 18vw) !important;
+      height: min(80px, 18vw) !important;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -1551,12 +1574,12 @@
       color: #fff;
       opacity: 0.3;
       gap: 2.3vw;
-      font-size: min(9px,1.8vw) !important; 
+      font-size: min(10px, 2.5vw) !important;
     }
 
     .custommodal_img_upload .ant-upload.ant-upload-select {
       color: #fff;
-      font-size: max(12px,0.9vw) !important; 
+      font-size: max(10px,0.9vw) !important; 
 
       background-color: #3a3a3a !important;
     }
@@ -1601,8 +1624,8 @@
       justify-content: flex-start;
 
       width: 100%;
-      height: min(30px,8vw) !important;
-      font-size: min(9px,1.8vw) !important; 
+      height: min(35px,8vw) !important;
+      font-size: min(10px, 2.5vw) !important;
 
       color: white !important;
       
@@ -1620,7 +1643,7 @@
 
     .custommodal_file_upload .ant-upload-list-item-name {
       color: white !important;
-      font-size: min(9px,1.8vw) !important; 
+      font-size: min(10px,1.8vw) !important; 
     }
 
     .custommodal_file_upload .ant-upload-list-item {

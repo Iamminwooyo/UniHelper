@@ -26,12 +26,23 @@ const PasswordModal = ({ open, onCancel }) => {
   const [isCodeVerifying, setIsCodeVerifying] = useState(false);
   const [isPasswordUpdating, setIsPasswordUpdating] = useState(false);
 
+  const schoolEmailRegex = /^[0-9]+@yiu\.ac\.kr$/;
+
   // 이메일 인증번호 전송 함수
   const handleSendEmail = async () => {
     if (isEmailSending) return;
 
     if (!state.email) {
       message.error("이메일을 입력해주세요.");
+      return;
+    }
+
+    if (!schoolEmailRegex.test(state.email)) {
+      message.error("학교 이메일 형식이 아닙니다.");
+      setState(prev => ({
+        ...prev,
+        emailVerificationStatus: "error",
+      }));
       return;
     }
 
@@ -231,15 +242,25 @@ const PasswordModal = ({ open, onCancel }) => {
 
   // 이메일 함수
   const handleEmailChange = (e) => {
+    const value = e.target.value;
     setState(prev => ({
       ...prev,
-      email: e.target.value,
+      email: value,
       emailVerificationStatus: "idle",
       emailVerificationMessage: "",
       codeVerificationStatus: "idle",
       codeVerificationMessage: "",
       userError: ""
     }));
+
+    if (value && !schoolEmailRegex.test(value)) {
+      setState(prev => ({
+        ...prev,
+        email: value,
+        emailVerificationStatus: "error",
+        userError: "학교 이메일 형식이 아닙니다.", 
+      }));
+    }
   };
 
   // 인증번호 함수
@@ -382,7 +403,7 @@ const PasswordModal = ({ open, onCancel }) => {
                 style={{ minHeight: "18px" }}
               >
                 {state.newPassword && !state.isPasswordValid
-                  ? "비밀번호는 대/소문자, 특수기호 포함 8자 이상"
+                  ? "대/소문자, 특수기호 포함 8자 이상"
                   : "\u00A0"}
               </p>
 

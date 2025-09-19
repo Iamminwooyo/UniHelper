@@ -325,8 +325,7 @@ const TipDetail = () => {
         <div className="tip_back_icon">
           <FaArrowLeft onClick={() => navigate(-1)} style={{ cursor: "pointer" }} />
         </div>
-        <div style={{ display: "flex", width: "90%", gap: "20px" }}>
-
+        <div className="tip_detail_container">
           <div className="tip_content_container">
             {isFetchingDetail ? (
               <div className="tip_empty" style={{ textAlign: "center", padding: "50px 0" }}>
