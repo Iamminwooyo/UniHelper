@@ -3,17 +3,31 @@ import "./Academic.css";
 import FAQCard from "../../Component/Card/FAQCard";
 import { faqs } from "../../Data/FAQdata";
 import FaqModal from "../../Component/Modal/FaqModal";
+import { createInquiry } from "../../API/AcademicAPI"; 
+import { message } from "antd";
 
 const AcademicFAQ = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const [isInquirySubmitting, setIsInquirySubmitting] = useState(false);
+
   const handleOpen = () => setIsModalOpen(true);
   const handleClose = () => setIsModalOpen(false);
 
-  // ✅ 모달에서 입력값을 받는 경우 (onSubmit)
-  const handleSubmit = (data) => {
-    console.log("문의 내용:", data);
-    setIsModalOpen(false); // 닫기
+  // 문의 등록 함수
+  const handleSubmit = async (data) => {
+    if (isInquirySubmitting) return; 
+    setIsInquirySubmitting(true);
+
+    try {
+      await createInquiry(data);
+      message.success("문의가 정상적으로 등록되었습니다.");
+      setIsModalOpen(false); 
+    } catch (err) {
+      message.error("문의 등록에 실패했습니다.");
+    } finally {
+      setIsInquirySubmitting(false);
+    }
   };
 
   return (
@@ -42,11 +56,11 @@ const AcademicFAQ = () => {
         </div>
       </section>
 
-      {/* ✅ 문의 모달 */}
       <FaqModal
         open={isModalOpen}
         onCancel={handleClose}
         onSubmit={handleSubmit}
+        isSubmitting={isInquirySubmitting} 
       />
     </main>
   );

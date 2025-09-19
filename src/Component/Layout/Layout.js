@@ -25,6 +25,8 @@ import AcademicManagement from "../../Page/Academic/AcademicManagement";
 import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
+import { useRecoilValue } from "recoil";
+import { askingState } from "../../Recoil/Atom"; 
 import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 
@@ -40,6 +42,8 @@ const PrivateRoute = ({ children }) => {
 const Layout = () => {
     const location = useLocation();
     const path = location.pathname;
+
+    const isAsking = useRecoilValue(askingState);
 
     const [loading, setLoading] = useState(true);
 
@@ -90,6 +94,7 @@ const Layout = () => {
 
     return(
         <div className="layout_background">
+            {isAsking && <div className="global_overlay"></div>}
             <Header />
             <div className="layout_body">
                 {!isMain &&  <Side />}

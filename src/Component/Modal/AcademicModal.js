@@ -1,19 +1,36 @@
-import { useState } from "react";
-import { Modal, Button, Upload, AutoComplete } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
+import { useState, useEffect } from "react";
+import { fetchCollections } from "../../API/AcademicAPI";
+import { Modal, Button, Upload, AutoComplete, Spin } from "antd";
+import { UploadOutlined, LoadingOutlined  } from "@ant-design/icons";
 import "./Modal.css";
 
-const AcademicModal = ({ open, onCancel, onSubmit }) => {
+const AcademicModal = ({ open, onCancel, onSubmit, isUploading }) => {
   const [title, setTitle] = useState(""); // 폴더 이름
   const [attachmentFiles, setAttachmentFiles] = useState([]); // 첨부파일 리스트
 
-  // ✅ 더미 데이터 (서버에서 받아온다고 가정)
-  const folderOptions = [
-    { value: "2025-1학기" },
-    { value: "2025-2학기" },
-    { value: "2026-1학기" },
-    { value: "졸업논문 자료" },
-  ];
+  const [folderOptions, setFolderOptions] = useState([]);
+
+  useEffect(() => {
+    const loadCollections = async () => {
+      try {
+        const data = await fetchCollections();
+        setFolderOptions((data.collections || []).map((name) => ({ value: name })));
+      } catch (err) {
+        console.error("❌ 컬렉션 목록 불러오기 실패:", err);
+      }
+    };
+
+    if (open) {
+      loadCollections();
+    }
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) {
+      setTitle("");
+      setAttachmentFiles([]);
+    }
+  }, [open]);
 
   // 파일 선택 핸들러
   const handleAttachmentChange = ({ fileList }) => {
@@ -27,19 +44,22 @@ const AcademicModal = ({ open, onCancel, onSubmit }) => {
       files: attachmentFiles.map((file) => file.originFileObj),
     };
     if (onSubmit) {
-      onSubmit(formData);
+      onSubmit(formData, () => {
+        setTitle("");
+        setAttachmentFiles([]);
+      });
     }
-    setTitle("");
-    setAttachmentFiles([]);
   };
 
   return (
     <Modal
       open={open}
-      onCancel={onCancel}
+      onCancel={isUploading ? null : onCancel}  
       footer={null}
       centered
       closable={false}
+      maskClosable={!isUploading}               
+      keyboard={!isUploading}            
       wrapClassName="custommodal_wrap"
     >
       <section className="custommodal_layout">
@@ -58,6 +78,7 @@ const AcademicModal = ({ open, onCancel, onSubmit }) => {
               option.value.toLowerCase().includes(inputValue.toLowerCase())
             }
             getPopupContainer={(triggerNode) => triggerNode.parentNode}
+            disabled={isUploading} 
           />
         </div>
 
@@ -70,15 +91,26 @@ const AcademicModal = ({ open, onCancel, onSubmit }) => {
             onChange={handleAttachmentChange}
             beforeUpload={() => false}
             multiple
+            disabled={isUploading} 
           >
             <Button
               icon={<UploadOutlined />}
               className="custommodal_file_upload_button"
+              disabled={isUploading} 
             >
               파일 선택
             </Button>
           </Upload>
         </div>
+        {isUploading && (
+          <div className="custommodal_upload_status">
+            <Spin
+              indicator={<LoadingOutlined style={{ color: "#78d900" }} spin />}
+              size="small"
+            />
+            <span style={{ marginLeft: 8 }}>파일 업로드 중...</span>
+          </div>
+        )}
       </section>
 
       {/* 확인 / 취소 버튼 */}
@@ -88,10 +120,11 @@ const AcademicModal = ({ open, onCancel, onSubmit }) => {
           className="custommodal_button_ok"
           onClick={handleSubmit}
           style={{ marginRight: 20 }}
+          disabled={isUploading}  
         >
           확인
         </Button>
-        <Button className="custommodal_button_cancle" onClick={onCancel}>
+        <Button className="custommodal_button_cancle" onClick={onCancel} disabled={isUploading}  >
           취소
         </Button>
       </section>

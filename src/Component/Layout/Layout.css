@@ -7,6 +7,17 @@
   align-items: center;
 }
 
+.global_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.15); /* ✅ 반투명 */
+  z-index: 2000; /* Header, Side, Footer 위에 덮도록 */
+  pointer-events: all; /* ✅ 클릭 막기 */
+}
+
 @media (min-width: 1241px) {
   .layout_background{
     flex: 1;

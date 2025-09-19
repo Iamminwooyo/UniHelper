@@ -73,7 +73,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 15px;
+      margin-bottom: 45px;
     }
 
     .user_profile_title h3 {
@@ -92,12 +92,12 @@
     }
 
     .user_profile_container{
+      flex: 1;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       gap: 30px;
-      margin-top: min(30px, 3vw);
       margin-bottom: 20px;
     }
 
@@ -132,6 +132,15 @@
       font-size: 0.8vw;
     }
 
+    .user_profile_empty {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      color: #666;
+      font-size: min(20px, 1.2vw);
+    }
 
     .user_grade {
       flex: 2;
@@ -452,7 +461,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 15px;
+      margin-bottom: 5vw;
     }
 
     .user_profile_title h3 {
@@ -471,12 +480,12 @@
     }
 
     .user_profile_container{
+      flex: 1;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       gap: 3vw;
-      margin-top: 2vw;
       margin-bottom: 20px;
     }
 
@@ -509,6 +518,16 @@
     .user_profile_value {
       flex: 1;
       font-size: 1vw;
+    }
+
+    .user_profile_empty {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        color: #666;
+        font-size: min(20px, 1.5vw);
     }
 
 

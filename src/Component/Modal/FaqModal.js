@@ -1,19 +1,25 @@
 import { useState } from "react";
-import { Modal, Input, Button } from "antd";
+import { Modal, Input, Button, message } from "antd";
 import "./Modal.css";
 
-const FaqModal = ({ open, onCancel, onSubmit }) => {
+const FaqModal = ({ open, onCancel, onSubmit, isSubmitting }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
   const handleSubmit = () => {
-    if (!title.trim() || !content.trim()) {
-      return; // 간단히 빈 값 체크
+    if (!title.trim()) {
+      message.error("제목을 입력해주세요.");
+      return;
     }
-    onSubmit?.({ title, content }); // 부모로 데이터 전달
+    if (!content.trim()) {
+      message.error("내용을 입력해주세요.");
+      return;
+    }
+
+    onSubmit?.({ title, content });
     setTitle("");
     setContent("");
-    onCancel(); // 닫기
+    onCancel();
   };
 
   return (
@@ -55,11 +61,12 @@ const FaqModal = ({ open, onCancel, onSubmit }) => {
           type="primary"
           className="custommodal_button_ok"
           onClick={handleSubmit}
+          disabled={isSubmitting} 
           style={{ marginRight: 20 }}
         >
           확인
         </Button>
-        <Button className="custommodal_button_cancle" onClick={onCancel}>
+        <Button className="custommodal_button_cancle" onClick={onCancel}  disabled={isSubmitting} >
           취소
         </Button>
       </section>
