@@ -1681,7 +1681,7 @@
         align-items: center;
         justify-content: center;
 
-        width: 38vw;
+        width: 38.5vw;
         height: auto;
 
         background-color: #242424;
@@ -1693,9 +1693,9 @@
     .noticecard_title {
         width: 80%;
         margin: 0 0 0 0;
-        padding: 20px 0;
+        padding: 12px 0;
 
-        font-size: min(16px, 1.9vw);
+        font-size: max(11px, 1.8vw);
         text-align: left;
 
         cursor: pointer;
@@ -1720,7 +1720,7 @@
         min-height: 100px;
         margin: 0 0;
 
-        font-size: min(12px, 1.6vw);
+        font-size: max(8.5px, 1.5vw);
         white-space: pre-line;
         text-align: left; 
 
@@ -1728,7 +1728,7 @@
         border: 1px solid #2a2a2a;
         border-radius: 8px;
 
-        padding: 12px;
+        padding: 10px;
         box-sizing: border-box;
 
         cursor: pointer;
@@ -1747,14 +1747,14 @@
         flex: 1;
         display: flex;
         align-items: center;
-        gap: 1vw;
+        gap: 1.5vw;
 
         width: 80%;
     }
 
     .noticecard_profile_img {
-        width: 4.2vw;
-        height: 4.2vw;
+        width: max(22px, 4vw);
+        height: max(22px, 4vw);
 
         border-radius: 50%;
 
@@ -1762,7 +1762,7 @@
     }
 
     .noticecard_text {
-        font-size: min(13px, 1.5vw);
+        font-size: max(7.5px, 1.5vw);
     }
 
     .noticecard_name {
@@ -1783,7 +1783,7 @@
         display: flex;
         align-items: center;
         justify-content: flex-end;
-        font-size: min(17px, 2.3vw);
+        font-size: max(12px, 1.5vw);
     }
 
     .custom-dropdown-menu {
@@ -1812,7 +1812,7 @@
         align-items: center;
         justify-content: center;
 
-        width: 23vw;
+        width: 38.5vw;
         height: auto;
 
         background-color: #242424;
@@ -1824,9 +1824,9 @@
     .subscribecard_title {
         width: 80%;
         margin: 0 0 0 0;
-        padding: 20px 0;
+        padding: 12px 0;
 
-        font-size: min(17px, 1.8vw);
+        font-size: max(11px, 1.8vw);
         text-align: left;
     }
 
@@ -1849,7 +1849,7 @@
         min-height: 100px;
         margin: 0 0;
 
-        font-size: min(13px, 1.5vw);
+        font-size: max(8.5px, 1.5vw);
         white-space: pre-line;
         text-align: left; 
 
@@ -1857,7 +1857,7 @@
         border: 1px solid #2a2a2a;
         border-radius: 8px;
 
-        padding: 12px;
+        padding: 10px;
         box-sizing: border-box;
 
         cursor: pointer;
@@ -1869,21 +1869,21 @@
         justify-content: space-between;
 
         width: 80%;
-        padding: 15px 0;
+        padding: 1.7vw 0;
     }
 
     .subscribecard_profile {
         flex: 1;
         display: flex;
         align-items: center;
-        gap: 1vw;
+        gap: 1.5vw;
 
         width: 80%;
     }
 
     .subscribecard_profile_img {
-        width: 4vw;
-        height: 4vw;
+        width: max(22px, 4vw);
+        height: max(22px, 4vw);
 
         border-radius: 50%;
 
@@ -1891,7 +1891,7 @@
     }
 
     .subscribecard_text {
-        font-size: min(15px, 1.5vw);
+        font-size: max(7.5px, 1.5vw);
     }
 
     .subscribecard_name {
@@ -1939,15 +1939,15 @@
 
         width: 90%;
 
-        font-size: max(12px, 1.8vw);
+        font-size: max(13px, 1.8vw);
         cursor: pointer;
     }
 
     .tipcard_icon {
         display: flex;
         align-items: center;
-        gap: 0.5vw;
-        font-size: max(17px, 1.5vw);
+        gap: 1.5vw;
+        font-size: max(15px, 1.5vw);
     }
 
     .tipcard_divider {
@@ -1965,7 +1965,7 @@
         display: flex;
         
         width: 90%;
-        padding: 1.7vw 0;
+        padding: 2vw 0;
 
         cursor: pointer;
     }
@@ -1974,14 +1974,14 @@
         flex: 1;
         display: flex;
         align-items: center;
-        gap: 1vw;
+        gap: 1.5vw;
 
         width: 80%;
     }
 
     .tipcard_profile_img {
-        width: 4.5vw;
-        height: 4.5vw;
+        width: max(25px, 4vw);
+        height: max(25px, 4vw);
 
         border-radius: 50%;
 
@@ -1989,7 +1989,7 @@
     }
 
     .tipcard_text {
-        font-size: min(11px, 1.6vw);
+        font-size: max(8.5px, 1.5vw);
     }
 
     .tipcard_name {
@@ -2013,7 +2013,7 @@
     }
 
     .tipcard_tag_item {
-        font-size: min(11px, 1.6vw);
+        font-size: max(8.5px, 1.5vw);
     }
 
     .tipcard_bookmark {
@@ -2024,12 +2024,13 @@
 
     .tipcard_box {
         display: flex;
+        align-items: center;
 
         width: 90%;
         min-height: 80px;
         margin: 0 0;
 
-        font-size: min(11px, 1.5vw);
+        font-size: max(8.5px, 1.5vw);
         white-space: pre-line;
         text-align: left; 
 
@@ -2045,11 +2046,16 @@
 
     .tipcard_content {
         flex: 1;
+        display: flex;
+        height: 100%;
+        align-items: flex-start;
     }
 
     .tipcard_img {
-        width: 10vw;      
-        height: 10vw;     
+        display: flex;
+        align-items: center;
+        width: max(40px, 10vw);      
+        height: max(40px, 10vw);       
         object-fit: cover;
         border-radius: 6px;
     }
@@ -2064,7 +2070,7 @@
         justify-content: flex-start;
         text-align: start;
 
-        gap: 20px;
+        gap: 15px;
     }
 
     .tipcard_reaction_item {
@@ -2072,7 +2078,7 @@
         align-items: center;
         gap: 5px;
 
-        font-size: max(11px, 1.5vw);
+        font-size: max(10px, 1.5vw);
     }
 
     .commentcard_layout {
@@ -2103,12 +2109,12 @@
         flex: 1;
         display: flex;
         align-items: center;
-        gap: 1vw;
+        gap: 8px;
     }
 
     .commentcard_profile_img {
-        width: 3.5vw;
-        height: 3.5vw;
+        width: max(25px, 4vw);
+        height: max(25px, 4vw);
 
         border-radius: 50%;
 
@@ -2116,7 +2122,7 @@
     }
 
     .commentcard_text {
-        font-size: min(13px, 1.4vw);
+        font-size: max(8.5px, 1.5vw);
     }
 
     .commentcard_name {
@@ -2134,7 +2140,7 @@
     }
 
     .commentcard_icon {
-        font-size: min(13px, 2vw);
+        font-size: max(15px, 1.5vw);
 
         cursor: pointer;
     }
@@ -2154,7 +2160,7 @@
         padding: 5px 0;
         box-sizing: border-box;
 
-        font-size: min(13px, 1.5vw);
+        font-size: max(8.5px, 1.5vw);
         white-space: pre-line;
         text-align: left; 
     }
@@ -2292,21 +2298,21 @@
 
         background-color: #242424;
         border: 1px solid #2a2a2a;
-        border-radius: 15px;
+        border-radius: 10px;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
     }
 
     .alarmcard_dot {
         position: absolute;
-        top: 0.1vw;
-        left: 1vw;
+        top: min(-1px, -0.1vw);
+        left: max(3.5px, 1.2vw);
     }
 
     .alarmcard_dot .ant-badge-status-dot {
-        width: 6px !important;
-        height: 6px !important;
-        min-width: 9px !important;
-        min-height: 9px !important;
+        width: min(6px, 3vw) !important;
+        height: min(6px, 3vw) !important;
+        min-width: min(10px, 5vw) !important;
+        min-height: min(10px, 5vw) !important;
         border-radius: 50% !important;
     }
 
@@ -2315,8 +2321,8 @@
         justify-content: space-between;
         align-items: center;
 
-        width: 92%;
-        padding: 1.7vw 0;
+        width: 90%;
+        padding: min(10px, 5vw) 0;
     }
 
     .alarmcard_info {
@@ -2328,8 +2334,8 @@
 
    
     .alarmcard_img {
-        width: 5vw;
-        height: 5vw;
+        width: max(25px, 4vw);
+        height: max(25px, 4vw);
 
         border-radius: 50%;
 
@@ -2337,7 +2343,7 @@
     }
 
     .alarmcard_text {
-        font-size: min(10px, 1.5vw);
+        font-size: max(8.5px, 1.5vw);
     }
 
     .alarmcard_name {
@@ -2356,14 +2362,14 @@
 
     /* AlarmCard 전용 체크박스 크기 */
     .alarmcard_checkbox .ant-checkbox-inner {
-        width: 2.5vw;   /* 원하는 크기 */
-        height: 2.5vw;
+        width: min(15px, 3.5vw);   /* 원하는 크기 */
+        height: min(15px, 3.5vw);
     }
 
     /* ✔ 체크 표시 위치 & 크기 */
     .alarmcard_checkbox.ant-checkbox-checked .ant-checkbox-inner::after {
-        width: 6px;
-        height: 12px;
+        width: min(6px, 3vw);
+        height: min(12px, 4vw);
         left: 30%;
         top: 45%;
     }
@@ -2391,11 +2397,11 @@
         align-items: center;
         gap: 0.3vw;
 
-        width: 92%;
-        height: 7vw;
+        width: 90%;
+        min-height: max(50px, 7vw);
 
 
-        font-size: min(10px, 1.5vw);
+        font-size: max(8.5px, 1.5vw);
         white-space: pre-line;
         text-align: left; 
 

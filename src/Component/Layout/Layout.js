@@ -24,6 +24,7 @@ import AcademicManagement from "../../Page/Academic/AcademicManagement";
 
 import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useMediaQuery } from "react-responsive";
 import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 
@@ -41,6 +42,8 @@ const Layout = () => {
     const path = location.pathname;
 
     const [loading, setLoading] = useState(true);
+
+    const isMobile = useMediaQuery({ maxWidth: 768 });
   
 
     useEffect(() => {
@@ -77,9 +80,10 @@ const Layout = () => {
     }
 
     if (path === "/enroll") {
-        return (
-            <Enroll />
-        );
+        if (isMobile) {
+            return <Navigate to="/" replace />; 
+        }
+        return <Enroll />;
     }
 
     const isMain = path === "/";
@@ -101,8 +105,22 @@ const Layout = () => {
                     <Route path="/tip/write" element={<PrivateRoute><TipWrite /></PrivateRoute>} />
                     <Route path="/tip/subscribe" element={<PrivateRoute><TipSub /></PrivateRoute>} />
 
-                    <Route path="/enroll/practice" element={<PrivateRoute><EnrollPractice /></PrivateRoute>} />
-                    <Route path="/enroll/guide" element={<PrivateRoute><EnrollGuide /></PrivateRoute>} />
+                    <Route
+                    path="/enroll/practice"
+                    element={
+                        isMobile
+                        ? <Navigate to="/" replace />
+                        : <PrivateRoute><EnrollPractice /></PrivateRoute>
+                    }
+                    />
+                    <Route
+                    path="/enroll/guide"
+                    element={
+                        isMobile
+                        ? <Navigate to="/" replace />
+                        : <PrivateRoute><EnrollGuide /></PrivateRoute>
+                    }
+                    />
 
                     <Route path="/user" element={<PrivateRoute><User /></PrivateRoute>} />
                     <Route path="/user/alarm" element={<PrivateRoute><UserAlarm /></PrivateRoute>} />

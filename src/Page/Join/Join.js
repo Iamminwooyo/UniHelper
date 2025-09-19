@@ -55,6 +55,8 @@ const Join = () => {
 
   const navigate = useNavigate();
 
+  const schoolEmailRegex = /^[0-9]+@yiu\.ac\.kr$/;
+
   const isMobile = useMediaQuery({ maxWidth: 768 })
 
   // 이메일 인증번호 전송 함수
@@ -63,6 +65,11 @@ const Join = () => {
 
     if (!email) {
       message.error("이메일을 입력해주세요.");
+      return;
+    }
+
+    if (!schoolEmailRegex.test(email)) {
+      message.error("학교 이메일 형식이 아닙니다.");
       return;
     }
 
@@ -234,11 +241,18 @@ const Join = () => {
 
   // 이메일 함수
   const handleEmailChange = (e) => {
-    setEmail(e.target.value);
+    const value = e.target.value;
+    setEmail(value);
+
     setEmailVerificationStatus("idle");
     setEmailVerificationMessage("");
     setCodeVerificationStatus("idle");
     setCodeVerificationMessage("");
+
+    if (value && !schoolEmailRegex.test(value)) {
+      setEmailVerificationStatus("error");
+      setEmailVerificationMessage("학교 이메일 형식이 아닙니다.");
+    }
   };
 
   // 인증번호 함수
@@ -402,7 +416,7 @@ const Join = () => {
                 />
                 <p className={`join_input_message ${!isPasswordValid ? "error" : ""}`} style={{ minHeight: "18px" }}>
                   {!isPasswordValid
-                    ? "비밀번호는 대/소문자, 특수기호 포함 8자 이상"
+                    ? "대/소문자, 특수기호 포함 8자 이상"
                     : "\u00A0"}
                 </p>
               </div>

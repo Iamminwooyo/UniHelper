@@ -17,6 +17,10 @@ const UserAlarm = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
+  const blockSize = 5; 
+  const currentBlock = Math.floor((currentPage - 1) / blockSize); 
+  const startPage = currentBlock * blockSize + 1;
+  const endPage = Math.min(startPage + blockSize - 1, totalPages);
 
   const isFetchingRef = useRef(false);
 
@@ -209,11 +213,8 @@ const UserAlarm = () => {
               ))}
             </div>
 
-            {totalPages > 1 && (
-              <div
-                className="user_alarm_page_wrap"
-                style={{ textAlign: "center", marginTop: "30px" }}
-              >
+           {totalPages > 1 && (
+              <div className="user_alarm_page_wrap" style={{ textAlign: "center", marginTop: "30px" }}>
                 <button
                   onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                   disabled={currentPage === 1}
@@ -222,22 +223,18 @@ const UserAlarm = () => {
                   &lt;
                 </button>
 
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+                {Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i).map((pageNum) => (
                   <button
                     key={pageNum}
                     onClick={() => setCurrentPage(pageNum)}
-                    className={`user_alarm_page_button ${
-                      currentPage === pageNum ? "active" : ""
-                    }`}
+                    className={`user_alarm_page_button ${currentPage === pageNum ? "active" : ""}`}
                   >
                     {pageNum}
                   </button>
                 ))}
 
                 <button
-                  onClick={() =>
-                    setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-                  }
+                  onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
                   disabled={currentPage === totalPages}
                   className="user_alarm_page_button"
                 >

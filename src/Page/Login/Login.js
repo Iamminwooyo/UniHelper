@@ -7,6 +7,7 @@ import { userBriefState } from "../../Recoil/Atom";
 import PasswordModal from "../../Component/Modal/PasswordModal";
 import { login, fetchUserBrief, fetchImagePreview } from "../../API/AccountAPI";
 import { Input, Button, message } from "antd";
+import { IoHome } from "react-icons/io5";
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -86,6 +87,7 @@ const Login = () => {
         },
       });
 
+      sessionStorage.setItem("roleType", briefRes.roleType);
 
       message.success("로그인 성공!");
       navigate("/");
@@ -101,7 +103,7 @@ const Login = () => {
       } else if (status === 403) {
         message.error("접근 권한이 없습니다.");
       } else if (status === 500) {
-        message.error("서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+        message.error("이메일 또는 비밀번호가 올바르지 않습니다.");
       } else {
         message.error(
           "로그인 중 알 수 없는 오류가 발생했습니다: " + (serverMsg || error.message)
@@ -129,6 +131,11 @@ const Login = () => {
         </section>
       )}
       <section className="login_text">
+        {isMobile && ( 
+          <div className="login_icon_wrapper" onClick={() => navigate("/")}>
+            <IoHome className="login_icon"/>
+          </div>
+        )}
         <h1 className="login_title">LOGIN</h1>
         <form className="login_form" onSubmit={handleLogin}>
           <div className='login_input_group'>
