@@ -258,16 +258,11 @@ const AcademicManagement = () => {
                       &lt;
                     </button>
 
-                    {Array.from(
-                      { length: endPage - startPage + 1 },
-                      (_, i) => startPage + i
-                    ).map((pageNum) => (
+                    {Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i).map((pageNum) => (
                       <button
                         key={pageNum}
                         onClick={() => setCurrentPage(pageNum)}
-                        className={`academic_inquiry_page_button ${
-                          currentPage === pageNum ? "active" : ""
-                        }`}
+                        className={`tip_page_button ${currentPage === pageNum ? "active" : ""}`}
                       >
                         {pageNum}
                       </button>

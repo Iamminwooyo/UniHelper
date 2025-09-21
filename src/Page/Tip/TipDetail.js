@@ -39,6 +39,12 @@ const TipDetail = () => {
   const [commentPage, setCommentPage] = useState(0);
   const [commentTotalPages, setCommentTotalPages] = useState(0);
 
+  const blockSize = 5;
+  const currentBlock = Math.floor(commentPage / blockSize);
+  const startPage = currentBlock * blockSize + 1;
+  const endPage = Math.min(startPage + blockSize - 1, commentTotalPages);
+  
+
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editTipData, setEditTipData] = useState(null);
 
@@ -481,15 +487,17 @@ const TipDetail = () => {
                 >
                   &lt;
                 </button>
-                {Array.from({ length: commentTotalPages }, (_, i) => i + 1).map((pageNum) => (
+
+                {Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i).map((pageNum) => (
                   <button
                     key={pageNum}
-                    onClick={() => setCommentPage(pageNum - 1)}
+                    onClick={() => setCommentPage(pageNum - 1)} 
                     className={`tip_page_button ${commentPage === pageNum - 1 ? "active" : ""}`}
                   >
                     {pageNum}
                   </button>
                 ))}
+
                 <button
                   onClick={() => setCommentPage((prev) => Math.min(prev + 1, commentTotalPages - 1))}
                   disabled={commentPage === commentTotalPages - 1}
