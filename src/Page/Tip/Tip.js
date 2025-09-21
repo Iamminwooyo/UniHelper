@@ -229,8 +229,9 @@ const Tip = () => {
                 <TipCard
                   key={tip.id}
                   id={tip.id}
-                  profile={tip.profile}
+                  profile={tip.authorProfileImageUrl}
                   name={tip.authorName}
+                  department={tip.authorDepartment}
                   title={tip.title}
                   date={formatDate(tip.createdAt, tip.updatedAt)}
                   content={tip.text}
@@ -243,7 +244,6 @@ const Tip = () => {
                   dislikes={tip.dislikeCount}
                   comments={tip.commentCount}
                   tags={tip.tags}
-                  role={user.roleType}
                   isOwner={tip.authorId === user.userId}
                   type="tip"
                   onEdit={() => handleEditClick(tip)}

@@ -535,7 +535,8 @@
         align-items: center;
 
         color: #666;
-        font-size: min(20px, 1.2vw);
+        font-size: min(15px, 1.2vw);
+        font-weight: bold;
     }
 
     .enroll_practice_record_index {
@@ -1290,7 +1291,8 @@
         align-items: center;
 
         color: #666;
-        font-size: min(20px, 1.2vw);
+        font-size: min(13px, 1.2vw);
+        font-weight: bold;
     }
 
     .enroll_practice_record_index {
@@ -2455,7 +2457,8 @@
         align-items: center;
 
         color: #666;
-        font-size: min(20px, 1.2vw);
+        font-size: min(20px, 2vw);
+        font-weight: bold;
     }
 
     .enroll_practice_record_index {

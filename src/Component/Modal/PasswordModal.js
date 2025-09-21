@@ -431,12 +431,11 @@ const PasswordModal = ({ open, onCancel }) => {
             </div>
       </section>
 
-      <section style={{ marginTop: "10px", marginBottom: "10px", textAlign: "right"}}>
+      <section className="custommodal_footer">
         <Button
           type="primary"
           className="custommodal_button_ok"
           onClick={handlePasswordUpdate}
-          style={{ marginRight: "20px" }}
           disabled={isPasswordUpdating}
         >
           변경

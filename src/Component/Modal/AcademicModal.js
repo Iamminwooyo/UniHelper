@@ -69,6 +69,7 @@ const AcademicModal = ({ open, onCancel, onSubmit, isUploading }) => {
         <div className="custommodal_input_group">
           <p className="custommodal_input_label">폴더 이름</p>
           <AutoComplete
+            className="custommodal_autocomplete"
             style={{ width: "100%" }}
             placeholder="폴더 이름"
             options={folderOptions}        // 더미데이터 사용
@@ -114,12 +115,11 @@ const AcademicModal = ({ open, onCancel, onSubmit, isUploading }) => {
       </section>
 
       {/* 확인 / 취소 버튼 */}
-      <section style={{ marginTop: 10, marginBottom: 10, textAlign: "right" }}>
+      <section className="custommodal_footer">
         <Button
           type="primary"
           className="custommodal_button_ok"
           onClick={handleSubmit}
-          style={{ marginRight: 20 }}
           disabled={isUploading}  
         >
           확인

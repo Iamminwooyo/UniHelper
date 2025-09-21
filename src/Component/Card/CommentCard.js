@@ -54,7 +54,7 @@ const CommentCard = ({
           </Dropdown>
         )}
 
-        {!isOwner && role === "MANAGER" && (
+        {!isOwner && (role === "MANAGER" || role === "ADMIN") && (
           <MdDeleteOutline
             className="commentcard_icon"
             style={{ cursor: "pointer" }}
