@@ -345,7 +345,7 @@ const TipDetail = () => {
                         </div>
                       </Dropdown>
                     )}
-                    {tip.authorId !== user.userId && user.roleType === "MANAGER" && (
+                    {tip.authorId !== user.userId && (user.roleType === "MANAGER" || user.roleType === "ADMIN") && (
                       <MdDeleteOutline
                         className="tip_info_icon"
                         style={{ cursor: "pointer" }}
@@ -356,9 +356,9 @@ const TipDetail = () => {
                   <hr className="tip_divider" />
                   <div className="tip_profile_block">
                     <div className="tip_profile">
-                      <img src="/image/profile.png" alt="profile" className="tip_profile_img" />
+                      <img src={tip.authorProfileImageUrl || "/image/profile.png"} alt="profile" className="tip_profile_img" />
                       <div className="tip_text">
-                        <p className="tip_name">{tip.authorName}</p>
+                        <p className="tip_name">{tip.authorDepartment}</p>
                         <p className="tip_date">
                           {tip.updatedAt ? `${formatDate(tip.updatedAt)} (수정됨)` : formatDate(tip.createdAt)}
                         </p>
@@ -458,6 +458,8 @@ const TipDetail = () => {
                   <CommentCard
                     key={c.id}
                     id={c.id}
+                    profile={c.authorProfileImageUrl}
+                    name={c.authorName}
                     department={c.authorDept}
                     content={c.content}
                     date={c.updatedAt ? `${formatDate(c.updatedAt)} (수정됨)` : formatDate(c.createdAt)}

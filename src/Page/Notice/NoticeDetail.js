@@ -264,9 +264,9 @@ const NoticeDetail = () => {
 
               <div className="notice_info_block">
                 <div className="notice_profile">
-                  <img src={notice.profile || "/image/profile.png"} alt="profile" className="notice_profile_img" />
+                   <img src={notice.authorProfileImageUrl || "/image/profile.png"} alt="profile" className="notice_profile_img" />
                   <div className="notice_text">
-                    <p className="notice_name">{notice.department}</p>
+                    <p className="notice_name">{notice.authorName}</p>
                     <p className="notice_date">
                       {notice.updatedAt
                         ? `${formatDate(notice.updatedAt)} (수정됨)`

@@ -685,6 +685,7 @@
         border: 1px solid #2a2a2a;
         border-radius: 12px;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        font-size: min(11px, 0.8vw);
     }
 
     .academiccard_index {
@@ -1411,6 +1412,7 @@
         border: 1px solid #2a2a2a;
         border-radius: 12px;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        font-size: min(13px, 1vw);
     }
 
     .academiccard_index {
@@ -2193,7 +2195,7 @@
     .faqcard_layout .ant-collapse-header {
         display: flex !important;
         align-items: center !important;
-        font-size: min(14px, 2vw);
+        font-size: max(11px, 1.8vw);
         font-weight: bold;
         color: #78D900 !important;
         padding: 3.5vw 2.5vw !important;
@@ -2219,7 +2221,7 @@
 
     .faqcard_layout .ant-collapse-content-box {
         color: #ddd;
-        font-size: min(14px, 2vw);
+        font-size: max(9.5px, 1.5vw);
         padding: 12px 16px;
     }
 
@@ -2255,6 +2257,7 @@
         border: 1px solid #2a2a2a;
         border-radius: 12px;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        font-size: max(8.5px, 1.5vw);
     }
 
     .academiccard_index {
@@ -2446,7 +2449,7 @@
 
         width: 90%;
 
-        font-size: min(18px, 1.8vw);
+        font-size: max(12px, 1.8vw);
 
         cursor: pointer;
     }
@@ -2455,7 +2458,7 @@
         display: flex;
         align-items: center;
         gap: 0.5vw;
-        font-size: min(20px, 2.5vw);
+        font-size: max(15px, 1.5vw);
         color: #78D900 !important;
 
         cursor: pointer;
@@ -2477,7 +2480,7 @@
         align-items: center;
         
         width: 90%;
-        padding: 10px 0;
+        padding: 2vw 0;
         gap: 1vw;
 
         cursor: pointer;
@@ -2487,14 +2490,14 @@
         flex: 1;
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 1.5vw;
 
         width: 80%;
     }
 
     .inquirycard_profile_img {
-        width: 4vw;
-        height: 4vw;
+        width: max(25px, 4vw);
+        height: max(25px, 4vw);
 
         border-radius: 50%;
 
@@ -2502,7 +2505,7 @@
     }
 
     .inquirycard_text {
-        font-size: min(10px, 1.3vw);
+        font-size: max(7.5px, 1.5vw);
     }
 
     .inquirycard_name {
@@ -2529,7 +2532,7 @@
         padding: 8px 10px;
         box-sizing: border-box;
 
-        font-size: min(10px, 1.3vw);
+        font-size: max(7.5px, 1.5vw);
         text-align: left;
         margin-bottom: 10px;
     }

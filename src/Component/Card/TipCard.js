@@ -23,6 +23,7 @@ const TipCard = ({
   id,
   profile,
   name,
+  department,
   date,
   title,
   content,
@@ -35,7 +36,6 @@ const TipCard = ({
   dislikes,
   comments,
   tags = [],
-  role,
   isOwner,
   onEdit,
   onDelete,
@@ -48,6 +48,8 @@ const TipCard = ({
 
   const [bookmarkLoading, setBookmarkLoading] = useState(false);
   const [reactionLoading, setReactionLoading] = useState(false);
+
+  const role = sessionStorage.getItem("roleType") || "";
 
   // 태그 색상 매핑 함수
   const tagColorMap = useMemo(() => {
@@ -199,7 +201,7 @@ const TipCard = ({
             </Dropdown>
           )}
 
-          {!isOwner && isTip && role === "MANAGER" && (
+          {!isOwner && !isWrite && ["MANAGER", "ADMIN"].includes(role) && (
             <MdDeleteOutline
               style={{cursor:'pointer'}}
               onClick={(e) => {
@@ -221,7 +223,7 @@ const TipCard = ({
             className="tipcard_profile_img"
           />
           <div className="tipcard_text">
-            <p className="tipcard_name">{name}</p>
+            <p className="tipcard_name">{department}</p>
             <p className="tipcard_date">{date}</p>
           </div>
         </div>

@@ -185,7 +185,7 @@ const NoticeWrite = () => {
                 <NoticeCard
                   key={post.id}
                   id={post.id}
-                  profile={post.profile}
+                  profile={post.authorProfileImageUrl}
                   authorid={post.authorId}
                   title={post.title}
                   name={post.authorName}

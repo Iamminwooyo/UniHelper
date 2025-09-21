@@ -250,7 +250,7 @@ const NoticeSub = () => {
               onClick={() => handleOrgClick(org.authorName, org.authorId)}
             >
               <div className="subscribe_profile">
-                <img src="/image/profile.png" alt={org.authorName} className="subscribe_profile_img" />
+                <img src={org.authorProfileImageUrl || "/image/profile.png"} alt={org.authorName} className="subscribe_profile_img" />
                 <p className="subscribe_name">{org.authorName}</p>
               </div>
               <div className="subscribe_icon">
@@ -287,7 +287,7 @@ const NoticeSub = () => {
                   id={post.id}
                   authorid={post.authorId}
                   title={post.title}
-                  profile={post.profile}
+                  profile={post.authorProfileImageUrl}
                   name={post.authorName}
                   createdAt={post.createdAt}
                   updatedAt={post.updatedAt}

@@ -1,7 +1,8 @@
 import "./Card.css";
 import { Checkbox, Badge } from "antd";
 
-const AlarmCard = ({ id, noticeId, name, date, content, isRead, selected, onSelect, onOpen }) => {
+const AlarmCard = ({ id, profile, noticeId, name, date, content, isRead, selected, onSelect, onOpen }) => {
+  console.log("profile 값:", profile);
   return (
     <section
       className="alarmcard_layout"
@@ -12,7 +13,7 @@ const AlarmCard = ({ id, noticeId, name, date, content, isRead, selected, onSele
 
       <div className="alarmcard_header">
         <div className="alarmcard_info">
-          <img src="/image/profile.png" alt="" className="alarmcard_img" />
+          <img src={profile || "/image/profile.png"} alt="" className="alarmcard_img" />
           <div className="alarmcard_text">
             <p className="alarmcard_name">{name}</p>
             <p className="alarmcard_date">{date}</p>

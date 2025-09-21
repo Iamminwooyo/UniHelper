@@ -308,7 +308,7 @@ const UserModal = ({ open, onCancel, initialData = null, mode, onSuccess }) => {
                 {/* 부/복수 전공 */}
                 <div className="custommodal_input_group" style={{ marginTop: 16 }}>
                   <p className="custommodal_input_label">부/복수 전공</p>
-                  <div style={{ display: "flex", flexDirection:'column'}}>
+                  <div style={{ display: "flex", flexDirection:'column', gap:'10px'}}>
                     <Select
                       placeholder="부/복수"
                       value={subType ?? undefined} 

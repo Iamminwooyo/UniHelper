@@ -56,13 +56,12 @@ const FaqModal = ({ open, onCancel, onSubmit, isSubmitting }) => {
         </div>
       </section>
 
-      <section style={{ marginTop: 10, marginBottom: 10, textAlign: "right" }}>
+      <section className="custommodal_footer">
         <Button
           type="primary"
           className="custommodal_button_ok"
           onClick={handleSubmit}
           disabled={isSubmitting} 
-          style={{ marginRight: 20 }}
         >
           확인
         </Button>

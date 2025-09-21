@@ -156,9 +156,9 @@ const EnrollPractice = () => {
               </div>
 
                {isFetchingRecords ? (
-                  <p className="enroll_practice_empty">불러오는 중...</p>
+                  <div className="enroll_practice_empty">불러오는 중...</div>
                 ) : records.length === 0 ? (
-                  <p className="enroll_practice_empty">기록이 존재하지 않습니다.</p>
+                  <div className="enroll_practice_empty">기록이 존재하지 않습니다.</div>
                 ) : (
                   <>
                     <div className="enroll_practice_record_list">

@@ -169,7 +169,9 @@ const TipWrite = () => {
                 <TipCard
                   key={tip.id}
                   id={tip.id}
+                  profile={tip.authorProfileImageUrl}
                   name={tip.authorName}
+                  department={tip.authorDepartment}
                   date={formatDate(tip.createdAt, tip.updatedAt)}
                   title={tip.title}
                   content={tip.text}

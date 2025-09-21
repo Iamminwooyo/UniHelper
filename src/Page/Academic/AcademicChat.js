@@ -133,14 +133,6 @@ const AcademicChat = () => {
       </section>
 
       <section className="academic_chat_body">
-        {isMobile && (
-          <div
-            className="academic_history_button"
-            onClick={() => setIsDrawerOpen(true)}
-          >
-            지난 질문
-          </div>
-        )}
         <div className="academic_chat_warning">
           <Collapse>
             <Panel header="주의사항" key="1">
@@ -172,7 +164,7 @@ const AcademicChat = () => {
                         <Spin
                           indicator={
                             <LoadingOutlined
-                              style={{ color: "#78d900" }}
+                              style={{ color: "#78d900", marginLeft: "10px" }}
                               spin
                             />
                           }
@@ -196,6 +188,9 @@ const AcademicChat = () => {
                 onKeyDown={(e) => e.key === "Enter" && handleSend()}
               />
               <button onClick={handleSend}>전송</button>
+              {isMobile && (
+                <button onClick={() => setIsDrawerOpen(true)}> 지난 질문 </button>
+              )}
             </div>
           </div>
 
@@ -261,8 +256,8 @@ const AcademicChat = () => {
                           setIsDrawerOpen(false);
                         }}
                       >
-                        {msg.question?.length > 12
-                          ? msg.question.slice(0, 12) + "..."
+                        {msg.question?.length > 20
+                          ? msg.question.slice(0, 20) + "..."
                           : msg.question}
                       </div>
                     ))

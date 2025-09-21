@@ -44,8 +44,8 @@ const EnrollModal = ({ open, onCancel, mode, time, diffVsOthers, onConfirm }) =>
       onCancel={handleCancel} 
       footer={null}
       centered
-      closable={false}
-      wrapClassName="custommodal_wrap"
+      closable={true}
+      wrapClassName="enrollmodal_wrap"
     >
       <section className="custommodal_layout">
         <h2 className="custommodal_title">
@@ -60,17 +60,6 @@ const EnrollModal = ({ open, onCancel, mode, time, diffVsOthers, onConfirm }) =>
 
         <p className="custommodal_result">{resultMessage}</p>
 
-      </section>
-
-      <section style={{ marginTop: 10, marginBottom: 10, textAlign: "right" }}>
-        <Button
-          type="primary"
-          className="custommodal_button_ok"
-          onClick={handleSubmit}
-          style={{ marginRight: 20 }}
-        >
-          확인
-        </Button>
       </section>
     </Modal>
   );

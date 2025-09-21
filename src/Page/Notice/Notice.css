@@ -132,6 +132,7 @@
 
         color: #666;
         font-size: min(20px, 1.2vw);
+        font-weight: bold;
     }
 
     .notice_post {
@@ -564,6 +565,7 @@
 
         color: #666;
         font-size: min(15px, 1.2vw);
+        font-weight: bold;
     }
 }
 @media (min-width: 769px) and (max-width: 1240px) {
@@ -704,7 +706,8 @@
         align-items: center;
 
         color: #666;
-        font-size: min(20px, 1.5vw);
+        font-size: min(16px, 1.8vw);
+        font-weight: bold;
     }
 
     .notice_post {
@@ -957,7 +960,7 @@
         border: none;
         color: white;      /* 기본 흰색 글씨 */
         cursor: pointer;
-        font-size: min(15px, 1.3vw);
+        font-size: min(15px, 1.8vw);
         transition: color 0.3s;
     }
 
@@ -1137,6 +1140,7 @@
 
         color: #666;
         font-size: min(15px, 1.5vw);
+        font-weight: bold;
     }
 }
 @media (min-width: 1px) and (max-width: 768px) {
@@ -1279,6 +1283,7 @@
         color: #666;
         min-height: 300px;
         font-size: max(11px, 2vw);
+        font-weight: bold;
     }
 
     .notice_post {
@@ -1526,7 +1531,7 @@
         border: none;
         color: white;      /* 기본 흰색 글씨 */
         cursor: pointer;
-        font-size: min(15px, 2.5vw);
+        font-size: max(11px, 1.6vw);
         transition: color 0.3s;
     }
 
@@ -1639,6 +1644,7 @@
         z-index: 2;
         overflow-y: auto;
         border-radius: 20px 0 0 20px;
+        font-weight: bold;
     }
 
     .subscribe_panel.open {
@@ -1671,7 +1677,7 @@
     }
 
     .subscribe_title {
-        font-size: max(12px, 2vw);
+        font-size: max(11.5px, 1.5vw);
         color: #78D900;
     }
 
@@ -1724,6 +1730,7 @@
         margin: 0;
 
         font-size: max(10px, 1.5vw);
+        font-weight: 400;
     }
 
     .subscribe_icon {
@@ -1773,6 +1780,7 @@
         align-items: center;
         color: #666;
         font-size: min(20px, 2vw);
+        font-weight: bold;
     }
 
     

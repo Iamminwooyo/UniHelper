@@ -53,7 +53,7 @@ const Side = () => {
     },
     {
       match: (p) => p.startsWith("/notice"),
-      items: (user.roleType === "MANAGER") 
+      items: (user.roleType != "STUDENT") 
       ? [
           { name: "공지사항", link: "/notice" },
           { name: "작성 목록", link: "/notice/write" },

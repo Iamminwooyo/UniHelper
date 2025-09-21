@@ -41,7 +41,9 @@ const UserAlarm = () => {
       const mapped = (data.content || []).map((alarm) => ({
         id: alarm.notificationId, 
         noticeId: alarm.noticeId,
-        name: alarm.department,
+        profile: alarm.authorProfileImageUrl,
+        name: alarm.authorName,
+        department: alarm.department,
         date: alarm.createdAt,
         content: alarm.noticeTitle,
         isRead: alarm.read,
@@ -192,8 +194,10 @@ const UserAlarm = () => {
                 <AlarmCard
                   key={alarm.id}
                   id={alarm.id}
+                  profile={alarm.profile} 
                   noticeId={alarm.noticeId}
                   name={alarm.name}
+                  department={alarm.department}
                   date={new Date(alarm.date).toISOString().split("T")[0]}
                   content={alarm.content}
                   isRead={alarm.isRead}

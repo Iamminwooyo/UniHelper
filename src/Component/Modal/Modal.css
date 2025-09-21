@@ -3,6 +3,28 @@
     width: 400px !important;
   }
 
+  .enrollmodal_wrap .ant-modal {
+    width: 450px !important;
+  }
+
+    /* X 버튼 위치 (오른쪽 위 여백 조절) */
+  .enrollmodal_wrap .ant-modal-close {
+    top: 40px;   /* 위쪽 위치 */
+    right: 40px; /* 오른쪽 위치 */
+  }
+
+  /* X 버튼 아이콘 스타일 */
+  .enrollmodal_wrap .ant-modal-close-x {
+    font-size: 24px;       /* 크기 */
+    color: #8f8f8f;        /* 초록색 */
+    transition: color 0.2s;
+  }
+
+  .enrollmodalwrap .ant-modal-close-x:hover {
+    color: #ffffff;        /* hover 색상 */
+    background-color: #1B1B1B;
+  }
+
   .chatmodal_wrap .ant-modal {
     width: 600px !important;
   }
@@ -41,6 +63,12 @@
     overflow: hidden;
   }
 
+  .enrollmodal_wrap .ant-modal-content {
+    background-color: #1B1B1B;
+    border-radius: 30px !important;
+    overflow: hidden;
+  }
+
   .textmodal_wrap .ant-modal-content {
     background-color: #1B1B1B;
     border-radius: 30px !important;
@@ -73,13 +101,13 @@
   .custommodal_time {
     color: #fff;
     font-size: 18px;
-    margin: 0 0 10px 0;
+    margin: 0 0 2vw 0;
   }
 
   .custommodal_result {
     color: #fff;
     font-size: 18px;
-    margin: 10px 0 0 0;
+    margin: 10px 0 3vw 0;
   }
 
   .custommodal_text {
@@ -281,6 +309,25 @@
       top: 50% !important;
       color: #ffffff !important;
       opacity: 0.3;
+    }
+
+    .custommodal_autocomplete .ant-select-selection-search-input {
+      font-size: 13px !important;
+      color: #fff;
+    }
+
+    .custommodal_autocomplete_message {
+      width: 70%;
+      display: flex;
+      justify-content: flex-start;
+      text-align: start;
+      margin-bottom: -20px;
+      font-size: 13px;
+      color: #aaa;
+    }
+
+    .custommodal_autocomplete_message.error {
+      color: red;
     }
 
     .custommodal_input_button.ant-btn {
@@ -487,6 +534,7 @@
     .custommodal_upload_status {
       display: flex;
       align-items: center;
+      justify-content: center;
       color: #78D900;
       font-size: 13px;
       gap: 0.5vw;
@@ -578,6 +626,27 @@
     width: min(400px,50vw) !important;
   }
 
+  .enrollmodal_wrap .ant-modal {
+    width: 380px !important;
+  }
+
+    /* X 버튼 위치 (오른쪽 위 여백 조절) */
+  .enrollmodal_wrap .ant-modal-close {
+    top: 40px;   /* 위쪽 위치 */
+    right: 30px; /* 오른쪽 위치 */
+  }
+
+  /* X 버튼 아이콘 스타일 */
+  .enrollmodal_wrap .ant-modal-close-x {
+    font-size: 20px;       /* 크기 */
+    color: #8f8f8f;        /* 초록색 */
+    transition: color 0.2s;
+  }
+
+  .enrollmodalwrap .ant-modal-close-x:hover {
+    color: #ffffff;        /* hover 색상 */
+    background-color: #1B1B1B;
+  }
 
   .custommodal_wrap .ant-modal-content {
     background-color: #1B1B1B;
@@ -592,7 +661,7 @@
     /* X 버튼 위치 (오른쪽 위 여백 조절) */
   .chatmodal_wrap .ant-modal-close {
     top: 40px;   /* 위쪽 위치 */
-    right: 40px; /* 오른쪽 위치 */
+    right: 30px; /* 오른쪽 위치 */
   }
 
   /* X 버튼 아이콘 스타일 */
@@ -624,6 +693,12 @@
     overflow: hidden;
   }
 
+  .enrollmodal_wrap .ant-modal-content {
+    background-color: #1B1B1B;
+    border-radius: 30px !important;
+    overflow: hidden;
+  }
+
   .custommodal_layout {
     display: flex;
     flex-direction: column;
@@ -650,13 +725,13 @@
   .custommodal_time {
     color: #fff;
     font-size: min(15px, 1.5vw);
-    margin: 0 0 10px 0;
+    margin: 0 0 3vw 0;
   }
 
   .custommodal_result {
     color: #fff;
     font-size: min(15px, 1.5vw);
-    margin: 10px 0 0 0;
+    margin: 10px 0 4.5vw 0;
   }
 
   .custommodal_text {
@@ -722,7 +797,7 @@
     .custommodal_input_group textarea.ant-input {
       min-height: min(38px,4.5vw) !important;
       font-size: max(12px,0.9vw) !important; 
-      padding: 8px 12px 0 12px;
+      padding: 10px 12px 0 12px;
       background-color: #3a3a3a !important;
       color: white !important;
       border: none !important;
@@ -864,6 +939,24 @@
       opacity: 0.3;
     }
 
+    .custommodal_autocomplete .ant-select-selection-search-input {
+      font-size: max(12px,0.9vw) !important; 
+      color: #fff;
+    }
+
+    .custommodal_autocomplete_message {
+      width: 70%;
+      display: flex;
+      justify-content: flex-start;
+      text-align: start;
+      margin-bottom: -20px;
+      font-size: 0.7rem;
+    }
+
+    .custommodal_autocomplete_message.error {
+      color: red;
+    }
+
     .custommodal_input_button.ant-btn {
       height: min(38px,4.5vw) !important;
       font-size: max(12px,0.9vw) !important; 
@@ -889,7 +982,7 @@
       width: 95%;
       justify-content: flex-end;
       margin: 1.5vw 0;
-      gap: 2vw;
+      gap: 1vw;
     }
 
     .custommodal_button_ok.ant-btn {
@@ -943,10 +1036,6 @@
       color: transparent; 
     }
 
-    .custommodal_input_group textarea.ant-input {
-      padding-top: 8px;
-      box-sizing: border-box;
-    }
 
     .custommodal_upload_circle .ant-upload {
       border-radius: 50%;
@@ -995,8 +1084,25 @@
     .custommodal_img_upload .ant-upload.ant-upload-select {
       color: #fff;
       font-size: max(12px,0.9vw) !important; 
+      width: 80px !important;
+      height: 80px !important;
 
       background-color: #3a3a3a !important;
+    }
+
+    /* 썸네일 컨테이너 크기 줄이기 */
+    .custommodal_img_upload .ant-upload-list-item {
+      width: 80px !important;
+      height: 80px !important;
+      overflow: hidden;
+    }
+
+    /* 업로드 썸네일/버튼 컨테이너 크기 줄이기 */
+    .custommodal_img_upload .ant-upload-list-picture-card .ant-upload-list-item-container {
+      width: 80px !important;   /* 원하는 크기 */
+      height: 80px !important;
+      margin-right: 2px !important;  /* 간격도 같이 줄임 */
+      margin-bottom: 2px !important;
     }
 
     .custommodal_img_upload .ant-upload:hover,
@@ -1069,6 +1175,16 @@
     .custommodal_file_upload .ant-upload-list-item .anticon {
       color: white !important;
       opacity: 0.3;
+    }
+
+    .custommodal_upload_status {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #78D900;
+      font-size: 13px;
+      gap: 0.5vw;
+      padding: 10px 0;
     }
 
    .custommodal_chat {
@@ -1179,7 +1295,7 @@
 
 
   .textmodal_wrap .ant-modal {
-    width: min(250px,70vw) !important;
+    width: min(300px,70vw) !important;
   }
 
   .custommodal_wrap .ant-modal-content {
@@ -1211,8 +1327,8 @@
   }
 
   .custommodal_title {
-      margin: 20px 0 30px 0;
-      font-size: min(20px, 3.8vw);
+      margin: 10px 0 30px 0;
+      font-size: max(15px,1.5vw);
       align-self: flex-start;
       color: #78D900;
   }
@@ -1295,9 +1411,9 @@
     }
 
     .custommodal_input_group textarea.ant-input {
-      height: min(35px,8vw) !important;
+      min-height: min(35px,8vw) !important;
       font-size: min(10px, 2.5vw) !important;
-      padding: 8px 12px 0 12px;
+      padding: 10px 12px 0 12px;
       background-color: #3a3a3a !important;
       color: white !important;
       border: none !important;
@@ -1362,7 +1478,7 @@
 
     /* 드롭다운 화살표 */
     .custommodal_input_group .ant-select-single .ant-select-arrow {
-      top: 65% !important;
+      top: 70% !important;
       transform: translateY(-50%) !important;
       right: 12px; /* 필요하면 오른쪽 간격도 살짝 조정 */
       color: #ffffff !important;
@@ -1446,6 +1562,25 @@
       top: 50% !important;
       color: #ffffff !important;
       opacity: 0.3;
+      font-size: max(8px,1.8vw) !important; 
+    }
+
+     .custommodal_autocomplete .ant-select-selection-search-input {
+      font-size: min(10px, 2.5vw) !important;
+      color: #fff;
+    }
+
+    .custommodal_autocomplete_message {
+      width: 70%;
+      display: flex;
+      justify-content: flex-start;
+      text-align: start;
+      margin-bottom: -20px;
+       font-size: min(10px, 2.5vw) !important;
+    }
+
+    .custommodal_autocomplete_message.error {
+      color: red;
     }
 
     .custommodal_input_button.ant-btn {
@@ -1580,9 +1715,27 @@
     .custommodal_img_upload .ant-upload.ant-upload-select {
       color: #fff;
       font-size: max(10px,0.9vw) !important; 
+      width: 70px !important;
+      height: 70px !important;
 
       background-color: #3a3a3a !important;
     }
+
+    /* 썸네일 컨테이너 크기 줄이기 */
+    .custommodal_img_upload .ant-upload-list-item {
+      width: 70px !important;
+      height: 70px !important;
+      overflow: hidden;
+    }
+
+    /* 업로드 썸네일/버튼 컨테이너 크기 줄이기 */
+    .custommodal_img_upload .ant-upload-list-picture-card .ant-upload-list-item-container {
+      width: 70px !important;   /* 원하는 크기 */
+      height: 70px !important;
+      margin-right: 2px !important;  /* 간격도 같이 줄임 */
+      margin-bottom: 2px !important;
+    }
+
 
     .custommodal_img_upload .ant-upload:hover,
     .custommodal_img_upload .ant-upload:focus,
@@ -1654,6 +1807,16 @@
     .custommodal_file_upload .ant-upload-list-item .anticon {
       color: white !important;
       opacity: 0.3;
+    }
+
+    .custommodal_upload_status {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #78D900;
+      font-size: 10px;
+      gap: 0.5vw;
+      padding: 10px 0;
     }
 
     .custommodal_chat {
