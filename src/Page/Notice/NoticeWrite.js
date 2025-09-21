@@ -18,6 +18,11 @@ const NoticeWrite = () => {
   const pageSize = 6;
   const [totalPages, setTotalPages] = useState(0);
 
+  const blockSize = 5; 
+  const currentBlock = Math.floor((currentPage - 1) / blockSize);
+  const startPage = currentBlock * blockSize + 1;
+  const endPage = Math.min(startPage + blockSize - 1, totalPages);
+
   const [myNotices, setMyNotices] = useState([]);
 
   const isFetchingRef = useRef(false);
@@ -214,11 +219,11 @@ const NoticeWrite = () => {
                   &lt;
                 </button>
 
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+                {Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i).map((pageNum) => (
                   <button
                     key={pageNum}
                     onClick={() => setCurrentPage(pageNum)}
-                    className={`notice_page_button ${currentPage === pageNum ? "active" : ""}`}
+                    className={`tip_page_button ${currentPage === pageNum ? "active" : ""}`}
                   >
                     {pageNum}
                   </button>

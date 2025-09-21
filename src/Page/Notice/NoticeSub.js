@@ -21,6 +21,11 @@ const NoticeSub = () => {
   const pageSize = 6;
   const [totalPages, setTotalPages] = useState(0);
 
+  const blockSize = 5; 
+  const currentBlock = Math.floor((currentPage - 1) / blockSize);
+  const startPage = currentBlock * blockSize + 1;
+  const endPage = Math.min(startPage + blockSize - 1, totalPages);
+
   const [SubListes, setSubListes] = useState([]);   
   const [SubNotices, setSubNotices] = useState([]);
 
@@ -307,11 +312,11 @@ const NoticeSub = () => {
                 <button onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))} disabled={currentPage === 1} className="notice_page_button">
                   &lt;
                 </button>
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+                {Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i).map((pageNum) => (
                   <button
                     key={pageNum}
                     onClick={() => setCurrentPage(pageNum)}
-                    className={`notice_page_button ${currentPage === pageNum ? "active" : ""}`}
+                    className={`tip_page_button ${currentPage === pageNum ? "active" : ""}`}
                   >
                     {pageNum}
                   </button>
@@ -410,14 +415,14 @@ const NoticeSub = () => {
               <button onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))} disabled={currentPage === 1} className="notice_page_button">
                 &lt;
               </button>
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
-                <button
-                  key={pageNum}
-                  onClick={() => setCurrentPage(pageNum)}
-                  className={`notice_page_button ${currentPage === pageNum ? "active" : ""}`}
-                >
-                  {pageNum}
-                </button>
+              {Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i).map((pageNum) => (
+                  <button
+                    key={pageNum}
+                    onClick={() => setCurrentPage(pageNum)}
+                    className={`tip_page_button ${currentPage === pageNum ? "active" : ""}`}
+                  >
+                    {pageNum}
+                  </button>
               ))}
               <button onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))} disabled={currentPage === totalPages} className="notice_page_button">
                 &gt;
