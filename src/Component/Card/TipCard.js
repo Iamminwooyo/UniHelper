@@ -168,15 +168,6 @@ const TipCard = ({
   const isTip = type === "tip";
   const isWrite = type === "write";
 
-  console.log("👉 TipCard Debug", {
-    id,
-    isOwner,
-    type,
-    isTip,
-    isWrite,
-    role,
-  });
-
   return (
     <section className="tipcard_layout">
       <div className="tipcard_header">

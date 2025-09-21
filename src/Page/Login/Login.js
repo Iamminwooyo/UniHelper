@@ -65,16 +65,7 @@ const Login = () => {
       //   profileImage: profileImageObj,
       // });
 
-      const rawUrl = briefRes.profileImage?.url;
-      const cleanUrl = rawUrl
-        ? rawUrl
-            .replace("Localhost", "localhost")
-            .replace("Files", "files")
-            .replace("proFiles", "profiles")
-        : "/image/profile.png";
-
-      console.log("🔎 원본 URL:", rawUrl);
-      console.log("✅ 교정된 URL:", cleanUrl);
+      console.log("📌 briefRes.profileImage:", briefRes.profileImage);
 
       setUserBrief({
         userId: briefRes.userId,
@@ -83,7 +74,18 @@ const Login = () => {
         department: briefRes.department,
         roleType: briefRes.roleType,
         profileImage: {
-          url: cleanUrl,
+          url: briefRes.profileImage?.url || "/image/profile.png",
+        },
+      });
+
+      console.log("✅ setUserBrief 값:", {
+        userId: briefRes.userId,
+        username: briefRes.username,
+        student_number: briefRes.student_number,
+        department: briefRes.department,
+        roleType: briefRes.roleType,
+        profileImage: {
+          url: briefRes.profileImage?.url || "/image/profile.png",
         },
       });
 

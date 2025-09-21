@@ -316,6 +316,20 @@
       color: #fff;
     }
 
+    .custommodal_autocomplete_message {
+      width: 70%;
+      display: flex;
+      justify-content: flex-start;
+      text-align: start;
+      margin-bottom: -20px;
+      font-size: 13px;
+      color: #aaa;
+    }
+
+    .custommodal_autocomplete_message.error {
+      color: red;
+    }
+
     .custommodal_input_button.ant-btn {
       height: 42px;
       font-size: 13px;
@@ -930,6 +944,19 @@
       color: #fff;
     }
 
+    .custommodal_autocomplete_message {
+      width: 70%;
+      display: flex;
+      justify-content: flex-start;
+      text-align: start;
+      margin-bottom: -20px;
+      font-size: 0.7rem;
+    }
+
+    .custommodal_autocomplete_message.error {
+      color: red;
+    }
+
     .custommodal_input_button.ant-btn {
       height: min(38px,4.5vw) !important;
       font-size: max(12px,0.9vw) !important; 
@@ -1541,6 +1568,19 @@
      .custommodal_autocomplete .ant-select-selection-search-input {
       font-size: min(10px, 2.5vw) !important;
       color: #fff;
+    }
+
+    .custommodal_autocomplete_message {
+      width: 70%;
+      display: flex;
+      justify-content: flex-start;
+      text-align: start;
+      margin-bottom: -20px;
+       font-size: min(10px, 2.5vw) !important;
+    }
+
+    .custommodal_autocomplete_message.error {
+      color: red;
     }
 
     .custommodal_input_button.ant-btn {
