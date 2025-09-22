@@ -44,7 +44,7 @@ const Tip = () => {
 
   const navigate = useNavigate();
 
-  // Tip 조회 함수
+ // Tip 조회 함수
   const loadTips = useCallback(async () => {
     if (isFetchingRef.current) return;
     isFetchingRef.current = true;
@@ -58,27 +58,16 @@ const Tip = () => {
         keyword,
       });
 
+      console.log("📥 fetchTips 원본 데이터:", data);
+
       const list = data.content || [];
 
-      const withPreview = await Promise.all(
-        list.map(async (item) => {
-          const filename = item?.images?.[0]?.url;
-          if (!filename) return { ...item, previewUrl: null };
+      const withPreview = list.map((item) => ({
+        ...item,
+        previewUrl: item?.images?.[0]?.url || null,
+      }));
 
-          if (imageCacheRef.current.has(filename)) {
-            return { ...item, previewUrl: imageCacheRef.current.get(filename) };
-          }
-
-          try {
-            const blob = await fetchTipImagePreview(filename); 
-            const url = URL.createObjectURL(blob);
-            imageCacheRef.current.set(filename, url);
-            return { ...item, previewUrl: url };
-          } catch {
-            return { ...item, previewUrl: null };
-          }
-        })
-      );
+      console.log("🖼️ 프리뷰 변환 후 데이터:", withPreview);
 
       setTips(withPreview);
       setTotalPages(data.totalPages || 0);

@@ -49,6 +49,12 @@ const UserModal = ({ open, onCancel, initialData = null, mode, onSuccess }) => {
     gpa: "",
   });
 
+  const urlToFile = async (url, filename) => {
+    const response = await fetch(url);
+    const blob = await response.blob();
+    return new File([blob], filename, { type: blob.type });
+  };
+
   // ------------------ useEffect ------------------
   useEffect(() => {
     if (open) {
@@ -129,20 +135,30 @@ const UserModal = ({ open, onCancel, initialData = null, mode, onSuccess }) => {
   };
 
   const handleSubmit = async () => {
-    if (mode === "profile") {
-      const data = {
-        username,
-        studentNumber: roleType === "STUDENT" ? studentNumber : "",
-        department,
-        gradeLabel: roleType === "STUDENT" ? gradeLabel : "",
-        minor: roleType === "STUDENT" && subType === "부전공" ? subMajor : null,
-        doubleMajor: roleType === "STUDENT" && subType === "복수전공" ? subMajor : null,
-        profileImageFile: fileList[0]?.originFileObj || null,
-      };
-      console.log("제출 데이터:", data);
-      if (onSuccess) onSuccess(data);
-      onCancel();
+     if (mode === "profile") {
+    let profileImageFile = null;
+
+    if (fileList.length === 0) {
+      profileImageFile = null;
+    } else if (fileList[0].originFileObj) {
+      profileImageFile = fileList[0].originFileObj;
+    } else {
+      profileImageFile = await urlToFile(fileList[0].url, "profile.png");
     }
+
+    const data = {
+      username,
+      studentNumber: roleType === "STUDENT" ? studentNumber : "",
+      department,
+      gradeLabel: roleType === "STUDENT" ? gradeLabel : "",
+      minor: roleType === "STUDENT" && subType === "부전공" ? subMajor : null,
+      doubleMajor: roleType === "STUDENT" && subType === "복수전공" ? subMajor : null,
+      profileImageFile,
+    };
+
+    if (onSuccess) onSuccess(data);
+    onCancel();
+  }
 
      if (mode === "grade") {
         if (step === 1) {

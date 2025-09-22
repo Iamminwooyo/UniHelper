@@ -49,7 +49,7 @@ const EnrollModal = ({ open, onCancel, mode, time, diffVsOthers, onConfirm }) =>
     >
       <section className="custommodal_layout">
         <h2 className="custommodal_title">
-          {mode === "practicebasic" 
+          {mode === "BASIC" 
           ? "기본 수강신청 완료" 
           : "장바구니 수강신청 완료"}
         </h2>

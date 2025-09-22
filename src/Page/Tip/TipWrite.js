@@ -30,6 +30,9 @@ const TipWrite = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deleteTipId, setDeleteTipId] = useState(null);
 
+  const savedUser = sessionStorage.getItem("userBrief");
+  const user = savedUser ? JSON.parse(savedUser) : {};
+
   const navigate = useNavigate();
 
   // Tip 작성 목록 조회 함수
@@ -46,20 +49,10 @@ const TipWrite = () => {
 
       const list = data.content || [];
 
-      const withPreview = await Promise.all(
-        list.map(async (item) => {
-          const filename = item?.images?.[0]?.url;
-          if (!filename) return { ...item, previewUrl: null };
-
-          try {
-            const blob = await fetchTipImagePreview(filename);
-            const url = URL.createObjectURL(blob);
-            return { ...item, previewUrl: url };
-          } catch {
-            return { ...item, previewUrl: null };
-          }
-        })
-      );
+      const withPreview = list.map((item) => ({
+        ...item,
+        previewUrl: item?.images?.[0]?.url || null,
+      }));
 
       setTips(withPreview);
       setTotalPages(data.totalPages || 0);
@@ -189,6 +182,7 @@ const TipWrite = () => {
                   comments={tip.commentCount}
                   tags={tip.tags}
                   type="write"
+                  isOwner={tip.authorId === user.userId}
                   onEdit={handleEditClick}
                   onDelete={handleDeleteClick}
                   onClick={() => handleCardClick(tip.id)}
