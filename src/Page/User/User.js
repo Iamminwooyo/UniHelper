@@ -1,8 +1,6 @@
 import "./User.css";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useMediaQuery } from "react-responsive"
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { userBriefState } from "../../Recoil/Atom";
 import UserModal from "../../Component/Modal/UserModal";
 import { fetchMyPageInfo, fetchMyPageCredits, updateMyPageInfo, updateCredits, fetchProfileImagePreview } from "../../API/UserAPI";
 import { message } from "antd";
@@ -11,7 +9,6 @@ import { FiEdit2 } from "react-icons/fi";
 const User = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState(null);
-
 
   const [userData, setUserData] = useState(null);
 
@@ -25,21 +22,10 @@ const User = () => {
 
   const [activeTab, setActiveTab] = useState("major");
 
-  const { roleType } = useRecoilValue(userBriefState);
-  const setUserBrief = useSetRecoilState(userBriefState);
+  const savedUser = sessionStorage.getItem("userBrief");
+  const user = savedUser ? JSON.parse(savedUser) : {};
 
   const isMobile = useMediaQuery({ maxWidth: 768 });
-
-  // 렌더링 함수
-  useEffect(() => {
-    const savedRoleType = sessionStorage.getItem("roleType");
-    if (savedRoleType && !roleType) {
-      setUserBrief((prev) => ({
-        ...prev,
-        roleType: savedRoleType,
-      }));
-    }
-  }, [setUserBrief, roleType]);
 
   // 사용자 정보 조회 함수
   const loadUserData = useCallback(async () => {
@@ -123,19 +109,23 @@ const User = () => {
 
         if (data.profileImageFile) {
           formData.append("profileImage", data.profileImageFile);
+        } else if (data.profileImageUrl) {
+          formData.append("profileImageUrl", data.profileImageUrl);
+        } else {
         }
 
         await updateMyPageInfo(formData);
         message.success("내 정보가 수정되었습니다.");
 
-        const updatedData = await loadUserData();
+       const updatedData = await loadUserData();
         if (updatedData) {
-          setUserBrief((prev) => ({
-            ...prev,
+          const newUserBrief = {
+            ...user,
             department: updatedData.department,
             student_number: updatedData.studentNumber,
             profileImage: { url: updatedData.profileUrl || "/image/profile.png" },
-          }));
+          };
+          sessionStorage.setItem("userBrief", JSON.stringify(newUserBrief));
         }
       }
 
@@ -198,11 +188,11 @@ const User = () => {
                     </div>
                     <div className="user_profile_row">
                       <span className="user_profile_label">
-                        {roleType === "STUDENT" ? "학과" : "부서"}
+                        {user.roleType === "STUDENT" ? "학과" : "부서"}
                       </span>
                       <span className="user_profile_value">{userData?.department || ""}</span>
                     </div>
-                    {roleType === "STUDENT" && (
+                    {user.roleType === "STUDENT" && (
                       <>
                         <div className="user_profile_row">
                           <span className="user_profile_label">학번</span>
@@ -242,11 +232,11 @@ const User = () => {
                   </div>
                   <div className="user_profile_row">
                     <span className="user_profile_label">
-                      {roleType === "STUDENT" ? "학과" : "부서"}
+                      {user.roleType === "STUDENT" ? "학과" : "부서"}
                     </span>
                     <span className="user_profile_value">{userData?.department || ""}</span>
                   </div>
-                  {roleType === "STUDENT" && (
+                  {user.roleType === "STUDENT" && (
                     <>
                       <div className="user_profile_row">
                         <span className="user_profile_label">학번</span>
@@ -278,7 +268,7 @@ const User = () => {
           <div className="user_grade">
             <div className="user_grade_title">
               <h3>학점 정보</h3>
-              {roleType === "STUDENT" && (
+              {user.roleType === "STUDENT" && (
                 <FiEdit2
                   className="user_icon"
                   onClick={() => handleOpenModal("grade")}
@@ -310,7 +300,7 @@ const User = () => {
             <div className="user_grade_container">
               {isCreditsFetching ? (
                 <p className="user_grade_empty">불러오는 중...</p>
-              ) : roleType !== "STUDENT" ? (
+              ) : user.roleType !== "STUDENT" ? (
                 <p className="user_grade_empty">
                   {activeTab === "minor"
                     ? "부전공 대상자가 아닙니다."

@@ -40,20 +40,10 @@ const TipSub = () => {
 
       const list = data.content || [];
 
-      const withPreview = await Promise.all(
-        list.map(async (item) => {
-          const filename = item?.images?.[0]?.url;
-          if (!filename) return { ...item, previewUrl: null };
-
-          try {
-            const blob = await fetchTipImagePreview(filename);
-            const url = URL.createObjectURL(blob);
-            return { ...item, previewUrl: url };
-          } catch {
-            return { ...item, previewUrl: null };
-          }
-        })
-      );
+      const withPreview = list.map((item) => ({
+        ...item,
+        previewUrl: item?.images?.[0]?.url || null,
+      }));
 
       setTips(withPreview);
       setTotalPages(data.totalPages || 0);

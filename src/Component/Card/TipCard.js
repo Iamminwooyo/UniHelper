@@ -49,7 +49,8 @@ const TipCard = ({
   const [bookmarkLoading, setBookmarkLoading] = useState(false);
   const [reactionLoading, setReactionLoading] = useState(false);
 
-  const role = sessionStorage.getItem("roleType") || "";
+  const savedUser = sessionStorage.getItem("userBrief");
+  const user = savedUser ? JSON.parse(savedUser) : {};
 
   // 태그 색상 매핑 함수
   const tagColorMap = useMemo(() => {
@@ -62,40 +63,23 @@ const TipCard = ({
 
   // 이미지 함수
   useEffect(() => {
-    let cancelled = false;
-    let objectUrl;
+  if (!images) {
+    setImgUrl(null);
+    return;
+  }
 
-    if (!images) {
-      setImgUrl(null);
-      return;
-    }
+  // images는 이미 blob URL 또는 서버 URL이므로 그대로 사용
+  setImgUrl(images);
 
-    const isReadyUrl =
-      typeof images === "string" && /^(blob:|https?:|\/)/.test(images);
-
-    if (isReadyUrl) {
-      setImgUrl(images);
-      return;
-    }
-
-    const run = async () => {
+  return () => {
+    // blob URL일 경우만 revoke
+    if (typeof images === "string" && images.startsWith("blob:")) {
       try {
-        const blob = await fetchTipImagePreview(images);
-        if (cancelled) return;
-        objectUrl = URL.createObjectURL(blob);
-        setImgUrl(objectUrl);
-      } catch {
-        if (!cancelled) setImgUrl(null);
-      }
-    };
-
-    run();
-
-    return () => {
-      cancelled = true;
-      if (objectUrl) URL.revokeObjectURL(objectUrl);
-    };
-  }, [images]);
+        URL.revokeObjectURL(images);
+      } catch {}
+    }
+  };
+}, [images]);
 
   // 저장 클릭 함수 
   const handleBookmarkClick = (e) => {
@@ -167,6 +151,7 @@ const TipCard = ({
 
   const isTip = type === "tip";
   const isWrite = type === "write";
+  const isBookmark = type === "bookmark";
 
   return (
     <section className="tipcard_layout">
@@ -201,7 +186,7 @@ const TipCard = ({
             </Dropdown>
           )}
 
-          {!isOwner && !isWrite && ["MANAGER", "ADMIN"].includes(role) && (
+          {!isOwner && !isBookmark && ["MANAGER", "ADMIN"].includes(user.roleType) && (
             <MdDeleteOutline
               style={{cursor:'pointer'}}
               onClick={(e) => {
