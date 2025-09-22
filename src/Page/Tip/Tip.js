@@ -5,8 +5,6 @@ import SearchBar from "../../Component/Search/Search";
 import TipCard from "../../Component/Card/TipCard";
 import TipModal from "../../Component/Modal/TipModal";
 import TextModal from "../../Component/Modal/TextModal";
-import { useRecoilValue } from "recoil";
-import { userBriefState } from "../../Recoil/Atom";
 import { fetchTips, deleteTip, fetchTipImagePreview } from "../../API/TipAPI";
 import { Dropdown, Menu, Button, message } from "antd";
 import { DownOutlined } from "@ant-design/icons";
@@ -39,7 +37,8 @@ const Tip = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deleteTipId, setDeleteTipId] = useState(null);
 
-  const user = useRecoilValue(userBriefState);
+  const savedUser = sessionStorage.getItem("userBrief");
+  const user = savedUser ? JSON.parse(savedUser) : {};
 
   const imageCacheRef = useRef(new Map());
 

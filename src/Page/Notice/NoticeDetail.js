@@ -1,10 +1,8 @@
 import "./Notice.css";
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect, useCallback, useRef  } from "react";
-import { useRecoilValue } from "recoil"
 import NoticeModal from "../../Component/Modal/NoticeModal";
 import TextModal from "../../Component/Modal/TextModal";
-import { userBriefState } from "../../Recoil/Atom";
 import { fetchNoticeDetail,fetchNoticeImagePreview, subscribeAuthor, unsubscribeAuthor, downloadNoticeFile, deleteNotice } from "../../API/NoticeAPI";
 import { Image, Dropdown, Menu, message } from "antd";
 import { IoBookmark, IoBookmarkOutline } from "react-icons/io5";
@@ -31,8 +29,9 @@ const NoticeDetail = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const userBrief = useRecoilValue(userBriefState);
-  const currentUserRole = userBrief?.roleType
+  const savedUser = sessionStorage.getItem("userBrief");
+  const userBrief = savedUser ? JSON.parse(savedUser) : {};
+  const currentUserRole = userBrief?.roleType;
 
   const boundUrlsRef = useRef([]);
   

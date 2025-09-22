@@ -177,7 +177,7 @@ const NoticeCard = ({
                   </div>
                 )}
 
-                {(isWrite || (isNotice && (isOwner || role === "MANAGER"))) && (
+                {(isWrite || (isNotice && (isOwner || role === "MANAGER" || role === "ADMIN"))) && (
                   <Dropdown overlay={menu} trigger={["click"]}>
                     <div className="noticecard_icon" style={{ cursor: "pointer" }}>
                       <HiDotsVertical />
