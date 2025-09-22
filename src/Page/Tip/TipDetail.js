@@ -4,8 +4,6 @@ import { useState, useEffect, useMemo, useRef, useCallback  } from "react";
 import TextModal from "../../Component/Modal/TextModal";
 import TipModal from "../../Component/Modal/TipModal";
 import CommentCard from "../../Component/Card/CommentCard";
-import { useRecoilValue } from "recoil";
-import { userBriefState } from "../../Recoil/Atom";
 import { fetchTipDetail, deleteTip, bookmarkTip, reactToTip, fetchTipImagePreview, fetchTipComments, addTipComment, updateTipComment, deleteTipComment} from "../../API/TipAPI";
 import { Image, Tag, Input, Dropdown, Menu, message } from "antd";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
@@ -64,7 +62,8 @@ const TipDetail = () => {
   const [isReacting, setIsReacting] = useState(false);
   const [isBookmarking, setIsBookmarking] = useState(false);
 
-  const user = useRecoilValue(userBriefState);
+  const savedUser = sessionStorage.getItem("userBrief");
+  const user = savedUser ? JSON.parse(savedUser) : {};
 
   const boundUrlsRef = useRef([]);
 

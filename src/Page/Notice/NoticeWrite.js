@@ -2,12 +2,10 @@ import "./Notice.css";
 import Masonry from "react-masonry-css";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { useRecoilValue } from "recoil"
 import SearchBar from "../../Component/Search/Search";
 import NoticeCard from "../../Component/Card/NoticeCard";
 import NoticeModal from "../../Component/Modal/NoticeModal";
 import TextModal from "../../Component/Modal/TextModal";
-import { userBriefState } from "../../Recoil/Atom";
 import { fetchMyNotices, deleteNotice, fetchNoticeImagePreview } from "../../API/NoticeAPI";
 import { message } from "antd";
 
@@ -35,7 +33,8 @@ const NoticeWrite = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deleteNoticeId, setDeleteNoticeId] = useState(null);
 
-  const user = useRecoilValue(userBriefState);
+  const savedUser = sessionStorage.getItem("userBrief");
+  const user = savedUser ? JSON.parse(savedUser) : {};
 
   const imageCacheRef = useRef(new Map());
 

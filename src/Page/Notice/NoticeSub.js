@@ -3,11 +3,9 @@ import Masonry from "react-masonry-css";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
-import { useRecoilValue } from "recoil"
 import SearchBar from "../../Component/Search/Search";
 import NoticeCard from "../../Component/Card/NoticeCard";
 import TextModal from "../../Component/Modal/TextModal";
-import { userBriefState } from "../../Recoil/Atom";
 import { fetchSubscribedAuthors, fetchSubscribedNotices, fetchAuthorNotices, fetchNoticeImagePreview, unsubscribeAuthor } from "../../API/NoticeAPI";
 import { message, Drawer, Button } from "antd";
 import { IoBookmark } from "react-icons/io5";
@@ -44,7 +42,8 @@ const NoticeSub = () => {
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
 
-  const user = useRecoilValue(userBriefState);
+  const savedUser = sessionStorage.getItem("userBrief");
+  const user = savedUser ? JSON.parse(savedUser) : {};
 
   const imageCacheRef = useRef(new Map());
 

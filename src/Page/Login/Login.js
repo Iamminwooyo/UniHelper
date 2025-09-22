@@ -76,7 +76,16 @@ const Login = () => {
         },
       });
 
-      sessionStorage.setItem("roleType", briefRes.roleType);
+      sessionStorage.setItem("userBrief", JSON.stringify({
+        userId: briefRes.userId,
+        username: briefRes.username,
+        student_number: briefRes.student_number,
+        department: briefRes.department,
+        roleType: briefRes.roleType,
+        profileImage: {
+          url: briefRes.profileImage?.url || "/image/profile.png",
+        },
+      }));
 
       message.success("로그인 성공!");
       navigate("/");

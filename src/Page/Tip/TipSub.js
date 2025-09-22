@@ -3,8 +3,6 @@ import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "../../Component/Search/Search";
 import TipCard from "../../Component/Card/TipCard";
-import { useRecoilValue } from "recoil";
-import { userBriefState } from "../../Recoil/Atom";
 import { fetchBookmarkedTips, fetchTipImagePreview  } from "../../API/TipAPI";
 import { message } from "antd";
 
@@ -23,7 +21,8 @@ const TipSub = () => {
   const startPage = currentBlock * blockSize + 1;
   const endPage = Math.min(startPage + blockSize - 1, totalPages);
 
-  const user = useRecoilValue(userBriefState);
+  const savedUser = sessionStorage.getItem("userBrief");
+  const user = savedUser ? JSON.parse(savedUser) : {};
 
   const navigate = useNavigate();
 
