@@ -1,11 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import "./Academic.css";
 import ChatModal from "../../Component/Modal/ChatModal";
-import {
-  askChatbot,
-  fetchChatHistory,
-  fetchChatHistoryDetail,
-} from "../../API/AcademicAPI";
+import { askChatbot, fetchChatHistory, fetchChatHistoryDetail } from "../../API/AcademicAPI";
 import { useRecoilState } from "recoil";
 import { askingState } from "../../Recoil/Atom";
 import { Collapse, Spin, message } from "antd";
@@ -28,6 +24,8 @@ const AcademicChat = () => {
 
   const [history, setHistory] = useState([]);
   const [loadingHistory, setLoadingHistory] = useState(false);
+
+  const isFetchingDetailRef = useRef(false);
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const isMobile = useMediaQuery({ maxWidth: 768 });
@@ -79,7 +77,7 @@ const AcademicChat = () => {
     }
   };
 
-  // 채팅창 스크롤 이동
+  // 채팅창 스크롤 이동 함수
   useEffect(() => {
     if (messages.length < 2) return;
     const lastIndex = messages.length - 2;
@@ -98,8 +96,9 @@ const AcademicChat = () => {
     }
   }, [messages]);
 
-  // 지난 질문 조회
+  // 지난 질문 조회 함수
   const loadHistory = async () => {
+    if (loadingHistory) return;
     setLoadingHistory(true);
     try {
       const res = await fetchChatHistory(20);
@@ -115,14 +114,19 @@ const AcademicChat = () => {
     loadHistory();
   }, []);
 
-  // 지난 질문 상세조회
+  // 지난 질문 상세조회 함수
   const handleHistoryClick = async (msg) => {
+    if (isFetchingDetailRef.current) return; 
+    isFetchingDetailRef.current = true;
+
     try {
       const detail = await fetchChatHistoryDetail(msg.id);
       setSelectedQA(detail);
       setModalOpen(true);
     } catch (err) {
       message.error("질문 상세를 불러오지 못했습니다.");
+    } finally {
+      isFetchingDetailRef.current = false;
     }
   };
 
@@ -194,7 +198,6 @@ const AcademicChat = () => {
             </div>
           </div>
 
-          {/* PC 전용 지난 질문 */}
           {!isMobile && (
             <div className="academic_chat_history">
               <h3>지난 질문 목록</h3>
@@ -222,7 +225,6 @@ const AcademicChat = () => {
             </div>
           )}
 
-          {/* 모바일 전용 패널 (항상 DOM에 두고 open 클래스만 토글) */}
           {isMobile && (
             <>
               <div
