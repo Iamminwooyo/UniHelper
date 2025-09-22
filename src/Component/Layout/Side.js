@@ -1,8 +1,9 @@
 import "./Layout.css";
 import { Link, useLocation } from "react-router-dom";
-import { useSetRecoilState } from "recoil"
+import { useSetRecoilState, useRecoilValue } from "recoil"
 import { useMediaQuery } from "react-responsive";
 import { MenuState } from "../../Recoil/Atom";
+import { userBriefState } from "../../Recoil/Atom";
 
 const Side = () => {
   const location = useLocation();
@@ -10,8 +11,7 @@ const Side = () => {
 
   const setMenu = useSetRecoilState(MenuState);
 
-  const savedUser = sessionStorage.getItem("userBrief");
-  const user = savedUser ? JSON.parse(savedUser) : {};
+  const user = useRecoilValue(userBriefState);
 
   const isMobile = useMediaQuery({ maxWidth: 768 });
 

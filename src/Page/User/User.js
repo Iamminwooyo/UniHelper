@@ -1,5 +1,7 @@
 import "./User.css";
 import { useState, useEffect, useCallback, useRef } from "react";
+import { useSetRecoilState } from "recoil";
+import { userBriefState } from "../../Recoil/Atom";
 import { useMediaQuery } from "react-responsive"
 import UserModal from "../../Component/Modal/UserModal";
 import { fetchMyPageInfo, fetchMyPageCredits, updateMyPageInfo, updateCredits, fetchProfileImagePreview } from "../../API/UserAPI";
@@ -21,6 +23,8 @@ const User = () => {
   const [isCreditsFetching, setIsCreditsFetching] = useState(false);
 
   const [activeTab, setActiveTab] = useState("major");
+
+  const setUserBrief = useSetRecoilState(userBriefState);
 
   const savedUser = sessionStorage.getItem("userBrief");
   const user = savedUser ? JSON.parse(savedUser) : {};
@@ -126,6 +130,7 @@ const User = () => {
             profileImage: { url: updatedData.profileUrl || "/image/profile.png" },
           };
           sessionStorage.setItem("userBrief", JSON.stringify(newUserBrief));
+          setUserBrief(newUserBrief);
         }
       }
 
