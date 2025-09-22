@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import "./Academic.css";
 import FAQCard from "../../Component/Card/FAQCard";
 import { faqs } from "../../Data/FAQdata";
@@ -10,22 +10,25 @@ const AcademicFAQ = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [isInquirySubmitting, setIsInquirySubmitting] = useState(false);
+  const isSubmittingRef = useRef(false);
 
   const handleOpen = () => setIsModalOpen(true);
   const handleClose = () => setIsModalOpen(false);
 
   // 문의 등록 함수
   const handleSubmit = async (data) => {
-    if (isInquirySubmitting) return; 
+    if (isSubmittingRef.current) return; 
+    isSubmittingRef.current = true;
     setIsInquirySubmitting(true);
 
     try {
       await createInquiry(data);
       message.success("문의가 정상적으로 등록되었습니다.");
-      setIsModalOpen(false); 
+      setIsModalOpen(false);
     } catch (err) {
       message.error("문의 등록에 실패했습니다.");
     } finally {
+      isSubmittingRef.current = false;
       setIsInquirySubmitting(false);
     }
   };

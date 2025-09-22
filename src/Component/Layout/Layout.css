@@ -13,9 +13,9 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0,0,0,0.15); /* ✅ 반투명 */
-  z-index: 2000; /* Header, Side, Footer 위에 덮도록 */
-  pointer-events: all; /* ✅ 클릭 막기 */
+  background: rgba(0,0,0,0.15);
+  z-index: 2000; 
+  pointer-events: all;
 }
 
 @media (min-width: 1241px) {
@@ -418,7 +418,7 @@
 
     .main_box p {
         margin: 0;
-        font-size: 0.8vw;
+        font-size: 1.2vw;
         color: #ccc;
     }
 
@@ -677,13 +677,13 @@
 
     .main_box h3 {
         margin: 0;
-        font-size: 1.5vw;
+        font-size: max(12px, 2.3vw);
         color: #78D900;
     }
 
     .main_box p {
         margin: 0;
-        font-size: 0.8vw;
+        font-size: max(8.5px, 1.8vw);
         color: #ccc;
     }
 

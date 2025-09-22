@@ -45,28 +45,3 @@ export const semesters = [
   "4학년 1학기",
   "4학년 2학기",
 ];
-
-// ✅ 더미 사용자 데이터
-export const gradeData = {
-  name: "정민기",
-  department: "컴퓨터과학과",
-  studentId: "202301111",
-  double: "유도경기지도학과과",
-  profileImage: "/image/profile.png",
-  grades: {
-    major: {
-      main: "39/33",      // 전공
-      basic: "12/12",     // 기초전공
-      required: "11/11",  // 교양필수
-      total: "118/130",
-      gpa: "4.5",
-    },
-    minor: {
-      main: "9/9",        // 부전공
-      basic: "9/12",
-      required: "11/11",
-      total: "32/36",
-      gpa: "4.2",
-    },
-  },
-};

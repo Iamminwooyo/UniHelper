@@ -1,17 +1,11 @@
 import "./Academic.css";
+import { useState, useEffect, useCallback, useRef } from "react";
 import AcademicCard from "../../Component/Card/AcademicCard";
 import InquiryCard from "../../Component/Card/InquiryCard";
 import AcademicModal from "../../Component/Modal/AcademicModal";
 import TextModal from "../../Component/Modal/TextModal";
-import {
-  fetchInquiries,
-  deleteInquiries,
-  uploadFiles,
-  fetchFileTree,
-} from "../../API/AcademicAPI";
-
+import { fetchInquiries, deleteInquiries, uploadFiles, fetchFileTree } from "../../API/AcademicAPI";
 import { Collapse, message } from "antd";
-import { useState, useEffect, useCallback, useRef } from "react";
 
 const { Panel } = Collapse;
 
@@ -21,26 +15,21 @@ const AcademicManagement = () => {
   const [selectedInquiryTitle, setSelectedInquiryTitle] = useState(null);
   const [selectedInquiryId, setSelectedInquiryId] = useState(null);
 
-  // ✅ 문의 목록 상태
   const [inquiries, setInquiries] = useState([]);
   const [isFetchingInquiries, setIsFetchingInquiries] = useState(false);
   const isFetchingInquiriesRef = useRef(false);
 
-  // ✅ 파일 목록 상태
   const [fileGroups, setFileGroups] = useState([]);
   const [isFetchingFiles, setIsFetchingFiles] = useState(false);
   const isFetchingFilesRef = useRef(false);
 
-  // ✅ 업로드 상태
   const [isUploading, setIsUploading] = useState(false);
   const isUploadingRef = useRef(false);
 
-  // ✅ 삭제 상태
   const [isDeleting, setIsDeleting] = useState(false);
   const isDeletingRef = useRef(false);
 
-  // ✅ 페이지네이션 상태
-  const [currentPage, setCurrentPage] = useState(1); // 화면은 1부터
+  const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(5);
   const [totalPages, setTotalPages] = useState(0);
 
@@ -48,8 +37,6 @@ const AcademicManagement = () => {
   const currentBlock = Math.floor((currentPage - 1) / blockSize);
   const startPage = currentBlock * blockSize + 1;
   const endPage = Math.min(startPage + blockSize - 1, totalPages);
-
-  // ================== API 호출 ==================
 
   // 문의 목록 불러오기
   const loadInquiries = useCallback(async () => {
@@ -59,12 +46,10 @@ const AcademicManagement = () => {
 
     try {
       const data = await fetchInquiries(currentPage, pageSize);
-      console.log("📥 문의 목록 API 응답:", data);
 
       setInquiries(data.content || []);
       setTotalPages(data.totalPages || 0);
     } catch (err) {
-      console.error("❌ 문의 목록 불러오기 실패:", err);
       message.error("문의 목록을 불러오지 못했습니다.");
     } finally {
       setIsFetchingInquiries(false);
@@ -80,7 +65,6 @@ const AcademicManagement = () => {
 
     try {
       const data = await fetchFileTree();
-      console.log("📥 파일 트리 API 응답:", data);
 
       const groups = (data || []).map((group) => ({
         title: group.collectionName,
@@ -89,24 +73,23 @@ const AcademicManagement = () => {
 
       setFileGroups(groups);
     } catch (err) {
-      console.error("❌ 파일 트리 불러오기 실패:", err);
       message.error("파일 목록을 불러오지 못했습니다.");
     } finally {
       setIsFetchingFiles(false);
       isFetchingFilesRef.current = false;
     }
   }, []);
-
-  // ================== 삭제 ==================
-
+  
+  // 문의 삭제 클릭 함수
   const handleInquiryDelete = (id, title) => {
     setSelectedInquiryId(id);
     setSelectedInquiryTitle(title);
     setIsTextModalOpen(true);
   };
-
+  
+  // 문의 삭제 함수
   const confirmInquiryDelete = async () => {
-    if (isDeletingRef.current) return; // 세마포어
+    if (isDeletingRef.current) return; 
     isDeletingRef.current = true;
     setIsDeleting(true);
 
@@ -118,9 +101,8 @@ const AcademicManagement = () => {
       setSelectedInquiryId(null);
       setSelectedInquiryTitle(null);
 
-      loadInquiries(); // 목록 새로고침
+      loadInquiries(); 
     } catch (err) {
-      console.error("❌ 문의 삭제 실패:", err);
       message.error("문의 삭제에 실패했습니다.");
     } finally {
       isDeletingRef.current = false;
@@ -128,8 +110,7 @@ const AcademicManagement = () => {
     }
   };
 
-  // ================== 업로드 ==================
-
+  // 파일 업로드 함수
   const handleModalSubmit = async (formData, resetForm) => {
     if (isUploadingRef.current) return;
     isUploadingRef.current = true;
@@ -141,17 +122,14 @@ const AcademicManagement = () => {
         fd.append("file", file);
       });
 
-      const res = await uploadFiles(fd, formData.title);
-      console.log("📤 파일 업로드 결과:", res);
+      await uploadFiles(fd, formData.title);
 
       message.success("파일 업로드 성공!");
       resetForm();
       setIsModalOpen(false);
 
-      // 업로드 성공 후 목록 갱신
       loadFileTree();
     } catch (err) {
-      console.error("❌ 파일 업로드 실패:", err);
       message.error("파일 업로드에 실패했습니다.");
     } finally {
       isUploadingRef.current = false;
@@ -159,13 +137,12 @@ const AcademicManagement = () => {
     }
   };
 
-  // ================== 초기 진입 ==================
+  // 렌더링 함수
   useEffect(() => {
     loadInquiries();
     loadFileTree();
   }, [loadInquiries, loadFileTree]);
 
-  // ================== 렌더링 ==================
   return (
     <main className="academic_layout">
       <section className="academic_header">
@@ -173,7 +150,6 @@ const AcademicManagement = () => {
       </section>
 
       <section className="academic_management_body">
-        {/* 파일 관리 */}
         <div className="academic_management_file">
           <div className="academic_file_header">
             <h2>파일 목록</h2>
@@ -218,7 +194,6 @@ const AcademicManagement = () => {
           )}
         </div>
 
-        {/* 문의 관리 */}
         <div className="academic_management_inquiry">
           <div className="academic_inquiry_header">
             <h2>문의 목록</h2>
@@ -242,7 +217,6 @@ const AcademicManagement = () => {
                   />
                 ))}
 
-                {/* 페이지네이션 */}
                 {totalPages > 1 && (
                   <div
                     className="academic_inquiry_page_wrap"
@@ -287,7 +261,6 @@ const AcademicManagement = () => {
         </div>
       </section>
 
-      {/* 파일 추가 모달 */}
       <AcademicModal
         open={isModalOpen}
         onCancel={() => setIsModalOpen(false)}
@@ -295,7 +268,6 @@ const AcademicManagement = () => {
         isUploading={isUploading}
       />
 
-      {/* 삭제 확인 모달 */}
       <TextModal
         open={isTextModalOpen}
         onCancel={() => setIsTextModalOpen(false)}

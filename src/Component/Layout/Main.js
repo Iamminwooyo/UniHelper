@@ -1,8 +1,10 @@
 import "./Layout.css";
 import { useNavigate } from "react-router-dom";
+import { useMediaQuery } from "react-responsive";
 
 const Main = () => {
   const navigate = useNavigate();
+  const isMobile = useMediaQuery({ maxWidth: 768 });
 
   return (
     <section className="main_layout">
@@ -15,14 +17,16 @@ const Main = () => {
           <p>학사정보 관련 챗봇으로, 학사정보에 관한 내용을 물어보고 답변 받을 수 있습니다.</p>
         </div>
 
-       <div
-          className="main_box"
-          style={{ "--hover-img": "url(/image/수강신청연습.jpg)" }}
-          onClick={() => navigate("/enroll/practice")}
-        >
-          <h3>수강신청 연습</h3>
-          <p>실제 수강신청과 비슷한 환경에서 수강신청을 연습할 수 있습니다.</p>
-        </div>
+       {!isMobile && (
+          <div
+            className="main_box"
+            style={{ "--hover-img": "url(/image/수강신청연습.jpg)" }}
+            onClick={() => navigate("/enroll/practice")}
+          >
+            <h3>수강신청 연습</h3>
+            <p>실제 수강신청과 비슷한 환경에서 수강신청을 연습할 수 있습니다.</p>
+          </div>
+        )}
       </div>
 
       <div className="main_row">
