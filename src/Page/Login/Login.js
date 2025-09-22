@@ -65,20 +65,7 @@ const Login = () => {
       //   profileImage: profileImageObj,
       // });
 
-      console.log("📌 briefRes.profileImage:", briefRes.profileImage);
-
       setUserBrief({
-        userId: briefRes.userId,
-        username: briefRes.username,
-        student_number: briefRes.student_number,
-        department: briefRes.department,
-        roleType: briefRes.roleType,
-        profileImage: {
-          url: briefRes.profileImage?.url || "/image/profile.png",
-        },
-      });
-
-      console.log("✅ setUserBrief 값:", {
         userId: briefRes.userId,
         username: briefRes.username,
         student_number: briefRes.student_number,

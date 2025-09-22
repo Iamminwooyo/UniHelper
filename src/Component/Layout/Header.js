@@ -5,6 +5,7 @@ import { MenuState } from "../../Recoil/Atom";
 import { AlarmCountState } from "../../Recoil/Atom";
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
+import { handleLogout } from "../../Utils/LogoutHelper";
 import { fetchUnreadAlarmCount } from "../../API/UserAPI"; 
 import { Badge } from "antd";
 import { FaBell } from "react-icons/fa";
@@ -43,15 +44,6 @@ const Header = () => {
     }
   }, []);
 
-  // 로그아웃 처리
-  const handleLogout = () => {
-    sessionStorage.removeItem("accessToken");
-    sessionStorage.removeItem("refreshToken");
-    setIsLoggedIn(false);
-    setUnreadCount(0);
-    navigate("/login");
-  };
-
   return (
     <header className="header_layout">
       <h2 style={{ margin: "10px 0 0 0" }}>
@@ -70,7 +62,7 @@ const Header = () => {
                 <FaBell className="header_side_bell" />
               </Badge>
             </button>
-            <button onClick={handleLogout} className="header_side_logout" title="로그아웃" style={{ background: "none", border: "none", cursor: "pointer" }}>
+            <button onClick={() => handleLogout(navigate, setUnreadCount, setIsLoggedIn)}  className="header_side_logout" title="로그아웃" style={{ background: "none", border: "none", cursor: "pointer" }}>
               <TbLogout/>
             </button>
           </>
