@@ -181,8 +181,7 @@ const UserModal = ({ open, onCancel, initialData = null, mode, onSuccess }) => {
             major: result["단일전공자 최소전공이수학점"] ?? "",
             subMinor: result["부전공 기초전공"] ?? result["복수전공 기초전공"] ?? "",
             linkedMajor: result["부전공 최소전공이수학점"] ?? result["복수전공 최소전공이수학점"] ?? "",
-            totalCredits: result["졸업학점"] ?? "",
-            acquiredCredits: result["취득학점"] ?? "",
+            totalCredits: result["취득학점"] ?? "",
             transferCredits: result["편입인정학점"] ?? "",
             gpa: result["학점평점"] ?? "",
           });

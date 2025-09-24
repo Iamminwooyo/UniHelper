@@ -47,6 +47,12 @@ const AcademicManagement = () => {
     try {
       const data = await fetchInquiries(currentPage, pageSize);
 
+      // ✅ 서버에서 받은 전체 데이터 확인
+    console.log("📌 fetchInquiries 응답:", data);
+
+    // ✅ 실제 content만 확인
+    console.log("📌 문의 목록 content:", data.content);
+
       setInquiries(data.content || []);
       setTotalPages(data.totalPages || 0);
     } catch (err) {
@@ -209,6 +215,7 @@ const AcademicManagement = () => {
                   <InquiryCard
                     key={inq.pid}
                     title={inq.title}
+                    profile={inq.authorProfileImageUrl}
                     name={inq.authorName}
                     department={inq.authorDepartment}
                     date={new Date(inq.createdAt).toISOString().split("T")[0]}

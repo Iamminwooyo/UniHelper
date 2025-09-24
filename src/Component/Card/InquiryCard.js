@@ -1,7 +1,7 @@
 import "./Card.css";
 import { MdDeleteOutline } from "react-icons/md";
 
-const InquiryCard = ({ name, department, date, title, content, onDelete, onClick }) => {
+const InquiryCard = ({ name, profile, department, date, title, content, onDelete, onClick }) => {
   return (
     <section className="inquirycard_layout">
         <div className="inquirycard_header">
@@ -12,7 +12,7 @@ const InquiryCard = ({ name, department, date, title, content, onDelete, onClick
         <hr className="inquirycard_divider" onClick={onClick} />
 
         <div className="inquirycard_info">
-            <img className="inquirycard_profile_img" src="/image/profile.png" alt=""/>
+            <img className="inquirycard_profile_img" src={profile || "/image/profile.png"} alt=""/>
             <div className="inquirycard_text">
                 <p className="inquirycard_name">{name} ({department})</p>
                 <p className="inquirycard_date">{date}</p>
