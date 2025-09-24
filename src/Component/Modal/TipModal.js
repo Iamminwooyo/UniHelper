@@ -1,6 +1,6 @@
 import "./Modal.css";
 import { useState, useEffect, useRef } from "react";
-import { createTip, updateTip, fetchTipImagePreview } from "../../API/TipAPI";
+import { createTip, updateTip } from "../../API/TipAPI";
 import { Modal, Input, Button, Upload, Select, message } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 
@@ -27,36 +27,23 @@ const TipModal = ({ open, onCancel, initialData = null, mode = "create", onSucce
 
     let cancelled = false;
 
-    const loadExistingImages = async () => {
+   const loadExistingImages = async () => {
       const imgs = initialData?.images || [];
       if (!imgs.length) {
         setImageFiles([]);
         return;
       }
 
-      try {
-        const files = [];
-        for (let i = 0; i < imgs.length; i++) {
-          const original = imgs[i];
-          try {
-            const blob = await fetchTipImagePreview(original.url); // ← Notice처럼 preview API 호출
-            if (cancelled) return;
-            const objUrl = URL.createObjectURL(blob);
-            createdObjectUrlsRef.current.push(objUrl);
+      const files = imgs.map((original, i) => ({
+        uid: `existing-img-${i}`,
+        id: original.id,
+        name: original.url.split("/").pop(),
+        status: "done",
+        url: original.url,       // ✅ 서버에서 내려준 URL 그대로 사용
+        thumbUrl: original.url,  // ✅ fallback
+      }));
 
-            files.push({
-              uid: `existing-img-${i}`,
-              id: original.id,
-              name: original.url.split("/").pop(),
-              status: "done",
-              thumbUrl: objUrl,
-            });
-          } catch {}
-        }
-        if (!cancelled) setImageFiles(files);
-      } catch {
-        if (!cancelled) setImageFiles([]);
-      }
+      setImageFiles(files);
     };
 
     loadExistingImages();
