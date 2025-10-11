@@ -1,11 +1,11 @@
-import axios from "axios";
+import API_CONFIG from './API_CONFIG';
 
 // 챗봇 질의응답 API
 export const askChatbot = async (question) => {
   const token = sessionStorage.getItem("accessToken");
   if (!token) throw new Error("로그인이 필요합니다.");
 
-  const response = await axios.post(
+  const response = await API_CONFIG.post(
     "/chatbot/ask",
     { question },
     {
@@ -24,7 +24,7 @@ export const fetchChatHistory = async (limit = 50) => {
   const token = sessionStorage.getItem("accessToken");
   if (!token) throw new Error("로그인이 필요합니다.");
 
-  const response = await axios.get("/chatbot/history", {
+  const response = await API_CONFIG.get("/chatbot/history", {
     params: { limit },
     headers: {
       Authorization: `Bearer ${token}`,
@@ -40,7 +40,7 @@ export const fetchChatHistoryDetail = async (id) => {
   const token = sessionStorage.getItem("accessToken");
   if (!token) throw new Error("로그인이 필요합니다.");
 
-  const response = await axios.get(`/chatbot/history/${id}`, {
+  const response = await API_CONFIG.get(`/chatbot/history/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
@@ -55,7 +55,7 @@ export const fetchCollections = async () => {
   const token = sessionStorage.getItem("accessToken");
   if (!token) throw new Error("로그인이 필요합니다.");
 
-  const response = await axios.get("/admin/processing/collections", {
+  const response = await API_CONFIG.get("/admin/processing/collections", {
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
@@ -70,7 +70,7 @@ export const fetchFileTree = async () => {
   const token = sessionStorage.getItem("accessToken");
   if (!token) throw new Error("로그인이 필요합니다.");
 
-  const response = await axios.get("/admin/processing/files/tree", {
+  const response = await API_CONFIG.get("/admin/processing/files/tree", {
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
@@ -85,7 +85,7 @@ export const uploadFiles = async (formData, collectionName) => {
   const token = sessionStorage.getItem("accessToken");
   if (!token) throw new Error("로그인이 필요합니다.");
 
-  const response = await axios.post(
+  const response = await API_CONFIG.post(
     `/admin/processing/files?collection_name=${encodeURIComponent(collectionName)}`,
     formData,
     {
@@ -109,7 +109,7 @@ export const fetchInquiries = async (page, size) => {
     size,
   };
 
-  const response = await axios.get("/admin/inquiries", {
+  const response = await API_CONFIG.get("/admin/inquiries", {
     params,
     headers: {
       Authorization: `Bearer ${token}`,
@@ -125,7 +125,7 @@ export const createInquiry = async ({ title, content }) => {
   const token = sessionStorage.getItem("accessToken");
   if (!token) throw new Error("로그인이 필요합니다.");
 
-  const response = await axios.post(
+  const response = await API_CONFIG.post(
     "/inquiries",
     { title, content },
     {
@@ -144,7 +144,7 @@ export const deleteInquiries = async (ids) => {
   const token = sessionStorage.getItem("accessToken");
   if (!token) throw new Error("로그인이 필요합니다.");
 
-  const response = await axios.delete("/admin/inquiries", {
+  const response = await API_CONFIG.delete("/admin/inquiries", {
     data: { pids: ids },
     headers: {
       Authorization: `Bearer ${token}`,
@@ -160,7 +160,7 @@ export const downloadFileById = async (id) => {
   const token = sessionStorage.getItem("accessToken");
   if (!token) throw new Error("로그인이 필요합니다.");
 
-  const response = await axios.get(`/admin/processing/files/${id}/download`, {
+  const response = await API_CONFIG.get(`/admin/processing/files/${id}/download`, {
     headers: { Authorization: `Bearer ${token}` },
     responseType: "blob",
   });

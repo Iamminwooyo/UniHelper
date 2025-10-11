@@ -1,11 +1,11 @@
-import axios from "axios";
+import API_CONFIG from './API_CONFIG';
 
 // 내 정보 조회 API
 export const fetchMyPageInfo = async () => {
   const token = sessionStorage.getItem("accessToken");
   if (!token) throw new Error("로그인이 필요합니다.");
 
-  const response = await axios.get("/mypage/info", {
+  const response = await API_CONFIG.get("/mypage/info", {
     headers: { Authorization: `Bearer ${token}` },
   });
 
@@ -17,7 +17,7 @@ export const fetchMyPageCredits = async () => {
   const token = sessionStorage.getItem("accessToken");
   if (!token) throw new Error("로그인이 필요합니다.");
 
-  const response = await axios.get("/mypage/credits", {
+  const response = await API_CONFIG.get("/mypage/credits", {
     headers: { Authorization: `Bearer ${token}` },
   });
 
@@ -29,7 +29,7 @@ export const updateMyPageInfo = async (formData) => {
   const token = sessionStorage.getItem("accessToken");
   if (!token) throw new Error("로그인이 필요합니다.");
 
-  const response = await axios.patch("/mypage/info", formData, {
+  const response = await API_CONFIG.patch("/mypage/info", formData, {
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "multipart/form-data",
@@ -44,7 +44,7 @@ export const uploadCreditsFile = async (formData) => {
   const token = sessionStorage.getItem("accessToken");
   if (!token) throw new Error("로그인이 필요합니다.");
 
-  const response = await axios.post("/credits/upload", formData, {
+  const response = await API_CONFIG.post("/credits/upload", formData, {
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "multipart/form-data",
@@ -57,7 +57,7 @@ export const uploadCreditsFile = async (formData) => {
 // 학점 정보 수정 API
 export const updateCredits = async (payload) => {
   const token = sessionStorage.getItem("accessToken");
-  const res = await axios.put("/credits/flat", payload, {
+  const res = await API_CONFIG.put("/credits/flat", payload, {
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
@@ -73,7 +73,7 @@ export const fetchProfileImagePreview = async (filename) => {
 
   const safeFilename = filename.replace(/^\/files\//, "").replace(/ /g, "%20");
 
-  const response = await axios.get(`/notices/download?filename=${safeFilename}`, {
+  const response = await API_CONFIG.get(`/notices/download?filename=${safeFilename}`, {
     responseType: "blob",
     headers: { Authorization: `Bearer ${token}` },
   });
@@ -91,7 +91,7 @@ export const fetchAlarm = async ({ page = 1, size = 10 }) => {
     size,
   };
 
-  const response = await axios.get("/notifications/me", {
+  const response = await API_CONFIG.get("/notifications/me", {
     params,
     headers: { Authorization: `Bearer ${token}` },
   });
@@ -104,7 +104,7 @@ export const markAlarmsRead = async (ids) => {
   const token = sessionStorage.getItem("accessToken");
   if (!token) throw new Error("로그인이 필요합니다.");
 
-  const response = await axios.patch("/notifications/me/read", ids, {
+  const response = await API_CONFIG.patch("/notifications/me/read", ids, {
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
@@ -119,7 +119,7 @@ export const deleteAlarms = async (ids) => {
   const token = sessionStorage.getItem("accessToken");
   if (!token) throw new Error("로그인이 필요합니다.");
 
-  const response = await axios.delete("/notifications/me", {
+  const response = await API_CONFIG.delete("/notifications/me", {
     data: ids,
     headers: {
       Authorization: `Bearer ${token}`,
@@ -135,7 +135,7 @@ export const fetchUnreadAlarmCount = async () => {
   const token = sessionStorage.getItem("accessToken");
   if (!token) throw new Error("로그인이 필요합니다.");
 
-  const response = await axios.get("/notifications/me/unread-count", {
+  const response = await API_CONFIG.get("/notifications/me/unread-count", {
     headers: { Authorization: `Bearer ${token}` },
   });
 

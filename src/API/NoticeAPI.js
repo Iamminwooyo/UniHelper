@@ -1,4 +1,4 @@
-import axios from "axios";
+import API_CONFIG from './API_CONFIG';
 import qs from "qs";
 
 // 공지사항 조회 API
@@ -13,7 +13,7 @@ export const fetchNotices = async ({ page, size, keyword, departments }) => {
     departments: departments?.length ? departments : undefined,
   };
 
-  const response = await axios.get("/notices", {
+  const response = await API_CONFIG.get("/notices", {
     params,
     headers: { Authorization: `Bearer ${token}` },
     paramsSerializer: (params) =>
@@ -28,7 +28,7 @@ export const fetchNoticeDetail = async (noticeId) => {
   const token = sessionStorage.getItem("accessToken");
   if (!token) throw new Error("로그인이 필요합니다.");
 
-  const response = await axios.get(`/notices/${noticeId}`, {
+  const response = await API_CONFIG.get(`/notices/${noticeId}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 
@@ -46,7 +46,7 @@ export const fetchMyNotices = async ({ page, size, keyword }) => {
     keyword: keyword?.trim() || undefined,
   };
 
-  const response = await axios.get("/notices/me", {
+  const response = await API_CONFIG.get("/notices/me", {
     params,
     headers: { Authorization: `Bearer ${token}` },
   });
@@ -65,7 +65,7 @@ export const fetchSubscribedNotices = async ({ page, size, keyword }) => {
     keyword: keyword?.trim() || undefined,
   };
 
-  const response = await axios.get("/notices/subscribed", {
+  const response = await API_CONFIG.get("/notices/subscribed", {
     params,
     headers: { Authorization: `Bearer ${token}` },
   });
@@ -83,7 +83,7 @@ export const fetchAuthorNotices = async ({ authorId, page, size, keyword }) => {
     keyword: keyword?.trim() || undefined,
   };
 
-  const response = await axios.get(`/notices/author/${authorId}`, {
+  const response = await API_CONFIG.get(`/notices/author/${authorId}`, {
     params,
     headers: { Authorization: `Bearer ${token}` },
   });
@@ -96,7 +96,7 @@ export const fetchSubscribedAuthors = async () => {
   const token = sessionStorage.getItem("accessToken");
   if (!token) throw new Error("로그인이 필요합니다.");
 
-  const response = await axios.get("/bookmarks/authors", {
+  const response = await API_CONFIG.get("/bookmarks/authors", {
     headers: { Authorization: `Bearer ${token}` },
   });
   return response.data;
@@ -107,7 +107,7 @@ export const createNotice = async (formData) => {
   const token = sessionStorage.getItem("accessToken");
   if (!token) throw new Error("로그인이 필요합니다.");
 
-  const response = await axios.post("/notices", formData, {
+  const response = await API_CONFIG.post("/notices", formData, {
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "multipart/form-data",
@@ -122,7 +122,7 @@ export const updateNotice = async (noticeId, formData) => {
   const token = sessionStorage.getItem("accessToken");
   if (!token) throw new Error("로그인이 필요합니다.");
 
-  const response = await axios.patch(`/notices/${noticeId}`, formData, {
+  const response = await API_CONFIG.patch(`/notices/${noticeId}`, formData, {
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "multipart/form-data",
@@ -137,7 +137,7 @@ export const deleteNotice = async (noticeId) => {
   const token = sessionStorage.getItem("accessToken");
   if (!token) throw new Error("로그인이 필요합니다.");
 
-  const response = await axios.delete(`/notices/${noticeId}`, {
+  const response = await API_CONFIG.delete(`/notices/${noticeId}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -151,7 +151,7 @@ export const subscribeAuthor = async (authorId) => {
   const token = sessionStorage.getItem("accessToken");
   if (!token) throw new Error("로그인이 필요합니다.");
 
-  const response = await axios.post(`/bookmarks/${authorId}`, null, {
+  const response = await API_CONFIG.post(`/bookmarks/${authorId}`, null, {
     headers: { Authorization: `Bearer ${token}` },
   });
   return response.data;
@@ -162,7 +162,7 @@ export const unsubscribeAuthor = async (authorId) => {
   const token = sessionStorage.getItem("accessToken");
   if (!token) throw new Error("로그인이 필요합니다.");
 
-  const response = await axios.delete(`/bookmarks/${authorId}`, {
+  const response = await API_CONFIG.delete(`/bookmarks/${authorId}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
   return response.data;
@@ -173,7 +173,7 @@ export const fetchNoticeImagePreview = async (filename) => {
   const token = sessionStorage.getItem("accessToken");
   const safe = filename.replace(/^\/files\//, "").split(" ").join("%20");
 
-  const response = await axios.get(`/notices/image-preview?filename=${safe}`, {
+  const response = await API_CONFIG.get(`/notices/image-preview?filename=${safe}`, {
     responseType: "blob",
     headers: { Authorization: `Bearer ${token}` },
   });
@@ -187,7 +187,7 @@ export const downloadNoticeFile = async (filename) => {
 
   const encoded = encodeURIComponent(filename);
 
-  const response = await axios.get(`/notices/download?filename=${encoded}`, {
+  const response = await API_CONFIG.get(`/notices/download?filename=${encoded}`, {
     headers: { Authorization: `Bearer ${token}` },
     responseType: "blob",
   });

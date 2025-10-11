@@ -1,4 +1,4 @@
-import axios from "axios";
+import API_CONFIG from './API_CONFIG';
 
 // 내 수강신청 연습 기록 조회 API
 export const fetchEnrollRecords = async (mode) => {
@@ -7,7 +7,7 @@ export const fetchEnrollRecords = async (mode) => {
 
   const params = { mode };
 
-  const response = await axios.get("/enroll-timer/me/recent", {
+  const response = await API_CONFIG.get("/enroll-timer/me/recent", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -22,7 +22,7 @@ export const fetchAverageEnrollStats = async () => {
   const token = sessionStorage.getItem("accessToken");
   if (!token) throw new Error("로그인이 필요합니다.");
 
-  const response = await axios.get("/enroll-timer/stats/average-by-mode", {
+  const response = await API_CONFIG.get("/enroll-timer/stats/average-by-mode", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -36,7 +36,7 @@ export const startEnrollTimer = async () => {
   const token = sessionStorage.getItem("accessToken");
   if (!token) throw new Error("로그인이 필요합니다.");
 
-  const response = await axios.post("/enroll-timer/start", null, {
+  const response = await API_CONFIG.post("/enroll-timer/start", null, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -50,7 +50,7 @@ export const finishEnrollTimer = async (mode) => {
   const token = sessionStorage.getItem("accessToken");
   if (!token) throw new Error("로그인이 필요합니다.");
 
-  const response = await axios.post("/enroll-timer/finish", {mode}, {
+  const response = await API_CONFIG.post("/enroll-timer/finish", {mode}, {
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
@@ -65,7 +65,7 @@ export const cancelEnrollTimer = async () => {
   const token = sessionStorage.getItem("accessToken");
   if (!token) throw new Error("로그인이 필요합니다.");
 
-  const response = await axios.post("/enroll-timer/cancel", null, {
+  const response = await API_CONFIG.post("/enroll-timer/cancel", null, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

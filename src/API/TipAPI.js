@@ -1,4 +1,4 @@
-import axios from "axios";
+import API_CONFIG from './API_CONFIG';
 
 // Tip 조회 API
 export const fetchTips = async ({ page, size, sortOrder, keyword }) => {
@@ -12,7 +12,7 @@ export const fetchTips = async ({ page, size, sortOrder, keyword }) => {
     sort: sortOrder === "최신순" ? "latest" : "popular",
   };
 
-  const response = await axios.get("/community", {
+  const response = await API_CONFIG.get("/community", {
     params,
     headers: { Authorization: `Bearer ${token}` },
   });
@@ -25,7 +25,7 @@ export const fetchTipDetail = async (tipId) => {
   const token = sessionStorage.getItem("accessToken");
   if (!token) throw new Error("로그인이 필요합니다.");
 
-  const response = await axios.get(`/community/${tipId}`, {
+  const response = await API_CONFIG.get(`/community/${tipId}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 
@@ -43,7 +43,7 @@ export const fetchMyTips = async ({ page, size, keyword }) => {
     keyword: keyword?.trim() || undefined,
   };
 
-  const response = await axios.get("/community/mine", {
+  const response = await API_CONFIG.get("/community/mine", {
     params,
     headers: { Authorization: `Bearer ${token}` },
   });
@@ -62,7 +62,7 @@ export const fetchBookmarkedTips = async ({ page, size, keyword }) => {
     keyword: keyword?.trim() || undefined,
   };
 
-  const response = await axios.get("/community/bookmarked", {
+  const response = await API_CONFIG.get("/community/bookmarked", {
     params,
     headers: { Authorization: `Bearer ${token}` },
   });
@@ -75,7 +75,7 @@ export const createTip = async (formData) => {
   const token = sessionStorage.getItem("accessToken");
   if (!token) throw new Error("로그인이 필요합니다.");
 
-  const response = await axios.post("/community", formData, {
+  const response = await API_CONFIG.post("/community", formData, {
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "multipart/form-data",
@@ -90,7 +90,7 @@ export const updateTip = async (tipId, formData) => {
   const token = sessionStorage.getItem("accessToken");
   if (!token) throw new Error("로그인이 필요합니다.");
 
-  const response = await axios.patch(`/community/${tipId}`, formData, {
+  const response = await API_CONFIG.patch(`/community/${tipId}`, formData, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -104,7 +104,7 @@ export const deleteTip = async (tipId) => {
   const token = sessionStorage.getItem("accessToken");
   if (!token) throw new Error("로그인이 필요합니다.");
 
-  const response = await axios.delete(`/community/${tipId}`, {
+  const response = await API_CONFIG.delete(`/community/${tipId}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 
@@ -121,7 +121,7 @@ export const fetchTipComments = async (tipId, page = 0, size = 5) => {
     size,
   };
 
-  const response = await axios.get(`/community/${tipId}/comments`, {
+  const response = await API_CONFIG.get(`/community/${tipId}/comments`, {
     params,
     headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
   });
@@ -134,7 +134,7 @@ export const addTipComment = async (tipId, content) => {
   const token = sessionStorage.getItem("accessToken");
   if (!token) throw new Error("로그인이 필요합니다.");
 
-  await axios.post(
+  await API_CONFIG.post(
     `/community/${tipId}/comments`,
     { content },
     { headers: { Authorization: `Bearer ${token}` } }
@@ -146,7 +146,7 @@ export const updateTipComment = async (commentId, content) => {
   const token = sessionStorage.getItem("accessToken");
   if (!token) throw new Error("로그인이 필요합니다.");
 
-  await axios.patch(
+  await API_CONFIG.patch(
     `/community/comments/${commentId}`,
     { content },
     { headers: { Authorization: `Bearer ${token}` } }
@@ -158,7 +158,7 @@ export const deleteTipComment = async (commentId) => {
   const token = sessionStorage.getItem("accessToken");
   if (!token) throw new Error("로그인이 필요합니다.");
 
-  await axios.delete(`/community/comments/${commentId}`, {
+  await API_CONFIG.delete(`/community/comments/${commentId}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 };
@@ -168,7 +168,7 @@ export const bookmarkTip = async (tipId) => {
   const token = sessionStorage.getItem("accessToken");
   if (!token) throw new Error("로그인이 필요합니다.");
 
-  await axios.post(`/community/${tipId}/bookmark`, null, {
+  await API_CONFIG.post(`/community/${tipId}/bookmark`, null, {
     headers: { Authorization: `Bearer ${token}` },
   });
 };
@@ -178,7 +178,7 @@ export const reactToTip = async (tipId, type) => {
   const token = sessionStorage.getItem("accessToken");
   if (!token) throw new Error("로그인이 필요합니다.");
 
-  await axios.post(
+  await API_CONFIG.post(
     `/community/${tipId}/reactions`,
     { type },
     { headers: { Authorization: `Bearer ${token}` } }
@@ -192,7 +192,7 @@ export const fetchTipImagePreview = async (filename) => {
 
   const safeFilename = filename.replace(/^\/files\//, "").replace(/ /g, "%20");
 
-  const response = await axios.get(`/notices/image-preview?filename=${safeFilename}`, {
+  const response = await API_CONFIG.get(`/notices/image-preview?filename=${safeFilename}`, {
     responseType: "blob",
     headers: { Authorization: `Bearer ${token}` },
   });
