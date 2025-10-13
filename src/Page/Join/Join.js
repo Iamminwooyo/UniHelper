@@ -101,7 +101,7 @@ const Join = () => {
       const status = error.response?.status;
 
       let errorMessage = "이메일 전송 실패";
-      if (status === 403) {
+      if (status === 500) {
         message.error("이미 가입된 이메일입니다.");
         errorMessage = "이미 가입된 이메일입니다.";
       } else {
@@ -142,7 +142,7 @@ const Join = () => {
       console.error(error);
       const status = error.response?.status;
 
-      if (status === 500) {
+      if (status === 403) {
         setCodeVerificationStatus("error");
         setCodeVerificationMessage("인증번호가 틀립니다.");
       } else {
