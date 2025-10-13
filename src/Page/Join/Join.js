@@ -101,7 +101,7 @@ const Join = () => {
       const status = error.response?.status;
 
       let errorMessage = "이메일 전송 실패";
-      if (status === 403) {
+      if (status === 500) {
         message.error("이미 가입된 이메일입니다.");
         errorMessage = "이미 가입된 이메일입니다.";
       } else {
