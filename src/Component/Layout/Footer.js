@@ -17,7 +17,7 @@ const Footer = () => {
                 <br />
                 주소 : 경기도 용인시 처인구 용인대학로 134
                 <br />
-                이메일 : zomin9546@gamil.com
+                이메일 : zomin9546@gmail.com
             </div>
 
             {!isMobile && (<div className='footer_vertical'/>)}

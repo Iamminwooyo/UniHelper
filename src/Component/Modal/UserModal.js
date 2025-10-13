@@ -209,6 +209,23 @@ const UserModal = ({ open, onCancel, initialData = null, mode, onSuccess }) => {
       }
   };
 
+  // PDF만 허용하는 업로드 제한 함수
+  const beforePdfUpload = (file) => {
+    const isPdf = file.type === "application/pdf";
+    if (!isPdf) {
+      message.error("PDF 파일만 업로드 가능합니다.");
+      return Upload.LIST_IGNORE; // ✅ 리스트에도 추가되지 않음
+    }
+
+    const isLt10M = file.size / 1024 / 1024 < 10;
+    if (!isLt10M) {
+      message.error("파일 크기는 10MB 이하만 가능합니다.");
+      return Upload.LIST_IGNORE;
+    }
+
+    return false; // ✅ 정상적인 PDF만 리스트에 추가됨 (업로드는 수동)
+  };
+
   return (
     <Modal
       open={open}
@@ -371,7 +388,7 @@ const UserModal = ({ open, onCancel, initialData = null, mode, onSuccess }) => {
               className="custommodal_file_upload"
               fileList={attachmentFiles}
               onChange={handleAttachmentChange}
-              beforeUpload={() => false}
+              beforeUpload={beforePdfUpload}
               multiple={false}
               accept=".pdf"
               disabled={isUploading} 

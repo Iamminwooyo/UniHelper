@@ -41,7 +41,7 @@ function AppContent() {
         console.error("주기적 토큰 갱신 실패", err);
         handleLogout(navigate, setUnreadCount);
       }
-    }, 30 * 60 * 1000);
+    }, 25 * 60 * 1000);
 
     return () => clearInterval(interval);
   }, [navigate, setUnreadCount]);
