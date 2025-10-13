@@ -67,7 +67,7 @@ const Tip = () => {
         previewUrl: item?.images?.[0]?.url || null,
       }));
 
-      console.log("🖼️ 프리뷰 변환 후 데이터:", withPreview);
+      console.log("🖼️ 프리뷰 변환 후 팁 데이터:", withPreview);
 
       setTips(withPreview);
       setTotalPages(data.totalPages || 0);

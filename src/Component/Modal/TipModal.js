@@ -39,8 +39,8 @@ const TipModal = ({ open, onCancel, initialData = null, mode = "create", onSucce
         id: original.id,
         name: original.url.split("/").pop(),
         status: "done",
-        url: original.url,       // ✅ 서버에서 내려준 URL 그대로 사용
-        thumbUrl: original.url,  // ✅ fallback
+        url: original.url,     
+        thumbUrl: original.url,  
       }));
 
       setImageFiles(files);
@@ -98,7 +98,9 @@ const TipModal = ({ open, onCancel, initialData = null, mode = "create", onSucce
         const formData = new FormData();
         formData.append("title", title.trim());
         formData.append("text", content.trim());
-        tags.forEach(tag => formData.append("tags", tag));
+        if (tags.length > 0) {
+          formData.append("tags", tags.join(",")); 
+        }
 
         imageFiles.forEach(f => {
           if (f.originFileObj) {
@@ -123,9 +125,17 @@ const TipModal = ({ open, onCancel, initialData = null, mode = "create", onSucce
   // 이미지 업로드 함수
   const beforeImageUpload = (file) => {
     const isImage = file.type.startsWith("image/");
-    const isLt2M = file.size / 1024 / 1024 < 25;
-    if (!isImage) message.error("이미지 파일만 업로드 가능합니다.");
-    if (!isLt2M) message.error("이미지는 25MB 이하만 가능합니다.");
+    const isLt25M = file.size / 1024 / 1024 < 25;
+    if (!isImage) {
+    message.error("이미지 파일만 업로드 가능합니다.");
+    return Upload.LIST_IGNORE; // ← 리스트에도 추가되지 않음
+    }
+
+    if (!isLt25M) {
+      message.error("이미지는 25MB 이하만 가능합니다.");
+      return Upload.LIST_IGNORE;
+    }
+
     return false; // ← 반드시 false
   };
 

@@ -265,6 +265,22 @@
       font-weight: bold;
     }
 
+    .user_grade_value .current,
+    .user_summary_value .current {
+      color: #ffffff;
+    }
+
+    .user_grade_value.incomplete .current,
+    .user_summary_value.incomplete .current {
+      color: #ff4d4f; /* 부족 시 빨강 */
+    }
+
+    .user_grade_value .required,
+    .user_summary_value .required {
+      color: #ffffff;
+      opacity: 0.9;
+    }
+
     .user_alarm_body {
         flex: 1;
         display: flex;
@@ -658,6 +674,21 @@
          font-weight: bold;
     }
 
+    .user_grade_value .current,
+    .user_summary_value .current {
+      color: #ffffff;
+    }
+
+    .user_grade_value.incomplete .current,
+    .user_summary_value.incomplete .current {
+      color: #ff4d4f; /* 부족 시 빨강 */
+    }
+
+    .user_grade_value .required,
+    .user_summary_value .required {
+      color: #ffffff;
+      opacity: 0.9;
+    }
 
     .user_alarm_body {
         flex: 1;
@@ -1089,6 +1120,22 @@
         font-size: max(11px, 2vw);
         font-weight: bold;
     }
+
+   .user_grade_value .current,
+  .user_summary_value .current {
+    color: #ffffff;
+  }
+
+  .user_grade_value.incomplete .current,
+  .user_summary_value.incomplete .current {
+    color: #ff4d4f; /* 부족 시 빨강 */
+  }
+
+  .user_grade_value .required,
+  .user_summary_value .required {
+    color: #ffffff;
+    opacity: 0.9;
+  }
 
     .user_alarm_body {
         flex: 1;

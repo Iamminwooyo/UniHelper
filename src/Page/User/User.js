@@ -68,6 +68,7 @@ const User = () => {
 
     try {
       const data = await fetchMyPageCredits();
+       console.log("📘 [fetchMyPageCredits] 응답 데이터:", data); // ✅ 콘솔 찍기
       setCredits(data);
     } catch (err) {
       console.error("❌ 학점 정보 불러오기 실패:", err);
@@ -154,6 +155,12 @@ const User = () => {
     } finally {
       isUpdatingRef.current = false;
     }
+  };
+
+  // 부족 확인 함수
+  const isIncomplete = (current, required) => {
+    if (current == null || required == null) return false;
+    return Number(current) < Number(required);
   };
 
   return (
@@ -302,17 +309,9 @@ const User = () => {
               </button>
             </div>
 
-            <div className="user_grade_container">
+             <div className="user_grade_container">
               {isCreditsFetching ? (
                 <p className="user_grade_empty">불러오는 중...</p>
-              ) : user.roleType !== "STUDENT" ? (
-                <p className="user_grade_empty">
-                  {activeTab === "minor"
-                    ? "부전공 대상자가 아닙니다."
-                    : activeTab === "double"
-                    ? "복수전공 대상자가 아닙니다."
-                    : "전공 대상자가 아닙니다."}
-                </p>
               ) : credits ? (
                 ((activeTab === "minor" && !credits?.minorMinimumRequiredCredits) ||
                   (activeTab === "double" && !credits?.doubleMinimumRequiredCredits)) ? (
@@ -332,44 +331,139 @@ const User = () => {
                             ? "부전공"
                             : "복수전공"}
                         </span>
-                        <span className="user_grade_value">
-                          {activeTab === "major"
-                            ? `${credits?.majorCredits ?? 0} / ${credits?.requiredSingleMajorMinimumCredits ?? 0}`
-                            : activeTab === "minor"
-                            ? `${credits?.minorMinimumRequiredCredits ?? 0} / ${credits?.requiredMinorMinimumRequiredCredits ?? 0}`
-                            : `${credits?.doubleMinimumRequiredCredits ?? 0} / ${credits?.requiredDoubleMinimumRequiredCredits ?? 0}`}
+                        <span
+                          className={`user_grade_value ${
+                            (activeTab === "major" &&
+                              isIncomplete(
+                                credits?.majorCredits,
+                                credits?.requiredSingleMajorMinimumCredits
+                              )) ||
+                            (activeTab === "minor" &&
+                              isIncomplete(
+                                credits?.minorMinimumRequiredCredits,
+                                credits?.requiredMinorMinimumRequiredCredits
+                              )) ||
+                            (activeTab === "double" &&
+                              isIncomplete(
+                                credits?.doubleMinimumRequiredCredits,
+                                credits?.requiredDoubleMinimumRequiredCredits
+                              ))
+                              ? "incomplete"
+                              : ""
+                          }`}
+                        >
+                          <span className="current">
+                            {activeTab === "major"
+                              ? credits?.majorCredits ?? 0
+                              : activeTab === "minor"
+                              ? credits?.minorMinimumRequiredCredits ?? 0
+                              : credits?.doubleMinimumRequiredCredits ?? 0}
+                          </span>
+                          {" / "}
+                          <span className="required">
+                            {activeTab === "major"
+                              ? credits?.requiredSingleMajorMinimumCredits ?? 0
+                              : activeTab === "minor"
+                              ? credits?.requiredMinorMinimumRequiredCredits ?? 0
+                              : credits?.requiredDoubleMinimumRequiredCredits ?? 0}
+                          </span>
                         </span>
                       </div>
 
+                      {/* 기초전공 */}
                       <div className="user_grade_row">
                         <span className="user_grade_label">기초전공</span>
-                        <span className="user_grade_value">
-                          {activeTab === "major"
-                            ? `${credits?.basicMajorCredits ?? 0} / ${credits?.requiredBasicMajorCredits ?? 0}`
-                            : activeTab === "minor"
-                            ? `${credits?.minorBasicMajorCredits ?? 0} / ${credits?.requiredMinorBasicMajorCredits ?? 0}`
-                            : `${credits?.doubleBasicMajorCredits ?? 0} / ${credits?.requiredDoubleBasicMajorCredits ?? 0}`}
+                        <span
+                          className={`user_grade_value ${
+                            (activeTab === "major" &&
+                              isIncomplete(
+                                credits?.basicMajorCredits,
+                                credits?.requiredBasicMajorCredits
+                              )) ||
+                            (activeTab === "minor" &&
+                              isIncomplete(
+                                credits?.minorBasicMajorCredits,
+                                credits?.requiredMinorBasicMajorCredits
+                              )) ||
+                            (activeTab === "double" &&
+                              isIncomplete(
+                                credits?.doubleBasicMajorCredits,
+                                credits?.requiredDoubleBasicMajorCredits
+                              ))
+                              ? "incomplete"
+                              : ""
+                          }`}
+                        >
+                          <span className="current">
+                            {activeTab === "major"
+                              ? credits?.basicMajorCredits ?? 0
+                              : activeTab === "minor"
+                              ? credits?.minorBasicMajorCredits ?? 0
+                              : credits?.doubleBasicMajorCredits ?? 0}
+                          </span>
+                          {" / "}
+                          <span className="required">
+                            {activeTab === "major"
+                              ? credits?.requiredBasicMajorCredits ?? 0
+                              : activeTab === "minor"
+                              ? credits?.requiredMinorBasicMajorCredits ?? 0
+                              : credits?.requiredDoubleBasicMajorCredits ?? 0}
+                          </span>
                         </span>
                       </div>
 
+                      {/* 교양필수 */}
                       <div className="user_grade_row">
                         <span className="user_grade_label">교양필수</span>
-                        <span className="user_grade_value">
-                          {`${credits?.generalRequiredCredits ?? 0} / ${credits?.requiredGeneralRequiredCredits ?? 0}`}
+                        <span
+                          className={`user_grade_value ${
+                            isIncomplete(
+                              credits?.generalRequiredCredits,
+                              credits?.requiredGeneralRequiredCredits
+                            )
+                              ? "incomplete"
+                              : ""
+                          }`}
+                        >
+                          <span className="current">
+                            {credits?.generalRequiredCredits ?? 0}
+                          </span>
+                          {" / "}
+                          <span className="required">
+                            {credits?.requiredGeneralRequiredCredits ?? 0}
+                          </span>
                         </span>
                       </div>
                     </div>
 
+                    {/* 총 이수학점 */}
                     <div className="user_grade_summary">
                       <div className="user_summary_row">
                         <span className="user_summary_label">총 이수학점</span>
-                        <span className="user_summary_value">
-                          {`${credits?.totalCredits ?? 0} / ${credits?.requiredGraduationTotal ?? 0}`}
+                        <span
+                          className={`user_summary_value ${
+                            isIncomplete(
+                              credits?.totalCredits,
+                              credits?.requiredGraduationTotal
+                            )
+                              ? "incomplete"
+                              : ""
+                          }`}
+                        >
+                          <span className="current">
+                            {credits?.totalCredits ?? 0}
+                          </span>
+                          {" / "}
+                          <span className="required">
+                            {credits?.requiredGraduationTotal ?? 0}
+                          </span>
                         </span>
                       </div>
                       <div className="user_summary_row">
                         <span className="user_summary_label">평점</span>
-                        <span className="user_summary_value">{credits?.gpa ?? 0}</span>
+                        <span className="user_summary_value">
+                          {credits?.gpa ?? 0}
+                        </span>
                       </div>
                     </div>
                   </>

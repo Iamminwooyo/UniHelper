@@ -158,9 +158,16 @@ const NoticeModal = ({ open, onCancel, initialData = null, mode = "create", onSu
   // 이미지 업로드 함수
   const beforeImageUpload = (file) => {
     const isImage = file.type?.startsWith("image/");
-    const isLt50M = file.size / 1024 / 1024 < 25;
-    if (!isImage) message.error("이미지 파일만 업로드 가능합니다.");
-    if (!isLt50M) message.error("이미지는 25MB 이하만 가능합니다.");
+    const isLt25M = file.size / 1024 / 1024 < 25;
+    if (!isImage) {
+      message.error("이미지 파일만 업로드 가능합니다.");
+      return Upload.LIST_IGNORE; // ← 리스트에도 추가되지 않음
+    }
+
+    if (!isLt25M) {
+      message.error("이미지는 25MB 이하만 가능합니다.");
+      return Upload.LIST_IGNORE;
+    }
     // 업로드는 수동(FormData로 직접 append) 처리 → false 리턴
     return false;
   };
