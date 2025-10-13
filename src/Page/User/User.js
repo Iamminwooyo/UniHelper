@@ -68,7 +68,6 @@ const User = () => {
 
     try {
       const data = await fetchMyPageCredits();
-       console.log("📘 [fetchMyPageCredits] 응답 데이터:", data); // ✅ 콘솔 찍기
       setCredits(data);
     } catch (err) {
       console.error("❌ 학점 정보 불러오기 실패:", err);
@@ -313,8 +312,10 @@ const User = () => {
               {isCreditsFetching ? (
                 <p className="user_grade_empty">불러오는 중...</p>
               ) : credits ? (
-                ((activeTab === "minor" && !credits?.minorMinimumRequiredCredits) ||
-                  (activeTab === "double" && !credits?.doubleMinimumRequiredCredits)) ? (
+                user.roleType !== "STUDENT" ? (
+                  <p className="user_grade_empty">전공 대상자가 아닙니다.</p>
+                ) : ((activeTab === "minor" && !credits?.minorMinimumRequiredCredits) ||
+                    (activeTab === "double" && !credits?.doubleMinimumRequiredCredits)) ? (
                   <p className="user_grade_empty">
                     {activeTab === "minor"
                       ? "부전공 대상자가 아닙니다."

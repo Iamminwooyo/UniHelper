@@ -150,7 +150,6 @@ const Enroll = () => {
     if (confirmed) {
       handleSave();
     } else {
-      console.log("저장 취소됨");
     }
   };
 
