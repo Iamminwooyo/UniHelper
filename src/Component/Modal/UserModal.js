@@ -173,7 +173,6 @@ const UserModal = ({ open, onCancel, initialData = null, mode, onSuccess }) => {
           try {
             setIsUploading(true); // 🔒 세마포어 ON
             const result = await uploadCreditsFile(formData); // API 호출
-            console.log("📂 업로드 응답:", result);
 
            setGradeData({
             generalRequired: result["교양 필수"] ?? "",

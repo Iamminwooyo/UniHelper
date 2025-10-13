@@ -69,8 +69,6 @@ const Notice = () => {
         departments: selectedTags,
       });
 
-      console.log("📥 fetchNotice 원본 데이터:", data);
-
       const list = data.content || [];
 
       const withPreview = await Promise.all(
@@ -92,8 +90,6 @@ const Notice = () => {
           }
         })
       );
-
-      console.log("🖼️ 프리뷰 변환 후 공지사항데이터:", withPreview);
       
       setNotices(withPreview);
       setTotalPages(data.totalPages || 0);

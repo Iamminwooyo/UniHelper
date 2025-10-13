@@ -2,7 +2,6 @@ import "./Card.css";
 import { Checkbox, Badge } from "antd";
 
 const AlarmCard = ({ id, profile, noticeId, name, date, content, isRead, selected, onSelect, onOpen }) => {
-  console.log("profile 값:", profile);
   return (
     <section
       className="alarmcard_layout"

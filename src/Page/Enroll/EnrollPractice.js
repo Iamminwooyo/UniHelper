@@ -71,7 +71,6 @@ const EnrollPractice = () => {
 
   // 성공 / 실패 모달 열기 함수
   useEffect(() => {
-    console.log("📌 missionResult:", sessionStorage.getItem("missionResult"));
     const result = JSON.parse(sessionStorage.getItem("missionResult") || "null");
     if (result) {
       if (result.success) {
