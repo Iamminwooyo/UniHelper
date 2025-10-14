@@ -67,12 +67,16 @@ export const fetchImagePreview = async (filename) => {
   const token = sessionStorage.getItem("accessToken");
   if (!token) throw new Error("로그인이 필요합니다.");
 
-  const safeFilename = filename.replace(/^\/files\//, "").replace(/ /g, "%20");
+  // ✅ 모든 특수문자 인코딩 (괄호, 공백, 한글 포함)
+  const safeFilename = encodeURIComponent(filename.replace(/^\/files\//, ""));
 
-  const response = await API_CONFIG.get(`/notices/image-preview?filename=${safeFilename}`, {
-    responseType: "blob",
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  const response = await API_CONFIG.get(
+    `/notices/download?filename=${safeFilename}`,
+    {
+      responseType: "blob",
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
 
   return response.data;
 };

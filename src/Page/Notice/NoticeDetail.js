@@ -50,8 +50,7 @@ const NoticeDetail = () => {
   }, []);
 
   
-
-  // 공지사항 상제 조회 함수
+  // 공지사항 상세 조회 함수
   const loadNotice = useCallback(async () => {
     if (isFetchingRef.current) return;
     isFetchingRef.current = true;
@@ -60,11 +59,13 @@ const NoticeDetail = () => {
     try {
       const data = await fetchNoticeDetail(id);
 
+      // ✅ 1️⃣ 본문 이미지 Blob 처리
       const blobs = await Promise.all(
         (data.images ?? []).map(async (f) => {
           try {
             const blob = await fetchNoticeImagePreview(f.url);
             const objUrl = URL.createObjectURL(blob);
+            boundUrlsRef.current.push(objUrl);
             return { id: f.id, previewUrl: objUrl };
           } catch {
             return { id: f.id, previewUrl: null };
@@ -72,18 +73,43 @@ const NoticeDetail = () => {
         })
       );
 
-      const enrichedImages = data.images.map(img => {
-        const found = blobs.find(b => b.id === img.id);
+      const enrichedImages = (data.images ?? []).map((img) => {
+        const found = blobs.find((b) => b.id === img.id);
         return { ...img, previewUrl: found?.previewUrl || img.url };
       });
 
+      // ✅ 2️⃣ 작성자 프로필 Blob 처리 추가
+      let authorProfileUrl = data.authorProfileImageUrl;
+      if (authorProfileUrl) {
+        if (imageCacheRef.current.has(authorProfileUrl)) {
+          authorProfileUrl = imageCacheRef.current.get(authorProfileUrl);
+        } else {
+          try {
+            const blob = await fetchNoticeImagePreview(authorProfileUrl);
+            const blobUrl = URL.createObjectURL(blob);
+            imageCacheRef.current.set(authorProfileUrl, blobUrl);
+            boundUrlsRef.current.push(blobUrl);
+            authorProfileUrl = blobUrl;
+          } catch (err) {
+            console.warn("⚠️ 프로필 이미지 불러오기 실패:", err);
+            authorProfileUrl = "/image/profile.png";
+          }
+        }
+      }
+
+      // ✅ 인덱스 보정
       let newIndex = currentIndex;
       if (newIndex >= enrichedImages.length) {
         newIndex = Math.max(0, enrichedImages.length - 1);
       }
       setCurrentIndex(newIndex);
 
-      setNotice({ ...data, images: enrichedImages });
+      // ✅ 최종 세팅
+      setNotice({
+        ...data,
+        images: enrichedImages,
+        authorProfileImageUrl: authorProfileUrl,
+      });
       setModalMode(data?.bookmarked ? "noticeunsubscribe" : "noticesubscribe");
     } catch (e) {
       console.error("공지 상세 불러오기 실패:", e);

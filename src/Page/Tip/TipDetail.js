@@ -89,13 +89,26 @@ const TipDetail = () => {
     try {
       const data = await fetchTipDetail(id);
 
-      // 이미지 blob 처리
+      // ✅ 작성자 프로필 Blob 처리
+      let authorProfileUrl = data.authorProfileImageUrl;
+      if (authorProfileUrl) {
+        try {
+          const blob = await fetchTipImagePreview(authorProfileUrl);
+          const blobUrl = URL.createObjectURL(blob);
+          boundUrlsRef.current.push(blobUrl);
+          authorProfileUrl = blobUrl;
+        } catch (err) {
+          console.warn("⚠️ 작성자 프로필 이미지 불러오기 실패:", err);
+        }
+      }
+
+      // ✅ 본문 이미지 blob 처리
       const blobs = await Promise.all(
         (data.images ?? []).map(async (img) => {
           try {
             const blob = await fetchTipImagePreview(img.url);
             const objUrl = URL.createObjectURL(blob);
-            boundUrlsRef.current.push(objUrl); 
+            boundUrlsRef.current.push(objUrl);
             return { id: img.id, previewUrl: objUrl };
           } catch {
             return { id: img.id, previewUrl: null };
@@ -103,7 +116,8 @@ const TipDetail = () => {
         })
       );
 
-      const enrichedImages = data.images?.map((img) => {
+      const enrichedImages =
+        data.images?.map((img) => {
           const found = blobs.find((b) => b.id === img.id);
           return { ...img, previewUrl: found?.previewUrl || img.url };
         }) ?? [];
@@ -115,9 +129,14 @@ const TipDetail = () => {
       }
       setCurrentIndex(newIndex);
 
-      setTip({ ...data, images: enrichedImages });
+      // ✅ 최종 Tip 상태 업데이트
+      setTip({
+        ...data,
+        images: enrichedImages,
+        authorProfileImageUrl: authorProfileUrl,
+      });
     } catch (error) {
-      console.error("Tip 상세 불러오기 실패:", error);
+      console.error("❌ Tip 상세 불러오기 실패:", error);
       message.error("Tip 불러오기 실패");
       setTip(null);
     } finally {
@@ -131,8 +150,25 @@ const TipDetail = () => {
     setIsFetchingComment(true);
     try {
       const data = await fetchTipComments(id, commentPage + 1, 5);
-      
-      setCommentData(data.content);
+
+      // ✅ 댓글 작성자 프로필 Blob 처리
+      const enrichedComments = await Promise.all(
+        (data.content || []).map(async (c) => {
+          if (!c.authorProfileImageUrl) return c;
+
+          try {
+            const blob = await fetchTipImagePreview(c.authorProfileImageUrl);
+            const blobUrl = URL.createObjectURL(blob);
+            boundUrlsRef.current.push(blobUrl);
+            return { ...c, authorProfileImageUrl: blobUrl };
+          } catch (err) {
+            console.warn("⚠️ 댓글 프로필 이미지 불러오기 실패:", err);
+            return { ...c, authorProfileImageUrl: "/image/profile.png" };
+          }
+        })
+      );
+
+      setCommentData(enrichedComments);
       setCommentTotalPages(data.totalPages);
     } catch (error) {
       message.error("댓글 불러오기 실패");

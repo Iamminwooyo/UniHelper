@@ -41,6 +41,7 @@ const User = () => {
       const data = await fetchMyPageInfo();
 
       let profileUrl = "/image/profile.png";
+
       if (data?.profileImageUrl) {
         try {
           const blob = await fetchProfileImagePreview(data.profileImageUrl);
@@ -48,9 +49,11 @@ const User = () => {
         } catch (err) {
           console.error("❌ 프로필 이미지 불러오기 실패:", err);
         }
+      } else {
       }
 
       const mergedData = { ...data, profileUrl };
+
       setUserData(mergedData);
       return mergedData;
     } catch (error) {
