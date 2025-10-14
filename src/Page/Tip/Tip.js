@@ -58,12 +58,16 @@ const Tip = () => {
         keyword,
       });
 
+      console.log("📦 Tip 데이터:", data);
+
       const list = data.content || [];
 
       const withPreview = list.map((item) => ({
         ...item,
         previewUrl: item?.images?.[0]?.url || null,
       }));
+
+      console.log("✅ 최종 withPreview 팁:", withPreview);
 
       setTips(withPreview);
       setTotalPages(data.totalPages || 0);

@@ -87,6 +87,11 @@ const Login = () => {
         },
       }));
 
+      console.log(
+        "💾 [sessionStorage 유저 정보 저장값]:",
+        JSON.parse(sessionStorage.getItem("userBrief"))
+      );
+
       message.success("로그인 성공!");
       navigate("/");
     } catch (error) {
