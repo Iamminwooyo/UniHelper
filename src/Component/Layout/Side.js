@@ -1,18 +1,14 @@
 import "./Layout.css";
 import { Link, useLocation } from "react-router-dom";
-import { useSetRecoilState, useRecoilValue } from "recoil"
+import { useSetRecoilState, useRecoilValue } from "recoil";
 import { useMediaQuery } from "react-responsive";
-import { MenuState } from "../../Recoil/Atom";
-import { userBriefState } from "../../Recoil/Atom";
+import { MenuState, userBriefState } from "../../Recoil/Atom";
 
 const Side = () => {
   const location = useLocation();
   const path = location.pathname;
-
   const setMenu = useSetRecoilState(MenuState);
-
   const user = useRecoilValue(userBriefState);
-
   const isMobile = useMediaQuery({ maxWidth: 768 });
 
   const menusByPath = [
@@ -68,19 +64,14 @@ const Side = () => {
     },
   ];
 
-  const currentMenu =
-    menusByPath.find((menu) => menu.match(path))?.items || [];
-
+  const currentMenu = menusByPath.find((menu) => menu.match(path))?.items || [];
   const isActiveMenu = (currentPath, itemLink) => {
     const normalize = (url) => url.replace(/\/+$/, "");
-    const getBasePath = (url) =>
-      normalize(url).split("/").slice(0, 3).join("/");
+    const getBasePath = (url) => normalize(url).split("/").slice(0, 3).join("/");
     return getBasePath(currentPath) === normalize(itemLink);
   };
 
-  const handleClick = (link) => {
-    setMenu(link);
-  };
+  const handleClick = (link) => setMenu(link);
 
   return (
     <aside className="side_layout">
@@ -90,6 +81,7 @@ const Side = () => {
             src={user.profileImage?.url || "/image/profile.png"}
             alt="profile"
             className="side_profile_img"
+            onError={(e) => (e.currentTarget.src = "/image/profile.png")}
           />
           <span className="side_info_text">{user.username}</span>
           {user.roleType === "STUDENT" && (

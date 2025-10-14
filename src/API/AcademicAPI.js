@@ -167,3 +167,18 @@ export const downloadFileById = async (id) => {
 
   return response.data;
 };
+
+// 문의 프로필 이미지 API
+export const fetchInquriesImagePreview = async (filename) => {
+  const token = sessionStorage.getItem("accessToken");
+  if (!token) throw new Error("로그인이 필요합니다.");
+
+  const safeFilename = filename.replace(/^\/files\//, "").replace(/ /g, "%20");
+
+  const response = await API_CONFIG.get(`/notices/download?filename=${safeFilename}`, {
+    responseType: "blob",
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  return response.data;
+};

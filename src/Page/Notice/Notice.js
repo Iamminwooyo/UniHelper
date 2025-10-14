@@ -57,54 +57,77 @@ const Notice = () => {
 
   // 공지사항 조회 함수
   const loadNotices = useCallback(async () => {
-    if (isFetchingRef.current) return;
-    isFetchingRef.current = true;
-    setIsFetchingNotices(true);
+  if (isFetchingRef.current) return;
+  isFetchingRef.current = true;
+  setIsFetchingNotices(true);
 
-    try {
-      const data = await fetchNotices({
-        page: currentPage,
-        size: pageSize,
-        keyword,
-        departments: selectedTags,
-      });
+  try {
+    const data = await fetchNotices({
+      page: currentPage,
+      size: pageSize,
+      keyword,
+      departments: selectedTags,
+    });
 
-      console.log("📦 공지사항 데이터:", data);
 
-      const list = data.content || [];
+    const list = data.content || [];
 
-      const withPreview = await Promise.all(
-        list.map(async (item) => {
-          const filename = item?.images?.[0]?.url;
-          if (!filename) return { ...item, previewUrl: null };
+    const withPreview = await Promise.all(
+      list.map(async (item) => {
+        const newItem = { ...item };
 
+        // ✅ 1️⃣ 본문 이미지 Blob 처리
+        const filename = item?.images?.[0]?.url;
+        if (filename) {
           if (imageCacheRef.current.has(filename)) {
-            return { ...item, previewUrl: imageCacheRef.current.get(filename) };
+            newItem.previewUrl = imageCacheRef.current.get(filename);
+          } else {
+            try {
+              const blob = await fetchNoticeImagePreview(filename);
+              const url = URL.createObjectURL(blob);
+              imageCacheRef.current.set(filename, url);
+              newItem.previewUrl = url;
+            } catch (err) {
+              console.warn("⚠️ 공지 본문 이미지 불러오기 실패:", err);
+              newItem.previewUrl = null;
+            }
           }
+        } else {
+          newItem.previewUrl = null;
+        }
 
-          try {
-            const blob = await fetchNoticeImagePreview(filename);
-            const url = URL.createObjectURL(blob);
-            imageCacheRef.current.set(filename, url);
-            return { ...item, previewUrl: url };
-          } catch {
-            return { ...item, previewUrl: null };
+        // ✅ 2️⃣ 작성자 프로필 Blob 처리 추가
+        const profilePath = item?.authorProfileImageUrl;
+        if (profilePath) {
+          if (imageCacheRef.current.has(profilePath)) {
+            newItem.authorProfileImageUrl = imageCacheRef.current.get(profilePath);
+          } else {
+            try {
+              const blob = await fetchNoticeImagePreview(profilePath);
+              const blobUrl = URL.createObjectURL(blob);
+              imageCacheRef.current.set(profilePath, blobUrl);
+              newItem.authorProfileImageUrl = blobUrl;
+            } catch (err) {
+              console.warn("⚠️ 공지 프로필 이미지 불러오기 실패:", err);
+              newItem.authorProfileImageUrl = "/image/profile.png";
+            }
           }
-        })
-      );
+        }
 
-      console.log("✅ 최종 withPreview 공지사항:", withPreview);
-      
-      setNotices(withPreview);
-      setTotalPages(data.totalPages || 0);
-    } catch (error) {
-      console.error("fetchNotices 오류:", error);
-      message.error("공지사항을 불러오는데 실패했습니다.");
-    } finally {
-      setIsFetchingNotices(false);
-      isFetchingRef.current = false;
-    }
-  }, [currentPage, pageSize, keyword, selectedTags]);
+        return newItem;
+      })
+    );
+
+    setNotices(withPreview);
+    setTotalPages(data.totalPages || 0);
+  } catch (error) {
+    console.error("fetchNotices 오류:", error);
+    message.error("공지사항을 불러오는데 실패했습니다.");
+  } finally {
+    setIsFetchingNotices(false);
+    isFetchingRef.current = false;
+  }
+}, [currentPage, pageSize, keyword, selectedTags]);
 
    // 공지사항 삭제 함수
   const handleDeleteConfirm = async () => {

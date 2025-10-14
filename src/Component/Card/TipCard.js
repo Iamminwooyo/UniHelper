@@ -62,24 +62,41 @@ const TipCard = ({
   }, [tags]);
 
   // 이미지 함수
-  useEffect(() => {
-  if (!images) {
-    setImgUrl(null);
-    return;
-  }
-
-  // images는 이미 blob URL 또는 서버 URL이므로 그대로 사용
-  setImgUrl(images);
-
-  return () => {
-    // blob URL일 경우만 revoke
-    if (typeof images === "string" && images.startsWith("blob:")) {
-      try {
-        URL.revokeObjectURL(images);
-      } catch {}
-    }
-  };
-}, [images]);
+    useEffect(() => {
+      let cancelled = false;
+      let objectUrl;
+  
+      if (!images) {
+        setImgUrl(null);
+        return;
+      }
+  
+      const isReadyUrl =
+        typeof images === "string" && /^(blob:|https?:|\/)/.test(images);
+  
+      if (isReadyUrl) {
+        setImgUrl(images);
+        return;
+      }
+  
+      const run = async () => {
+        try {
+          const blob = await fetchTipImagePreview(images);
+          if (cancelled) return;
+          objectUrl = URL.createObjectURL(blob);
+          setImgUrl(objectUrl);
+        } catch (error) {
+          if (!cancelled) setImgUrl(null);
+        }
+      };
+  
+      run();
+  
+      return () => {
+        cancelled = true;
+        if (objectUrl) URL.revokeObjectURL(objectUrl);
+      };
+    }, [images]);
 
   // 저장 클릭 함수 
   const handleBookmarkClick = (e) => {

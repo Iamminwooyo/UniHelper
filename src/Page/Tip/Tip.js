@@ -44,7 +44,8 @@ const Tip = () => {
 
   const navigate = useNavigate();
 
- // Tip 조회 함수
+  // Tip 조회 함수
+  // ✅ Tip 조회 함수 (프로필 + 본문 이미지 Blob 변환)
   const loadTips = useCallback(async () => {
     if (isFetchingRef.current) return;
     isFetchingRef.current = true;
@@ -58,16 +59,56 @@ const Tip = () => {
         keyword,
       });
 
-      console.log("📦 Tip 데이터:", data);
 
       const list = data.content || [];
 
-      const withPreview = list.map((item) => ({
-        ...item,
-        previewUrl: item?.images?.[0]?.url || null,
-      }));
+      // ✅ 프로필 이미지 + 게시글 이미지 둘 다 Blob 처리
+      const withPreview = await Promise.all(
+        list.map(async (item) => {
+          const newItem = { ...item };
 
-      console.log("✅ 최종 withPreview 팁:", withPreview);
+          // --- (1) 프로필 이미지 Blob 변환 ---
+          const profilePath = item?.authorProfileImageUrl;
+          if (profilePath) {
+            try {
+              if (imageCacheRef.current.has(profilePath)) {
+                newItem.authorProfileImageUrl = imageCacheRef.current.get(profilePath);
+              } else {
+                const blob = await fetchTipImagePreview(profilePath);
+                const blobUrl = URL.createObjectURL(blob);
+                imageCacheRef.current.set(profilePath, blobUrl);
+                newItem.authorProfileImageUrl = blobUrl;
+              }
+            } catch (err) {
+              console.warn("⚠️ 프로필 이미지 미리보기 실패:", err);
+              newItem.authorProfileImageUrl = "/image/profile.png"; // fallback
+            }
+          }
+
+          // --- (2) 본문 대표 이미지 Blob 변환 ---
+          const filename = item?.images?.[0]?.url;
+          if (filename) {
+            try {
+              if (imageCacheRef.current.has(filename)) {
+                newItem.previewUrl = imageCacheRef.current.get(filename);
+              } else {
+                const blob = await fetchTipImagePreview(filename);
+                const blobUrl = URL.createObjectURL(blob);
+                imageCacheRef.current.set(filename, blobUrl);
+                newItem.previewUrl = blobUrl;
+              }
+            } catch (err) {
+              console.warn("⚠️ 본문 이미지 미리보기 실패:", err);
+              newItem.previewUrl = null;
+            }
+          } else {
+            newItem.previewUrl = null;
+          }
+
+          return newItem;
+        })
+      );
+
 
       setTips(withPreview);
       setTotalPages(data.totalPages || 0);

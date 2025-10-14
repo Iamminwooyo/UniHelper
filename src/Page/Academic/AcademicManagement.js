@@ -4,7 +4,7 @@ import AcademicCard from "../../Component/Card/AcademicCard";
 import InquiryCard from "../../Component/Card/InquiryCard";
 import AcademicModal from "../../Component/Modal/AcademicModal";
 import TextModal from "../../Component/Modal/TextModal";
-import { fetchInquiries, deleteInquiries, uploadFiles, fetchFileTree } from "../../API/AcademicAPI";
+import { fetchInquiries, deleteInquiries, uploadFiles, fetchFileTree, fetchInquriesImagePreview } from "../../API/AcademicAPI";
 import { Collapse, message } from "antd";
 
 const { Panel } = Collapse;
@@ -38,7 +38,9 @@ const AcademicManagement = () => {
   const startPage = currentBlock * blockSize + 1;
   const endPage = Math.min(startPage + blockSize - 1, totalPages);
 
-  // 문의 목록 불러오기
+  const imageCacheRef = useRef(new Map()); // ✅ 이미지 캐시 추가
+
+  // ✅ 문의 목록 불러오기 (프로필 Blob 변환 추가)
   const loadInquiries = useCallback(async () => {
     if (isFetchingInquiriesRef.current) return;
     isFetchingInquiriesRef.current = true;
@@ -46,10 +48,35 @@ const AcademicManagement = () => {
 
     try {
       const data = await fetchInquiries(currentPage, pageSize);
+      const list = data.content || [];
 
-      setInquiries(data.content || []);
+      // Blob 변환 처리
+      const withProfile = await Promise.all(
+        list.map(async (inq) => {
+          let profileUrl = "/image/profile.png";
+          const filename = inq.authorProfileImageUrl;
+          if (filename) {
+            if (imageCacheRef.current.has(filename)) {
+              profileUrl = imageCacheRef.current.get(filename);
+            } else {
+              try {
+                const blob = await fetchInquriesImagePreview(filename);
+                const url = URL.createObjectURL(blob);
+                imageCacheRef.current.set(filename, url);
+                profileUrl = url;
+              } catch (err) {
+                console.warn("⚠️ 문의 프로필 이미지 로드 실패:", err);
+              }
+            }
+          }
+          return { ...inq, profileUrl };
+        })
+      );
+
+      setInquiries(withProfile);
       setTotalPages(data.totalPages || 0);
     } catch (err) {
+      console.error("❌ 문의 목록 불러오기 오류:", err);
       message.error("문의 목록을 불러오지 못했습니다.");
     } finally {
       setIsFetchingInquiries(false);
@@ -137,6 +164,18 @@ const AcademicManagement = () => {
     }
   };
 
+  // ✅ 이미지 캐시 메모리 해제
+  useEffect(() => {
+    return () => {
+      for (const url of imageCacheRef.current.values()) {
+        try {
+          URL.revokeObjectURL(url);
+        } catch {}
+      }
+      imageCacheRef.current.clear();
+    };
+  }, []);
+
   // 렌더링 함수
   useEffect(() => {
     loadInquiries();
@@ -209,7 +248,7 @@ const AcademicManagement = () => {
                   <InquiryCard
                     key={inq.pid}
                     title={inq.title}
-                    profile={inq.authorProfileImageUrl}
+                    profile={inq.profileUrl}
                     name={inq.authorName}
                     department={inq.authorDepartment}
                     date={new Date(inq.createdAt).toISOString().split("T")[0]}

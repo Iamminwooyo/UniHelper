@@ -57,21 +57,49 @@ const NoticeWrite = () => {
 
       const withPreview = await Promise.all(
         list.map(async (item) => {
+          const newItem = { ...item };
+
+          // ✅ 1️⃣ 본문 이미지 Blob 처리
           const filename = item?.images?.[0]?.url;
-          if (!filename) return { ...item, previewUrl: null };
-
-          if (imageCacheRef.current.has(filename)) {
-            return { ...item, previewUrl: imageCacheRef.current.get(filename) };
+          if (filename) {
+            if (imageCacheRef.current.has(filename)) {
+              newItem.previewUrl = imageCacheRef.current.get(filename);
+            } else {
+              try {
+                const blob = await fetchNoticeImagePreview(filename);
+                const url = URL.createObjectURL(blob);
+                imageCacheRef.current.set(filename, url);
+                newItem.previewUrl = url;
+              } catch (err) {
+                console.warn("⚠️ 본문 이미지 로드 실패:", err);
+                newItem.previewUrl = null;
+              }
+            }
+          } else {
+            newItem.previewUrl = null;
           }
 
-          try {
-            const blob = await fetchNoticeImagePreview(filename);
-            const url = URL.createObjectURL(blob);
-            imageCacheRef.current.set(filename, url);
-            return { ...item, previewUrl: url };
-          } catch {
-            return { ...item, previewUrl: null };
+          // ✅ 2️⃣ 프로필 이미지 Blob 처리
+          const profilePath = item?.authorProfileImageUrl;
+          if (profilePath) {
+            if (imageCacheRef.current.has(profilePath)) {
+              newItem.authorProfileImageUrl = imageCacheRef.current.get(profilePath);
+            } else {
+              try {
+                const blob = await fetchNoticeImagePreview(profilePath);
+                const blobUrl = URL.createObjectURL(blob);
+                imageCacheRef.current.set(profilePath, blobUrl);
+                newItem.authorProfileImageUrl = blobUrl;
+              } catch (err) {
+                console.warn("⚠️ 프로필 이미지 로드 실패:", err);
+                newItem.authorProfileImageUrl = "/image/profile.png";
+              }
+            }
+          } else {
+            newItem.authorProfileImageUrl = "/image/profile.png";
           }
+
+          return newItem;
         })
       );
 

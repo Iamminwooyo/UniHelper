@@ -1,5 +1,5 @@
 import "./Tip.css";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "../../Component/Search/Search";
 import TipModal from "../../Component/Modal/TipModal";
@@ -10,7 +10,6 @@ import { message } from "antd";
 
 const TipWrite = () => {
   const [keyword, setKeyword] = useState("");
-
   const [tips, setTips] = useState([]);
 
   const [isFetching, setIsFetching] = useState(false);
@@ -20,7 +19,7 @@ const TipWrite = () => {
   const pageSize = 6;
   const [totalPages, setTotalPages] = useState(0);
 
-  const blockSize = 5; 
+  const blockSize = 5;
   const currentBlock = Math.floor((currentPage - 1) / blockSize);
   const startPage = currentBlock * blockSize + 1;
   const endPage = Math.min(startPage + blockSize - 1, totalPages);
@@ -35,7 +34,23 @@ const TipWrite = () => {
 
   const navigate = useNavigate();
 
-  // Tip 작성 목록 조회 함수
+  // ✅ Blob 캐시 & 정리 Ref
+  const imageCacheRef = useRef(new Map());
+  const boundUrlsRef = useRef([]);
+
+  const cleanupBoundUrls = useCallback(() => {
+    try {
+      for (const url of boundUrlsRef.current) {
+        try {
+          URL.revokeObjectURL(url);
+        } catch {}
+      }
+    } finally {
+      boundUrlsRef.current = [];
+    }
+  }, []);
+
+  // ✅ Tip 작성 목록 조회 함수
   const loadMyTips = useCallback(async () => {
     if (isFetching) return;
     setIsFetching(true);
@@ -49,15 +64,58 @@ const TipWrite = () => {
 
       const list = data.content || [];
 
-      const withPreview = list.map((item) => ({
-        ...item,
-        previewUrl: item?.images?.[0]?.url || null,
-      }));
+      const withPreview = await Promise.all(
+        list.map(async (item) => {
+          const newItem = { ...item };
+
+          // ✅ 1️⃣ 본문 이미지 Blob 처리
+          const filename = item?.images?.[0]?.url;
+          if (filename) {
+            if (imageCacheRef.current.has(filename)) {
+              newItem.previewUrl = imageCacheRef.current.get(filename);
+            } else {
+              try {
+                const blob = await fetchTipImagePreview(filename);
+                const blobUrl = URL.createObjectURL(blob);
+                imageCacheRef.current.set(filename, blobUrl);
+                boundUrlsRef.current.push(blobUrl);
+                newItem.previewUrl = blobUrl;
+              } catch (err) {
+                console.warn("⚠️ 본문 이미지 미리보기 실패:", err);
+                newItem.previewUrl = null;
+              }
+            }
+          } else {
+            newItem.previewUrl = null;
+          }
+
+          // ✅ 2️⃣ 작성자 프로필 이미지 Blob 처리
+          const profilePath = item?.authorProfileImageUrl;
+          if (profilePath) {
+            if (imageCacheRef.current.has(profilePath)) {
+              newItem.authorProfileImageUrl = imageCacheRef.current.get(profilePath);
+            } else {
+              try {
+                const blob = await fetchTipImagePreview(profilePath);
+                const blobUrl = URL.createObjectURL(blob);
+                imageCacheRef.current.set(profilePath, blobUrl);
+                boundUrlsRef.current.push(blobUrl);
+                newItem.authorProfileImageUrl = blobUrl;
+              } catch (err) {
+                console.warn("⚠️ 프로필 이미지 미리보기 실패:", err);
+                newItem.authorProfileImageUrl = "/image/profile.png";
+              }
+            }
+          }
+
+          return newItem;
+        })
+      );
 
       setTips(withPreview);
       setTotalPages(data.totalPages || 0);
     } catch (error) {
-      console.error("작성 목록 조회 실패:", error);
+      console.error("❌ 작성 목록 조회 실패:", error);
       message.error("작성 목록을 불러오는데 실패했습니다.");
     } finally {
       setIsFetching(false);

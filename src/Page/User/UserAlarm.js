@@ -4,7 +4,7 @@ import { useSetRecoilState } from "recoil";
 import { AlarmCountState } from "../../Recoil/Atom";
 import AlarmCard from "../../Component/Card/AlarmCard";
 import { useNavigate } from "react-router-dom";
-import { fetchAlarm, markAlarmsRead, deleteAlarms, fetchUnreadAlarmCount } from "../../API/UserAPI";
+import { fetchAlarm, markAlarmsRead, deleteAlarms, fetchUnreadAlarmCount, fetchProfileImagePreview } from "../../API/UserAPI";
 import TextModal from "../../Component/Modal/TextModal";
 import { Checkbox, message } from "antd";
 
@@ -15,21 +15,23 @@ const UserAlarm = () => {
   const [fetchingAlarm, setFetchingAlarm] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
-  const blockSize = 5; 
-  const currentBlock = Math.floor((currentPage - 1) / blockSize); 
+
+  const blockSize = 5;
+  const currentBlock = Math.floor((currentPage - 1) / blockSize);
   const startPage = currentBlock * blockSize + 1;
   const endPage = Math.min(startPage + blockSize - 1, totalPages);
 
   const isFetchingRef = useRef(false);
+  const imageCacheRef = useRef(new Map()); // ✅ Blob 캐시
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState(null);
 
   const setUnreadCount = useSetRecoilState(AlarmCountState);
 
-  // 알람 조회 함수
+  // ✅ 알림 조회 함수 (프로필 이미지 Blob 처리 포함)
   const loadAlarms = useCallback(async () => {
     if (isFetchingRef.current) return;
     isFetchingRef.current = true;
@@ -38,21 +40,45 @@ const UserAlarm = () => {
     try {
       const data = await fetchAlarm({ page: currentPage, size: pageSize });
 
-      const mapped = (data.content || []).map((alarm) => ({
-        id: alarm.notificationId, 
-        noticeId: alarm.noticeId,
-        profile: alarm.authorProfileImageUrl,
-        name: alarm.authorName,
-        department: alarm.department,
-        date: alarm.createdAt,
-        content: alarm.noticeTitle,
-        isRead: alarm.read,
-        selected: false,
-      }));
+      const mapped = await Promise.all(
+        (data.content || []).map(async (alarm) => {
+          let profileUrl = "/image/profile.png"; // 기본 프로필
+
+          // 프로필 Blob 처리
+          const filename = alarm.authorProfileImageUrl;
+          if (filename) {
+            if (imageCacheRef.current.has(filename)) {
+              profileUrl = imageCacheRef.current.get(filename);
+            } else {
+              try {
+                const blob = await fetchProfileImagePreview(filename);
+                const url = URL.createObjectURL(blob);
+                imageCacheRef.current.set(filename, url);
+                profileUrl = url;
+              } catch (err) {
+                console.warn("⚠️ 알림 프로필 이미지 로드 실패:", err);
+              }
+            }
+          }
+
+          return {
+            id: alarm.notificationId,
+            noticeId: alarm.noticeId,
+            profile: profileUrl,
+            name: alarm.authorName,
+            department: alarm.department,
+            date: alarm.createdAt,
+            content: alarm.noticeTitle,
+            isRead: alarm.read,
+            selected: false,
+          };
+        })
+      );
 
       setAlarms(mapped);
       setTotalPages(data.totalPages || 0);
     } catch (error) {
+      console.error("❌ fetchAlarm 오류:", error);
       message.error("알림을 불러오는데 실패했습니다.");
     } finally {
       setFetchingAlarm(false);
@@ -60,10 +86,22 @@ const UserAlarm = () => {
     }
   }, [currentPage, pageSize]);
 
-  // 렌더링 함수
+  // ✅ 렌더링 시 알림 불러오기
   useEffect(() => {
     loadAlarms();
   }, [loadAlarms]);
+
+  // ✅ ObjectURL 메모리 정리
+  useEffect(() => {
+    return () => {
+      for (const url of imageCacheRef.current.values()) {
+        try {
+          URL.revokeObjectURL(url);
+        } catch {}
+      }
+      imageCacheRef.current.clear();
+    };
+  }, []);
 
   // 카드 클릭 함수
   const handleOpen = async (noticeId, id) => {
