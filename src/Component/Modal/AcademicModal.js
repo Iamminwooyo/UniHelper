@@ -134,16 +134,17 @@ const AcademicModal = ({ open, onCancel, onSubmit, isUploading }) => {
               파일 선택
             </Button>
           </Upload>
+
+           {isUploading && (
+              <div className="custommodal_upload_status">
+                <Spin
+                  indicator={<LoadingOutlined style={{ color: "#78d900" }} spin />}
+                  size="small"
+                />
+                <span style={{ marginLeft: 8 }}>파일 업로드 중...</span>
+              </div>
+            )}
         </div>
-        {isUploading && (
-          <div className="custommodal_upload_status">
-            <Spin
-              indicator={<LoadingOutlined style={{ color: "#78d900" }} spin />}
-              size="small"
-            />
-            <span style={{ marginLeft: 8 }}>파일 업로드 중...</span>
-          </div>
-        )}
       </section>
 
       {/* 확인 / 취소 버튼 */}

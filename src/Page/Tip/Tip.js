@@ -183,8 +183,43 @@ const Tip = () => {
   };
 
   // Tip 수정 클릭 함수
-  const handleEditClick = (tip) => {
-    setEditTipData(tip);
+  const handleEditClick = async (tip) => {
+    const newTip = { ...tip };
+
+    // 이미지가 있을 경우 Blob URL로 변환
+    if (Array.isArray(tip.images) && tip.images.length > 0) {
+      const converted = await Promise.all(
+        tip.images.map(async (img) => {
+          if (!img?.url) return img;
+
+          // 이미 Blob URL이면 그대로 사용
+          if (img.url.startsWith("blob:")) {
+            return img;
+          }
+
+          // 캐시에 있으면 그대로 사용
+          if (imageCacheRef.current.has(img.url)) {
+            return { ...img, url: imageCacheRef.current.get(img.url) };
+          }
+
+          // 새로 Blob 변환
+          try {
+            const blob = await fetchTipImagePreview(img.url);
+            const blobUrl = URL.createObjectURL(blob);
+            imageCacheRef.current.set(img.url, blobUrl);
+            return { ...img, url: blobUrl };
+          } catch (err) {
+            console.warn("⚠️ 이미지 변환 실패:", err);
+            return img;
+          }
+        })
+      );
+
+      newTip.images = converted;
+    }
+
+    // 변환된 데이터를 모달로 전달
+    setEditTipData(newTip);
     setIsEditModalOpen(true);
   };
 
