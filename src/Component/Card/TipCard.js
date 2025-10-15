@@ -24,7 +24,8 @@ const TipCard = ({
   profile,
   name,
   department,
-  date,
+  updatedAt,
+  createdAt,
   title,
   content,
   images,
@@ -151,6 +152,9 @@ const TipCard = ({
     setIsModalOpen(false);
   }  
 
+  // 시간 변환 함수
+  const formatDate = (dateString) => dateString?.slice(0, 10) || "";
+
   // 드롭다운 메뉴 함수
   const handleMenuClick = (info) => {
     info.domEvent.stopPropagation();
@@ -226,7 +230,7 @@ const TipCard = ({
           />
           <div className="tipcard_text">
             <p className="tipcard_name">{department}</p>
-            <p className="tipcard_date">{date}</p>
+            <p className="tipcard_date">{updatedAt ? `${formatDate(updatedAt)} (수정됨)` : formatDate(createdAt)}</p>
           </div>
         </div>
         <div className="tipcard_tag">

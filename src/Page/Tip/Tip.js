@@ -302,7 +302,8 @@ const Tip = () => {
                   name={tip.authorName}
                   department={tip.authorDepartment}
                   title={tip.title}
-                  date={formatDate(tip.createdAt, tip.updatedAt)}
+                  createdAt={tip.createdAt}
+                  updatedAt={tip.updatedAt}
                   content={tip.text}
                   images={tip.previewUrl ?? null}
                   bookmarked={tip.bookmarked}
