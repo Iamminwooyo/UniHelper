@@ -37,8 +37,6 @@ const Login = () => {
 
       const briefRes = await fetchUserBrief(response.accessToken);
 
-      console.log("📦 briefRes:", briefRes.data);
-
       let profileImageObj = {
         url: "/image/profile.png",
         serverUrl: null,
@@ -46,11 +44,9 @@ const Login = () => {
 
       if (briefRes.profileImage?.url) {
   try {
-    console.log("📦 briefRes.profileImage.url:", briefRes.profileImage.url);
 
     // ✅ encodeURIComponent 제거 (fetchImagePreview 내부에서 이미 처리함)
     const filename = briefRes.profileImage.url.replace(/^\/files\//, "");
-    console.log("📂 변환된 filename:", filename);
 
     const blob = await fetchImagePreview(filename); // 그대로 넘김 ✅
     const objectUrl = URL.createObjectURL(blob);
@@ -75,9 +71,6 @@ const Login = () => {
       // ✅ recoil + sessionStorage 동기화
       setUserBrief(userBriefData);
       sessionStorage.setItem("userBrief", JSON.stringify(userBriefData));
-
-      console.log("💾 [sessionStorage 유저 정보 저장값]:", userBriefData);
-      console.log("📸 briefRes:", briefRes);
 
       message.success("로그인 성공!");
       navigate("/");
