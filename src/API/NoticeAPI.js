@@ -10,7 +10,9 @@ export const fetchNotices = async ({ page, size, keyword, departments }) => {
     page: page - 1,
     size,
     keyword: keyword?.trim() || undefined,
-    departments: departments?.length ? departments : undefined,
+     departments: Array.isArray(departments)
+      ? departments.join(",")
+      : departments || undefined,
   };
 
   const response = await API_CONFIG.get("/notices", {

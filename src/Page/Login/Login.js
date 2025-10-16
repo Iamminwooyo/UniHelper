@@ -78,11 +78,21 @@ const Login = () => {
       console.error(error);
       const status = error.response?.status;
       const serverMsg = error.response?.data?.message;
-      if (status === 400) message.error(serverMsg || "잘못된 요청입니다.");
-      else if (status === 401) message.error("이메일 또는 비밀번호가 올바르지 않습니다.");
-      else if (status === 403) message.error("접근 권한이 없습니다.");
-      else if (status === 500) message.error("서버 오류입니다.");
-      else message.error("로그인 중 오류: " + (serverMsg || error.message));
+      if (status === 400) {
+        message.error(serverMsg || "잘못된 요청입니다.");
+      } else if (status === 401) {
+        message.error("비밀번호가 올바르지 않습니다.");
+      } else if (status === 403) {
+        message.error("접근 권한이 없습니다.");
+      } else if (status === 500) {
+        message.error("서버 내부 오류입니다(500).");
+      } else if (status === 404) {
+        message.error("존재하지 않는 유저입니다.");
+      } else {
+        message.error(
+          "로그인 중 알 수 없는 오류가 발생했습니다: " + (serverMsg || error.message)
+        );
+      }
     } finally {
       setIsLoginProcessing(false);
     }

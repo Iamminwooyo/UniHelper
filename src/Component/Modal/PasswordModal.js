@@ -113,11 +113,11 @@ const PasswordModal = ({ open, onCancel }) => {
     try {
       const response = await verifyPasswordResetCode(state.email, state.authCode);
 
-      const responseData = response.data;
-
+      console.log("📥 서버 응답 전체:", response);
+      
       if (
-        (typeof responseData === "string" && responseData.includes("인증 성공")) ||
-        (responseData.success === true)
+        (typeof response === "string" && response.includes("인증 성공")) ||
+        (response.success === true)
       ) {
         setState(prev => ({
           ...prev,
@@ -131,9 +131,9 @@ const PasswordModal = ({ open, onCancel }) => {
         setState(prev => ({
           ...prev,
           codeVerificationStatus: "error",
-          codeVerificationMessage: responseData.message || "인증번호가 틀립니다.",
+          codeVerificationMessage: response.message || "인증번호가 틀립니다.",
         }));
-        message.error(responseData.message || "인증번호가 틀립니다.");
+        message.error(response.message || "인증번호가 틀립니다.");
       }
     } catch (error) {
       console.error(error);

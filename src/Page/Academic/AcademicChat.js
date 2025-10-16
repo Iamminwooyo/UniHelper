@@ -189,7 +189,10 @@ const AcademicChat = () => {
                 value={input}
                 placeholder="질문을 입력하세요..."
                 onChange={(e) => setInput(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleSend()}
+                onKeyDown={(e) => {
+                  if (e.isComposing) return;
+                  if (e.key === "Enter") handleSend();
+                }}
               />
               <button onClick={handleSend}>전송</button>
               {isMobile && (
