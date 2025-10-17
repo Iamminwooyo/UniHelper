@@ -148,6 +148,7 @@
         background-color: #242424;
         border-radius: 12px;
         border: 1px solid #333 !important;
+        padding: 10px 15px 0 15px;
     }
 
     
@@ -158,7 +159,7 @@
         gap: 10px;
         overflow-y: auto;
         height: 400px;
-        padding: 10px 20px;
+        padding: 10px 10px;
     }
 
     /* 크롬, 사파리, 엣지용 */
@@ -230,7 +231,7 @@
 
      .academic_chat_input {
         display: flex;
-        padding: 10px;
+        padding: 10px 0;
         background: #242424;
         border-radius: 12px;
     }
@@ -329,6 +330,18 @@
 
     .academic_chat_loader .ant-spin-dot-item {
         background-color: #78d900 !important;
+    }
+
+    .academic_chat_recommend {
+        display: flex;
+        justify-content: center;
+        padding: 10px 16px;
+        background: #78d900;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: max(12px, 0.7vw);
     }
 
     .academic_history_empty {
@@ -717,6 +730,7 @@
         background-color: #242424;
         border-radius: 12px;
         border: 1px solid #333 !important;
+        padding: 10px 15px 0 15px;
     }
 
     
@@ -727,7 +741,7 @@
         gap: 10px;
         overflow-y: auto;
         height: 400px;
-        padding: 10px 20px;
+        padding: 10px 10px;
     }
 
     /* 크롬, 사파리, 엣지용 */
@@ -799,7 +813,7 @@
 
      .academic_chat_input {
         display: flex;
-        padding: 10px;
+        padding: 10px 0;
         background: #242424;
         border-radius: 12px;
     }
@@ -898,6 +912,18 @@
 
     .academic_chat_loader .ant-spin-dot-item {
         background-color: #78d900 !important;
+    }
+
+    .academic_chat_recommend {
+        display: flex;
+        justify-content: center;
+        padding: min(8px, 1vw) min(14px, 1.6vw);
+        background: #78d900;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: min(12px, 1.2vw);
     }
 
     .academic_history_empty {
@@ -1287,6 +1313,7 @@
         background-color: #242424;
         border-radius: 12px;
         border: 1px solid #333 !important;
+        padding: 10px 15px 0 15px;
     }
 
     
@@ -1297,7 +1324,7 @@
         gap: 10px;
         overflow-y: auto;
         height: 350px;
-        padding: 10px 20px;
+        padding: 0 5px 15px 5px;
     }
 
     /* 크롬, 사파리, 엣지용 */
@@ -1375,7 +1402,7 @@
      .academic_chat_input {
         display: flex;
         gap: 1.5vw;
-        padding: 10px;
+        padding: 10px 0;
         background: #242424;
         border-radius: 12px;
     }
@@ -1473,6 +1500,18 @@
 
     .academic_chat_loader .ant-spin-dot-item {
         background-color: #78d900 !important;
+    }
+
+    .academic_chat_recommend {
+        display: flex;
+        justify-content: center;
+        padding: min(8px, 1.2vw) min(12px, 2.2vw);
+        background: #78d900;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: max(9px, 1.5vw);
     }
 
     .academic_history_empty {

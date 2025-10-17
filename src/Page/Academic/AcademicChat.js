@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import "./Academic.css";
 import ChatModal from "../../Component/Modal/ChatModal";
+import TimetableModal from "../../Component/Modal/TimetableModal";
 import { askChatbot, fetchChatHistory, fetchChatHistoryDetail } from "../../API/AcademicAPI";
 import { useRecoilState } from "recoil";
 import { askingState } from "../../Recoil/Atom";
@@ -19,6 +20,8 @@ const AcademicChat = () => {
 
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedQA, setSelectedQA] = useState(null);
+
+   const [recommendModalOpen, setRecommendModalOpen] = useState(false);
 
   const [isAsking, setIsAsking] = useRecoilState(askingState);
 
@@ -130,6 +133,46 @@ const AcademicChat = () => {
     }
   };
 
+  // 시간표 추천 함수
+  const handleTimetableRecommend = async (data) => {
+    setRecommendModalOpen(false);
+
+    const question = `${data.department ? `${data.department} ` : ""}${data.grade} ${data.category} ${data.day} ${data.timePeriod} 수업 추천해줘`;
+
+    setMessages((prev) => [...prev, { role: "user", text: question }]);
+
+    setIsAsking(true);
+    setMessages((prev) => [...prev, { role: "bot", text: "loading" }]);
+
+    try {
+      const res = await askChatbot(question);
+
+      setMessages((prev) => {
+        const newMessages = [...prev];
+        newMessages[newMessages.length - 1] = {
+          role: "bot",
+          text: res.answer || "추천 결과를 찾지 못했어요 🤔",
+        };
+        return newMessages;
+      });
+    } catch (err) {
+      setMessages((prev) => {
+        const newMessages = [...prev];
+        newMessages[newMessages.length - 1] = {
+          role: "bot",
+          text:
+            err.response?.status === 502
+              ? "502 Bad Gateway: 서버가 응답하지 않아요 😢"
+              : "서버 오류가 발생했어요 😢",
+        };
+        return newMessages;
+      });
+    } finally {
+      setIsAsking(false);
+    }
+  };
+
+
   return (
     <main className="academic_layout">
       <section className="academic_header">
@@ -183,6 +226,14 @@ const AcademicChat = () => {
               ))}
             </div>
 
+            <div
+              className="academic_chat_recommend"
+              // onClick={() => setRecommendModalOpen(true)}
+              onClick={() => { message.open({ type: "info", content: "기능 추가 예정입니다. 다음에 이용해 주세요!", duration: 2.5,}); }}
+            >
+              <span>시간표 추천</span>
+            </div>
+
             <div className="academic_chat_input">
               <input
                 type="text"
@@ -190,8 +241,9 @@ const AcademicChat = () => {
                 placeholder="질문을 입력하세요..."
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => {
-                  if (e.isComposing) return;
-                  if (e.key === "Enter") handleSend();
+                  if (e.key === "Enter" && !e.nativeEvent.isComposing) {
+                    handleSend();
+                  }
                 }}
               />
               <button onClick={handleSend}>전송</button>
@@ -279,6 +331,14 @@ const AcademicChat = () => {
           open={modalOpen}
           onCancel={() => setModalOpen(false)}
           qna={selectedQA}
+        />
+      )}
+
+      {recommendModalOpen && (
+        <TimetableModal
+          open={recommendModalOpen}
+          onCancel={() => setRecommendModalOpen(false)}
+          onSuccess={handleTimetableRecommend}
         />
       )}
     </main>
