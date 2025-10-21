@@ -84,7 +84,7 @@ function AppContent() {
     }, 50 * 60 * 1000); // 50분마다 재발급
 
     return () => clearInterval(interval);
-  }, []); // navigate, setUnreadCount 등은 내부 클로저에서 직접 접근
+  }, []);
 
   return <Layout />;
 }
