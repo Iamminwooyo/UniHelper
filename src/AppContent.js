@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
+import { useNavigate, Navigate } from "react-router-dom";
+import { useSetRecoilState, useRecoilValue } from "recoil";
 import { message } from "antd";
-import { fetchImagePreview } from "./API/AccountAPI"; // reissueToken 제거
+import { fetchImagePreview } from "./API/AccountAPI";
 import { AlarmCountState, userBriefState } from "./Recoil/Atom";
 import Layout from "./Component/Layout/Layout";
 
@@ -10,6 +10,7 @@ function AppContent() {
   const navigate = useNavigate();
   const setUnreadCount = useSetRecoilState(AlarmCountState);
   const setUserBrief = useSetRecoilState(userBriefState);
+  const userBrief = useRecoilValue(userBriefState);
 
   // ✅ 로그아웃 처리 함수
   const handleLogout = () => {
@@ -21,7 +22,6 @@ function AppContent() {
       setUserBrief(null);
 
       message.warning("세션이 만료되었습니다. 다시 로그인해주세요.");
-      navigate("/login", { replace: true });
     } catch (err) {
       console.error("❌ 로그아웃 처리 중 오류:", err);
     }
@@ -56,16 +56,21 @@ function AppContent() {
     return () => window.removeEventListener("storage", syncUserBrief);
   }, [setUserBrief]);
 
-  // ✅ 일정 시간(예: 1시간) 후 자동 로그아웃
+  // ✅ 일정 시간(2분) 후 자동 로그아웃
   useEffect(() => {
-    const AUTO_LOGOUT_TIME = 2 * 60 * 1000; // 1시간 (단위: ms)
+    const AUTO_LOGOUT_TIME = 1 * 60 * 1000; // 2분
     const timer = setTimeout(() => {
       console.log("🕒 세션 만료로 자동 로그아웃");
       handleLogout();
     }, AUTO_LOGOUT_TIME);
 
     return () => clearTimeout(timer);
-  }, []); // 마운트 시 1회 실행
+  }, []);
+
+  // ✅ userBrief 없으면 로그인 페이지로 이동
+  if (!userBrief) {
+    return <Navigate to="/login" replace />;
+  }
 
   return <Layout />;
 }
