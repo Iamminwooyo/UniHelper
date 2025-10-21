@@ -32,7 +32,7 @@ const Header = () => {
     setMenu(menuKey);
   };
 
-  // 로그인 여부 확인s
+  // 로그인 여부 확인
   useEffect(() => {
     const token = sessionStorage.getItem("accessToken");
     setIsLoggedIn(!!token);
