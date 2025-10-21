@@ -78,7 +78,7 @@ const PasswordModal = ({ open, onCancel }) => {
       }
     } catch (error) {
 
-      if (error.response?.status === 403) {
+      if (error.response?.status === 500) {
         setState(prev => ({
           ...prev,
           emailVerificationStatus: "idle",
