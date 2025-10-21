@@ -58,7 +58,7 @@ function AppContent() {
 
   // ✅ 일정 시간(2분) 후 자동 로그아웃
   useEffect(() => {
-    if (!userBrief) return; // 로그인 안된 상태면 타이머 설정하지 않음
+     if (!userBrief?.userId) return;
 
     const AUTO_LOGOUT_TIME = 2 * 60 * 1000; // 2분
     const timer = setTimeout(() => {
@@ -69,11 +69,6 @@ function AppContent() {
 
     return () => clearTimeout(timer);
   }, [userBrief, navigate]);
-  
-  // ✅ userBrief 없으면 로그인 페이지로 이동
-  if (!userBrief) {
-    return <Navigate to="/login" replace />;
-  }
 
   return <Layout />;
 }
