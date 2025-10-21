@@ -228,8 +228,8 @@ const AcademicChat = () => {
 
             <div
               className="academic_chat_recommend"
-              //onClick={() => setRecommendModalOpen(true)}
-              onClick={() => { message.open({ type: "info", content: "기능 추가 예정입니다. 다음에 이용해 주세요!", duration: 2.5,}); }}
+              onClick={() => setRecommendModalOpen(true)}
+              // onClick={() => { message.open({ type: "info", content: "기능 추가 예정입니다. 다음에 이용해 주세요!", duration: 2.5,}); }}
             >
               <span>시간표 추천</span>
             </div>
