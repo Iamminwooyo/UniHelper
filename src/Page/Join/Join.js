@@ -142,7 +142,7 @@ const Join = () => {
       console.error(error);
       const status = error.response?.status;
 
-      if (status === 403) {
+      if (status === 500) {
         setCodeVerificationStatus("error");
         setCodeVerificationMessage("인증번호가 틀립니다.");
       } else {
