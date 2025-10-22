@@ -1,7 +1,7 @@
 import "./Modal.css";
 import { useState } from "react";
 import { Modal, Select, Button, message } from "antd";
-import { grades, categories, days, timePeriods, departments, liberalArtsAreas } from "../../Data/TimeTabledata";
+import { grades, categories, days, timePeriods, departments, liberalArtsAreas, credits  } from "../../Data/TimeTabledata";
 
 const { Option } = Select;
 
@@ -12,24 +12,34 @@ const TimetableModal = ({ open, onCancel, onSuccess }) => {
     department: "",
     day: "",
     timePeriod: "",
+    credit: "",
   });
 
   const handleSubmit = () => {
-    const { grade, category, department, day, timePeriod } = formData;
+  const { category, department, liberalArea } = formData;
 
-    if (!grade || !category || !day || !timePeriod) {
-      message.error("모든 항목을 선택해주세요.");
-      return;
-    }
+  if (!category) {
+    message.error("과목 구분을 선택해주세요.");
+    return;
+  }
 
-    if ((category === "전공" || category === "기초전공") && !department) {
-      message.error("전공 또는 기초전공 선택 시 학과를 선택해주세요.");
-      return;
-    }
+  if (
+    (category === "전공" || category === "기초전공") &&
+    !department
+  ) {
+    message.error("학과를 선택해주세요.");
+    return;
+  }
 
-    if (onSuccess) onSuccess(formData);
-    onCancel();
-  };
+  if (category === "교양선택" && !liberalArea) {
+    message.error("교양 영역을 선택해주세요.");
+    return;
+  }
+
+  // 성공 시 onSuccess 호출
+  if (onSuccess) onSuccess(formData);
+  onCancel();
+};
 
   return (
     <Modal
@@ -43,24 +53,6 @@ const TimetableModal = ({ open, onCancel, onSuccess }) => {
     >
       <section className="custommodal_layout">
         <h2 className="custommodal_title">시간표 추천</h2>
-
-        {/* 학년 */}
-        <div className="custommodal_input_group">
-          <p className="custommodal_input_label">학년</p>
-          <Select
-            placeholder="학년"
-            value={formData.grade || undefined}
-            onChange={(v) => setFormData({ ...formData, grade: v })}
-            style={{ width: "100%" }}
-            getPopupContainer={(triggerNode) => triggerNode.parentNode}
-          >
-            {grades.map((g) => (
-              <Option key={g} value={g}>
-                {g}
-              </Option>
-            ))}
-          </Select>
-        </div>
 
         {/* 구분 */}
         <div className="custommodal_input_group" style={{ marginTop: 16 }}>
@@ -85,6 +77,26 @@ const TimetableModal = ({ open, onCancel, onSuccess }) => {
             ))}
           </Select>
         </div>
+
+        {/* 학년 */}
+        {(formData.category === "전공" || formData.category === "기초전공") && (
+          <div className="custommodal_input_group" style={{ marginTop: 16 }}>
+            <p className="custommodal_input_label">학년</p>
+            <Select
+              placeholder="학년"
+              value={formData.grade || undefined}
+              onChange={(v) => setFormData({ ...formData, grade: v })}
+              style={{ width: "100%" }}
+              getPopupContainer={(triggerNode) => triggerNode.parentNode}
+            >
+              {grades.map((g) => (
+                <Option key={g} value={g}>
+                  {g}
+                </Option>
+              ))}
+            </Select>
+          </div>
+        )}
 
         {formData.category === "교양선택" && (
         <div className="custommodal_input_group" style={{ marginTop: 16 }}>
@@ -126,6 +138,24 @@ const TimetableModal = ({ open, onCancel, onSuccess }) => {
             </Select>
           </div>
         )}
+
+        {/* 학점 */}
+        <div className="custommodal_input_group" style={{ marginTop: 16 }}>
+          <p className="custommodal_input_label">학점</p>
+          <Select
+            placeholder="학점"
+            value={formData.credit || undefined}
+            onChange={(v) => setFormData({ ...formData, credit: v })}
+            style={{ width: "100%" }}
+            getPopupContainer={(triggerNode) => triggerNode.parentNode}
+          >
+            {credits.map((c) => (
+              <Option key={c} value={c}>
+                {c}학점
+              </Option>
+            ))}
+          </Select>
+        </div>
 
         {/* 요일 */}
         <div className="custommodal_input_group" style={{ marginTop: 16 }}>

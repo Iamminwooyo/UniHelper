@@ -135,42 +135,111 @@ const AcademicChat = () => {
 
   // 시간표 추천 함수
   const handleTimetableRecommend = async (data) => {
-    setRecommendModalOpen(false);
+  setRecommendModalOpen(false);
 
-    const question = `${data.department ? `${data.department} ` : ""}${data.grade} ${data.category} ${data.day} ${data.timePeriod} 수업 추천해줘`;
-
-    setMessages((prev) => [...prev, { role: "user", text: question }]);
-
-    setIsAsking(true);
-    setMessages((prev) => [...prev, { role: "bot", text: "loading" }]);
-
-    try {
-      const res = await askChatbot(question);
-
-      setMessages((prev) => {
-        const newMessages = [...prev];
-        newMessages[newMessages.length - 1] = {
-          role: "bot",
-          text: res.answer || "추천 결과를 찾지 못했어요 🤔",
-        };
-        return newMessages;
-      });
-    } catch (err) {
-      setMessages((prev) => {
-        const newMessages = [...prev];
-        newMessages[newMessages.length - 1] = {
-          role: "bot",
-          text:
-            err.response?.status === 502
-              ? "502 Bad Gateway: 서버가 응답하지 않아요 😢"
-              : "서버 오류가 발생했어요 😢",
-        };
-        return newMessages;
-      });
-    } finally {
-      setIsAsking(false);
-    }
+  // 1. 카테고리 변환
+  let categoryMap = {
+    전공: "전공",
+    "기초전공": "기전",
+    "교양선택": "교선",
+    "교양필수": "교필",
   };
+
+  const apiCategory = categoryMap[data.category] || data.category;
+
+  // 2. 제목 결정
+  let title = "";
+  if (data.category === "전공" || data.category === "기초전공") {
+    title = data.department;
+  } else if (data.category === "교양선택") {
+    title = data.liberalArea;
+  } else if (data.category === "교양필수") {
+    title = "교양필수";
+  }
+
+  // API용 요일
+  const dayMapAPI = { 월요일: "월", 화요일: "화", 수요일: "수", 목요일: "목", 금요일: "금" };
+  const dayShort = dayMapAPI[data.day] || data.day;
+
+  // 유저용 요일
+  const dayMapUser = { 월요일: "월요일", 화요일: "화요일", 수요일: "수요일", 목요일: "목요일", 금요일: "금요일" };
+  const userDay = dayMapUser[data.day] || data.day;
+
+  // 4. API에 보낼 문자열
+  let apiQuestionParts = [];
+  if (title) apiQuestionParts.push(`'제목': '${title}'`);
+  apiQuestionParts.push(`'이수구분': '${apiCategory}'`);
+  apiQuestionParts.push(`'강의시간': '${dayShort}'`);
+  apiQuestionParts.push(`'학점': '${data.credit}'`);
+  if (data.grade && (data.category === "전공" || data.category === "기초전공")) {
+    apiQuestionParts.push(`${data.grade}`);
+  }
+  if (data.timePeriod) apiQuestionParts.push(`${data.timePeriod} 시간`);
+
+  const apiQuestion = apiQuestionParts.join(", ") + "에 해당하는 수업 알려줘";
+
+  // 5. 유저에게 보여줄 문자열
+  let userQuestionParts = [];
+  if (data.category === "전공" || data.category === "기초전공") {
+    if (data.credit) userQuestionParts.push(`${data.credit}학점짜리`);
+    if (data.department) userQuestionParts.push(`${data.department}`);
+    if (data.grade) userQuestionParts.push(`${data.grade}`);
+    userQuestionParts.push(data.category);
+    if (data.day) userQuestionParts.push(`${userDay}`);
+    if (data.timePeriod) userQuestionParts.push(`${data.timePeriod} 시간`);
+  } else if (data.category === "교양선택") {
+    if (data.liberalArea) userQuestionParts.push(`${data.liberalArea}`);
+    if (data.credit) userQuestionParts.push(`${data.credit}학점짜리`);
+    if (data.day) userQuestionParts.push(`${userDay}`);
+    if (data.timePeriod) userQuestionParts.push(`${data.timePeriod} 시간`);
+  } else if (data.category === "교양필수") {
+    if (data.credit) userQuestionParts.push(`${data.credit}학점짜리`);
+    userQuestionParts.push(data.category);
+    if (data.day) userQuestionParts.push(`${userDay}`);
+    if (data.timePeriod) userQuestionParts.push(`${data.timePeriod} 시간`);
+  }
+
+  const userQuestion = userQuestionParts.join(" ") + "에 해당하는 수업 알려줘";
+
+  // 6. 먼저 유저에게 보여주기
+  setMessages((prev) => [...prev, { role: "user", text: userQuestion }]);
+
+  // 7. API 호출
+  setIsAsking(true);
+  setMessages((prev) => [...prev, { role: "bot", text: "loading" }]);
+
+  try {
+    const res = await askChatbot(apiQuestion);
+
+    setMessages((prev) => {
+      const newMessages = [...prev];
+      newMessages[newMessages.length - 1] = {
+        role: "bot",
+        text: res.answer || "추천 결과를 찾지 못했어요 🤔",
+      };
+      return newMessages;
+    });
+  } catch (err) {
+    setMessages((prev) => {
+      const newMessages = [...prev];
+      newMessages[newMessages.length - 1] = {
+        role: "bot",
+        text:
+          err.response?.status === 502
+            ? "502 Bad Gateway: 서버가 응답하지 않아요 😢"
+            : "서버 오류가 발생했어요 😢",
+      };
+      return newMessages;
+    });
+  } finally {
+    setIsAsking(false);
+  }
+
+  // 8. 콘솔 확인용
+  console.log("API 질문:", apiQuestion);
+  console.log("유저 질문:", userQuestion);
+};
+
 
 
   return (

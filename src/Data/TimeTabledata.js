@@ -2,7 +2,7 @@
 export const grades = ["1학년", "2학년", "3학년", "4학년"];
 
 // 구분 옵션
-export const categories = ["교양필수", "교양선택", "전공", "기초전공", "사이버강의"];
+export const categories = ["교양필수", "교양선택", "전공", "기초전공"];
 
 // 요일 옵션
 export const days = ["월요일", "화요일", "수요일", "목요일", "금요일"];
@@ -38,3 +38,6 @@ export const liberalArtsAreas = [
   "교양 7영역",
   "교양 8영역",
 ];
+
+// 학점 옵션
+export const credits = [1, 2, 3, 4];
