@@ -112,8 +112,6 @@ const PasswordModal = ({ open, onCancel }) => {
 
     try {
       const response = await verifyPasswordResetCode(state.email, state.authCode);
-
-      console.log("📥 서버 응답 전체:", response);
       
       if (
         (typeof response === "string" && response.includes("인증 성공")) ||

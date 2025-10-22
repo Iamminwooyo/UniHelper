@@ -1,7 +1,7 @@
 import "./Modal.css";
 import { useState } from "react";
 import { Modal, Select, Button, message } from "antd";
-import { grades, categories, days, timePeriods, departments, liberalArtsAreas, credits  } from "../../Data/TimeTabledata";
+import { grades, categories, days, timePeriods, departments, basicdepartments, liberalArtsAreas, credits  } from "../../Data/TimeTabledata";
 
 const { Option } = Select;
 
@@ -79,7 +79,7 @@ const TimetableModal = ({ open, onCancel, onSuccess }) => {
         </div>
 
         {/* 학년 */}
-        {(formData.category === "전공" || formData.category === "기초전공") && (
+        {(formData.category === "전공") && (
           <div className="custommodal_input_group" style={{ marginTop: 16 }}>
             <p className="custommodal_input_label">학년</p>
             <Select
@@ -130,7 +130,7 @@ const TimetableModal = ({ open, onCancel, onSuccess }) => {
               optionFilterProp="children"
               getPopupContainer={(triggerNode) => triggerNode.parentNode}
             >
-              {departments.map((dep) => (
+              {(formData.category === "기초전공" ? basicdepartments : departments).map((dep) => (
                 <Option key={dep} value={dep}>
                   {dep}
                 </Option>
