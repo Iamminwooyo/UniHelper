@@ -130,7 +130,7 @@ export const getEnrollGuideSteps = (refs) => [
   { title: "추가 버튼", description: "원하는 강좌의 +추가 버튼을 눌러 신청 목록에 넣을 수 있습니다.", target: () => refs.refAddButton.current },
   { title: "신청 목록", description: "내가 선택한 과목들은 이곳에 표시됩니다.", target: () => refs.refApplyList.current },
   { title: "저장 버튼", description: "모든 과목 선택을 마친 후 저장 버튼을 눌러야 최종 반영됩니다.", target: () => refs.refSaveButton.current },
-  { title: "취소 체크박스", description: "체크박스를 눌러 과목을 신청 취소할 수 있습니다.", target: () => refs.refCancelCheckbox.current },
+  { title: "취소 체크박스", description: "체크박스를 누르고 저장을 눌러 과목을 신청 취소할 수 있습니다.", target: () => refs.refCancelCheckbox.current },
   { title: "시간표", description: "선택한 강좌들이 이 시간표에 반영됩니다.", target: () => refs.refTimetable.current },
   { title: "학적 세이브 학점", description: "학적 세이브 학점이 표시됩니다.", target: () => refs.refSummarySave.current },
   { title: "4.0 이상 허용학점", description: "평점 4.0 이상 학생의 허용 학점입니다.", target: () => refs.refSummaryAllow.current },
@@ -142,7 +142,7 @@ export const getEnrollGuideSteps = (refs) => [
   { title: "취득성적내역", description: "지금까지 취득한 성적 내역을 확인할 수 있습니다.", target: () => refs.refGrade.current },
   { title: "도움말", description: "수강신청 관련 설명을 볼 수 있습니다.", target: () => refs.refHelp.current },
   { title: "수강신청확인서", description: "수강신청 확인서를 확인할 수 있습니다.", target: () => refs.refConfirm.current },
-  { title: "전수강신청내역조회", description: "모든 수강신청 내역을 한번에 확인할 수 있습니다.", target: () => refs.refAll.current },
+  { title: "전수강신청내역조회", description: "지난학기 수강신청 내역을 한번에 확인할 수 있습니다.", target: () => refs.refAll.current },
 ];
 
 export const courseData = [

@@ -173,7 +173,7 @@ const TextModal = ({ open, onCancel, mode, name, title, onConfirm }) => {
         {mode === "practicebasic" && (
           <>
             <p className="custommodal_notice">
-              아래 5개 과목을 찾아서 신청하세요
+              아래 제시된 5개 과목을 찾아서 신청하세요
             </p>
             <div className="custommodal_course_list">
               {missionCourses.map((c) => (
@@ -182,6 +182,7 @@ const TextModal = ({ open, onCancel, mode, name, title, onConfirm }) => {
                 </div>
               ))}
             </div>
+            <p className="custommodal_notice"> 아래 2과목은 과목명 혹은 코드를 검색하세요</p>
             <p className="custommodal_warning">
               모든 과목을 저장해야 연습이 종료됩니다.
             </p>

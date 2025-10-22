@@ -172,7 +172,7 @@ const TipModal = ({ open, onCancel, initialData = null, mode = "create", onSucce
         <h2 className="custommodal_title">{mode === "edit" ? "Tip 수정" : "Tip 작성"}</h2>
 
         <div className="custommodal_input_group">
-          <p className="custommodal_input_label">제목</p>
+          <p className="custommodal_input_label">제목 <span style={{color: '#78D900', marginLeft:'3px', display:'flex', alignItems:'center'}}>* </span></p>
           <Input
             placeholder="제목"
             value={title}
@@ -182,7 +182,7 @@ const TipModal = ({ open, onCancel, initialData = null, mode = "create", onSucce
         </div>
 
         <div className="custommodal_input_group" style={{ marginTop: 16 }}>
-          <p className="custommodal_input_label">내용</p>
+          <p className="custommodal_input_label">내용 <span style={{color: '#78D900', marginLeft:'3px', display:'flex', alignItems:'center'}}>* </span></p>
           <Input.TextArea
             placeholder="내용"
             value={content}

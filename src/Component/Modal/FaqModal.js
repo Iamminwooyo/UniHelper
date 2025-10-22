@@ -35,7 +35,7 @@ const FaqModal = ({ open, onCancel, onSubmit, isSubmitting }) => {
         <h2 className="custommodal_title">챗봇 문의</h2>
 
         <div className="custommodal_input_group">
-          <p className="custommodal_input_label">제목</p>
+          <p className="custommodal_input_label">제목 <span style={{color: '#78D900', marginLeft:'3px', display:'flex', alignItems:'center'}}>* </span></p>
           <Input
             placeholder="제목"
             value={title}
@@ -45,7 +45,7 @@ const FaqModal = ({ open, onCancel, onSubmit, isSubmitting }) => {
         </div>
 
         <div className="custommodal_input_group" style={{ marginTop: 16 }}>
-          <p className="custommodal_input_label">내용</p>
+          <p className="custommodal_input_label">내용 <span style={{color: '#78D900', marginLeft:'3px', display:'flex', alignItems:'center'}}>* </span></p>
           <Input.TextArea
             placeholder="내용"
             value={content}

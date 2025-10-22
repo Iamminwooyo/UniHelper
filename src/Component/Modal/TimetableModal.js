@@ -56,7 +56,7 @@ const TimetableModal = ({ open, onCancel, onSuccess }) => {
 
         {/* 구분 */}
         <div className="custommodal_input_group" style={{ marginTop: 16 }}>
-          <p className="custommodal_input_label">과목 구분</p>
+          <p className="custommodal_input_label">과목 구분 <span style={{color: '#78D900', marginLeft:'3px', display:'flex', alignItems:'center'}}>* </span></p>
           <Select
             placeholder="과목 구분"
             value={formData.category || undefined}
@@ -100,7 +100,7 @@ const TimetableModal = ({ open, onCancel, onSuccess }) => {
 
         {formData.category === "교양선택" && (
         <div className="custommodal_input_group" style={{ marginTop: 16 }}>
-            <p className="custommodal_input_label">교양 영역</p>
+            <p className="custommodal_input_label">교양 영역 <span style={{color: '#78D900', marginLeft:'3px', display:'flex', alignItems:'center'}}>* </span></p>
             <Select
             placeholder="교양 영역"
             value={formData.liberalArea || undefined}
@@ -120,7 +120,7 @@ const TimetableModal = ({ open, onCancel, onSuccess }) => {
         {/* 학과 (전공/기초전공일 때만 표시) */}
         {(formData.category === "전공" || formData.category === "기초전공") && (
           <div className="custommodal_input_group" style={{ marginTop: 16 }}>
-            <p className="custommodal_input_label">학과</p>
+            <p className="custommodal_input_label">학과<span style={{color: '#78D900', marginLeft:'3px', display:'flex', alignItems:'center'}}>* </span></p>
             <Select
               placeholder="학과"
               value={formData.department || undefined}
