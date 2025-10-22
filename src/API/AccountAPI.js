@@ -1,82 +1,86 @@
 import API_CONFIG from './API_CONFIG';
 
-// 이메일 인증번호 전송 API
+// ✅ 로그인 필요 없는 API: authRequired: false
 export const requestSignupEmail = async (email) => {
-  const response = await API_CONFIG.post("/auth/email/signup/request", { email });
-  return response.data;
-};
-
-// 이메일 인증번호 확인 API
-export const verifySignupEmail = async (email, code) => {
-  const response = await API_CONFIG.post("/auth/email/verify", { email, code });
-  return response.data;
-};
-
-// 회원가입 API
-export const signup = async ({ username, password, email, department, student_number }) => {
-  return await API_CONFIG.post("/auth/signup", {
-    username,
-    password,
-    email,
-    department,
-    role: "STUDENT",
-    student_number,
-  });
-};
-
-// 로그인 API
-export const login = async (email, password) => {
-  const response = await API_CONFIG.post("/auth/login", { email, password });
-  return response.data;
-};
-
-// 사용자 정보 조회 API
-export const fetchUserBrief = async (accessToken) => {
-  const response = await API_CONFIG.get("/mypage/brief", {
-    headers: { Authorization: `Bearer ${accessToken}` },
-  });
-  return response.data;
-};
-
-// 비밀번호 변경 이메일 인증번호 전송 API
-export const requestPasswordResetEmail = async (email) => {
-  const response = await API_CONFIG.post("/auth/email/password-reset/request", { email });
-  return response.data;
-};
-
-// 비밀번호 변경 이메일 인증번호 확인 API
-export const verifyPasswordResetCode = async (email, code) => {
-  const response = await API_CONFIG.post("/auth/email/verify", { email, code });
-  return response.data;
-};
-
-// 비밀번호 변경 API
-export const resetPassword = async (email, newPassword) => {
-  const response = await API_CONFIG.post("/auth/password/reset/confirm", { email, newPassword });
-  return response.data;
-};
-
-// 액세스 토큰 재발급 API
-export const reissueToken = async (accessToken, refreshToken) => {
-  const response = await API_CONFIG.post("/auth/reissue", { accessToken, refreshToken });
-  return response.data;
-};
-
-// 계정 이미지 API
-export const fetchImagePreview = async (filename) => {
-  const token = sessionStorage.getItem("accessToken");
-  if (!token) throw new Error("로그인이 필요합니다.");
-
-  // ✅ 모든 특수문자 인코딩 (괄호, 공백, 한글 포함)
-  const safeFilename = encodeURIComponent(filename.replace(/^\/files\//, ""));
-
-  const response = await API_CONFIG.get(
-    `/notices/download?filename=${safeFilename}`,
-    {
-      responseType: "blob",
-      headers: { Authorization: `Bearer ${token}` },
-    }
+  const response = await API_CONFIG.post(
+    "/auth/email/signup/request",
+    { email },
+    { authRequired: false }
   );
+  return response.data;
+};
 
+export const verifySignupEmail = async (email, code) => {
+  const response = await API_CONFIG.post(
+    "/auth/email/verify",
+    { email, code },
+    { authRequired: false }
+  );
+  return response.data;
+};
+
+export const signup = async ({ username, password, email, department, student_number }) => {
+  const response = await API_CONFIG.post(
+    "/auth/signup",
+    {
+      username,
+      password,
+      email,
+      department,
+      role: "STUDENT",
+      student_number,
+    },
+    { authRequired: false }
+  );
+  return response.data;
+};
+
+export const login = async (email, password) => {
+  const response = await API_CONFIG.post(
+    "/auth/login",
+    { email, password },
+    { authRequired: false }
+  );
+  return response.data;
+};
+
+export const requestPasswordResetEmail = async (email) => {
+  const response = await API_CONFIG.post(
+    "/auth/email/password-reset/request",
+    { email },
+    { authRequired: false }
+  );
+  return response.data;
+};
+
+export const verifyPasswordResetCode = async (email, code) => {
+  const response = await API_CONFIG.post(
+    "/auth/email/verify",
+    { email, code },
+    { authRequired: false }
+  );
+  return response.data;
+};
+
+export const resetPassword = async (email, newPassword) => {
+  const response = await API_CONFIG.post(
+    "/auth/password/reset/confirm",
+    { email, newPassword },
+    { authRequired: false }
+  );
+  return response.data;
+};
+
+// ✅ 로그인 필요 API: 인터셉터가 Authorization 헤더 자동 추가
+export const fetchUserBrief = async () => {
+  const response = await API_CONFIG.get("/mypage/brief");
+  return response.data;
+};
+
+export const fetchImagePreview = async (filename) => {
+  const safeFilename = encodeURIComponent(filename.replace(/^\/files\//, ""));
+  const response = await API_CONFIG.get(`/notices/download?filename=${safeFilename}`, {
+    responseType: "blob",
+  });
   return response.data;
 };

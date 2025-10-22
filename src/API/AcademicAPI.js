@@ -1,184 +1,85 @@
-import API_CONFIG from './API_CONFIG';
+import API_CONFIG from "./API_CONFIG";
 
-// 챗봇 질의응답 API
+// ✅ 챗봇 질의응답 API
 export const askChatbot = async (question) => {
-  const token = sessionStorage.getItem("accessToken");
-  if (!token) throw new Error("로그인이 필요합니다.");
-
-  const response = await API_CONFIG.post(
-    "/chatbot/ask",
-    { question },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    }
-  );
-
-  return response.data; 
+  const response = await API_CONFIG.post("/chatbot/ask", { question });
+  return response.data;
 };
 
-// 챗봇 질문 기록 조회 API
+// ✅ 챗봇 질문 기록 조회 API
 export const fetchChatHistory = async (limit = 50) => {
-  const token = sessionStorage.getItem("accessToken");
-  if (!token) throw new Error("로그인이 필요합니다.");
-
   const response = await API_CONFIG.get("/chatbot/history", {
     params: { limit },
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
   });
-
   return response.data;
 };
 
-// 챗봇 질문 기록 상세조회 API
+// ✅ 챗봇 질문 기록 상세조회 API
 export const fetchChatHistoryDetail = async (id) => {
-  const token = sessionStorage.getItem("accessToken");
-  if (!token) throw new Error("로그인이 필요합니다.");
-
-  const response = await API_CONFIG.get(`/chatbot/history/${id}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-  });
-
+  const response = await API_CONFIG.get(`/chatbot/history/${id}`);
   return response.data;
 };
 
-// 폴더 목록 조회 API
+// ✅ 폴더 목록 조회 API
 export const fetchCollections = async () => {
-  const token = sessionStorage.getItem("accessToken");
-  if (!token) throw new Error("로그인이 필요합니다.");
-
-  const response = await API_CONFIG.get("/admin/processing/collections", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-  });
-
+  const response = await API_CONFIG.get("/admin/processing/collections");
   return response.data;
 };
 
-// 파일 목록 조회
+// ✅ 파일 목록 조회
 export const fetchFileTree = async () => {
-  const token = sessionStorage.getItem("accessToken");
-  if (!token) throw new Error("로그인이 필요합니다.");
-
-  const response = await API_CONFIG.get("/admin/processing/files/tree", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-  });
-
-  return response.data; 
+  const response = await API_CONFIG.get("/admin/processing/files/tree");
+  return response.data;
 };
 
-// 파일 업로드 API
+// ✅ 파일 업로드 API
 export const uploadFiles = async (formData, collectionName) => {
-  const token = sessionStorage.getItem("accessToken");
-  if (!token) throw new Error("로그인이 필요합니다.");
-
   const response = await API_CONFIG.post(
     `/admin/processing/files?collection_name=${encodeURIComponent(collectionName)}`,
     formData,
     {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "multipart/form-data",
-      },
+      headers: { "Content-Type": "multipart/form-data" },
     }
   );
-
   return response.data;
 };
 
-// 문의 목록 조회 API
+// ✅ 문의 목록 조회 API
 export const fetchInquiries = async (page, size) => {
-  const token = sessionStorage.getItem("accessToken");
-  if (!token) throw new Error("로그인이 필요합니다.");
-
-  const params = {
-    page: page - 1,
-    size,
-  };
-
   const response = await API_CONFIG.get("/admin/inquiries", {
-    params,
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
+    params: { page: page - 1, size },
   });
-
   return response.data;
 };
 
-// 문의 등록 API
+// ✅ 문의 등록 API
 export const createInquiry = async ({ title, content }) => {
-  const token = sessionStorage.getItem("accessToken");
-  if (!token) throw new Error("로그인이 필요합니다.");
-
-  const response = await API_CONFIG.post(
-    "/inquiries",
-    { title, content },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    }
-  );
-
+  const response = await API_CONFIG.post("/inquiries", { title, content });
   return response.data;
 };
 
-// 문의 삭제 API
+// ✅ 문의 삭제 API
 export const deleteInquiries = async (ids) => {
-  const token = sessionStorage.getItem("accessToken");
-  if (!token) throw new Error("로그인이 필요합니다.");
-
   const response = await API_CONFIG.delete("/admin/inquiries", {
     data: { pids: ids },
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
   });
-
   return response.data;
 };
 
-// 학사정보 파일 다운로드 API
+// ✅ 학사정보 파일 다운로드 API
 export const downloadFileById = async (id) => {
-  const token = sessionStorage.getItem("accessToken");
-  if (!token) throw new Error("로그인이 필요합니다.");
-
   const response = await API_CONFIG.get(`/admin/processing/files/${id}/download`, {
-    headers: { Authorization: `Bearer ${token}` },
     responseType: "blob",
   });
-
   return response.data;
 };
 
-// 문의 프로필 이미지 API
+// ✅ 문의 프로필 이미지 API
 export const fetchInquriesImagePreview = async (filename) => {
-  const token = sessionStorage.getItem("accessToken");
-  if (!token) throw new Error("로그인이 필요합니다.");
-
   const safeFilename = filename.replace(/^\/files\//, "").replace(/ /g, "%20");
 
   const response = await API_CONFIG.get(`/notices/download?filename=${safeFilename}`, {
     responseType: "blob",
-    headers: { Authorization: `Bearer ${token}` },
   });
-
   return response.data;
 };
