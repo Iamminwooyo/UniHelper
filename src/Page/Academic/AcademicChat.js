@@ -152,7 +152,7 @@ const AcademicChat = () => {
   if (data.category === "전공" || data.category === "기초전공") {
     title = data.department;
   } else if (data.category === "교양선택") {
-    title = data.liberalArea;
+    title = data.liberalArea ? data.liberalArea.replace(/\s+/g, "") : "";
   } else if (data.category === "교양필수") {
     title = "교양필수";
   }
@@ -168,9 +168,9 @@ const AcademicChat = () => {
   // 4. API에 보낼 문자열
   let apiQuestionParts = [];
   if (title) apiQuestionParts.push(`'제목': '${title}'`);
-  apiQuestionParts.push(`'이수구분': '${apiCategory}'`);
-  apiQuestionParts.push(`'강의시간': '${dayShort}'`);
-  apiQuestionParts.push(`'학점': '${data.credit}'`);
+  if (apiCategory) apiQuestionParts.push(`'이수구분': '${apiCategory}'`);
+  if (dayShort) apiQuestionParts.push(`'강의시간': '${dayShort}'`);
+  if (data.credit) apiQuestionParts.push(`'학점': '${data.credit}'`);
   if (data.grade && (data.category === "전공" || data.category === "기초전공")) {
     apiQuestionParts.push(`${data.grade}`);
   }
@@ -234,10 +234,6 @@ const AcademicChat = () => {
   } finally {
     setIsAsking(false);
   }
-
-  // 8. 콘솔 확인용
-  console.log("API 질문:", apiQuestion);
-  console.log("유저 질문:", userQuestion);
 };
 
 

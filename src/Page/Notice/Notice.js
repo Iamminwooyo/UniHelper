@@ -69,8 +69,6 @@ const Notice = () => {
       departments: selectedTags,
     });
 
-    console.log("📥 서버 응답 데이터:", data);
-
     const list = data.content || [];
 
     const withPreview = await Promise.all(

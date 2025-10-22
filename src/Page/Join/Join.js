@@ -134,6 +134,9 @@ const Join = () => {
         setCodeVerificationMessage("이메일 인증 완료");
         setEmailVerificationStatus("verified");
         setEmailVerificationMessage("인증 완료");
+        
+        const idPart = email.split("@")[0];
+        setStudentId(idPart);
       } else {
         setCodeVerificationStatus("error");
         setCodeVerificationMessage("인증번호가 틀립니다.");
@@ -453,7 +456,7 @@ const Join = () => {
                   type="text"
                   placeholder="학번"
                   value={studentId}
-                  onChange={handleStudentIdChange}
+                  readOnly
                 />
                 <p className="join_input_message hidden">&nbsp;</p>
               </div>
