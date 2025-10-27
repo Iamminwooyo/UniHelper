@@ -246,13 +246,14 @@ const AcademicChat = () => {
 
       <section className="academic_chat_body">
         <div className="academic_chat_warning">
-          <Collapse>
+          <Collapse defaultActiveKey={["1"]}>
             <Panel header="주의사항" key="1">
               <p>
                 이 챗봇은 매 학기 종합정보서비스 종합강의시간표를 기준으로 답변을
                 제공합니다.
               </p>
               <p>각 질문은 개별로 전에 했던 대화 내용이 이어지지 않습니다.</p>
+              <p>잘못된 정보나 오답을 제공할 수 있으니, 반드시 추가 검증이 필요합니다.</p>
             </Panel>
           </Collapse>
         </div>
