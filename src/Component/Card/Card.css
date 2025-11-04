@@ -371,6 +371,13 @@
 
     .tipcard_content {
         flex: 1;
+        display: -webkit-box;
+        -webkit-line-clamp: 3; /* 줄 수 */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: normal; /* 이걸 꼭 normal로 */
+        word-break: break-word; /* 단어 단위로 줄바꿈 */
     }
 
     .tipcard_img {
@@ -1208,6 +1215,14 @@
 
     .tipcard_content {
         flex: 1;
+         display: -webkit-box;
+        -webkit-line-clamp: 3; /* 줄 수 */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: normal; /* 이걸 꼭 normal로 */
+        word-break: break-word; /* 단어 단위로 줄바꿈 */
+        
     }
 
     .tipcard_img {
@@ -2051,6 +2066,13 @@
         display: flex;
         height: 100%;
         align-items: flex-start;
+         display: -webkit-box;
+        -webkit-line-clamp: 3; /* 줄 수 */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: normal; /* 이걸 꼭 normal로 */
+        word-break: break-word; /* 단어 단위로 줄바꿈 */
     }
 
     .tipcard_img {
