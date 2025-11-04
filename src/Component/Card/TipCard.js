@@ -134,12 +134,19 @@ const TipCard = ({
 
     try {
       await reactToTip(id, type);
-      message.success(
-        type === "LIKE"
-          ? "좋아요가 업데이트되었습니다."
-          : "싫어요가 업데이트되었습니다."
-      );
-      onBookmarkToggle?.();
+
+      if (type === "LIKE") {
+        message.success(
+          liked ? "좋아요 취소" : "좋아요"
+        );
+      } else if (type === "DISLIKE") {
+        message.success(
+          disliked ? "싫어요 취소" : "싫어요."
+        );
+      }
+
+      // 좋아요/싫어요 변경 후 부모에 알림 (UI 갱신용)
+      onBookmarkToggle?.(id);
     } catch {
       message.error("반응 처리 중 오류가 발생했습니다.");
     } finally {
