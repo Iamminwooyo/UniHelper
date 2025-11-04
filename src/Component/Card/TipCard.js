@@ -1,5 +1,5 @@
 import "./Card.css";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import TextModal from "../Modal/TextModal";
 import { bookmarkTip, reactToTip, fetchTipImagePreview } from "../../API/TipAPI";
 import { Tag, Dropdown, Menu, message } from "antd";
@@ -159,6 +159,17 @@ const TipCard = ({
     setIsModalOpen(false);
   }  
 
+  // 최대 글자 수 설정
+  const MAX_CONTENT_LENGTH = 150; 
+
+  // 본문 자르기 함수
+  const getShortContent = (text) => {
+    if (!text) return "";
+    return text.length > MAX_CONTENT_LENGTH
+      ? text.slice(0, MAX_CONTENT_LENGTH) + "..."
+      : text;
+  };
+
   // 시간 변환 함수
   const formatDate = (dateString) => dateString?.slice(0, 10) || "";
 
@@ -250,7 +261,7 @@ const TipCard = ({
       </div>
 
       <div className="tipcard_box" onClick={onClick}>
-        <div className="tipcard_content">{content}</div>
+        <div className="tipcard_content">{getShortContent(content)}</div>
         {imgUrl && <img src={imgUrl} alt={title} className="tipcard_img" />}
       </div>
 
