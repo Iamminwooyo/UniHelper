@@ -141,7 +141,7 @@ const TipCard = ({
         );
       } else if (type === "DISLIKE") {
         message.success(
-          disliked ? "싫어요 취소" : "싫어요."
+          disliked ? "싫어요 취소" : "싫어요"
         );
       }
 
@@ -160,7 +160,7 @@ const TipCard = ({
   }  
 
   // 최대 글자 수 설정
-  const MAX_CONTENT_LENGTH = 150; 
+  const MAX_CONTENT_LENGTH = 300; 
 
   // 본문 자르기 함수
   const getShortContent = (text) => {
