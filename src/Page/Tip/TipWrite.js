@@ -233,6 +233,7 @@ const TipWrite = () => {
                   content={tip.text}
                   images={tip.previewUrl ?? null}
                   bookmarked={tip.bookmarked}
+                  onBookmarkToggle={loadMyTips}
                   liked={tip.myReaction === "LIKE"}
                   disliked={tip.myReaction === "DISLIKE"}
                   likes={tip.likeCount}
