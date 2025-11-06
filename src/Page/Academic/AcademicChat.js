@@ -163,10 +163,15 @@ const AcademicChat = () => {
     try {
       const res = await fetchChatHistory(20);
 
-      const formatted = (res || []).map(item => ({
-        ...item,
-        question: formatUserQuestion(item.question),
-      }));
+      const formatted = (res || []).map(item => {
+      if (item.question.startsWith("'제목':")) {
+        return {
+          ...item,
+          question: formatUserQuestion(item.question),
+        };
+      }
+      return item;
+    });
 
       setHistory(formatted);
     } catch (err) {
@@ -190,7 +195,9 @@ const AcademicChat = () => {
 
       const formattedDetail = {
         ...detail,
-        question: formatUserQuestion(detail.question),
+        question: detail.question.startsWith("'제목':")
+          ? formatUserQuestion(detail.question)
+          : detail.question,
       };
 
       setSelectedQA(formattedDetail);
