@@ -103,37 +103,57 @@ const AcademicChat = () => {
   const formatUserQuestion = (apiQuestion) => {
     if (!apiQuestion) return "";
 
-    // 전공/교양 판별
-    const isMajor = apiQuestion.includes("전공") || apiQuestion.includes("기전");
-    const isLiberal = apiQuestion.includes("교선") || apiQuestion.includes("교필");
-
-    // 각 정보 추출
-    const matchDept = apiQuestion.match(/'제목': '([^']+)'/);
+    // 1. 각 항목 추출
+    const matchTitle = apiQuestion.match(/'제목': '([^']+)'/);
     const matchCategory = apiQuestion.match(/'이수구분': '([^']+)'/);
     const matchDay = apiQuestion.match(/'강의시간': '([^']+)'/);
     const matchCredit = apiQuestion.match(/'학점': '([^']+)'/);
     const matchGrade = apiQuestion.match(/(\d학년)/);
     const matchTime = apiQuestion.match(/(\d+)\s*시간/);
 
-    const department = matchDept?.[1] || "";
-    const category = matchCategory?.[1] || "";
-    const day = matchDay?.[1] ? `${matchDay[1]}요일` : "";
-    const credit = matchCredit?.[1] ? `${matchCredit[1]}학점짜리` : "";
+    const title = matchTitle?.[1] || "";
+    const categoryCode = matchCategory?.[1] || "";
+    const dayShort = matchDay?.[1] || "";
+    const credit = matchCredit?.[1] || "";
     const grade = matchGrade?.[1] || "";
-    const time = matchTime?.[1] ? `${matchTime[1]}시간` : "";
+    const time = matchTime?.[1] || "";
 
-    // 보기 좋은 형태로 조합
-    let result = "";
+    // 2. 카테고리명 복원
+    const categoryMapReverse = {
+      전공: "전공",
+      기전: "기초전공",
+      교선: "교양선택",
+      교필: "교양필수",
+    };
+    const category = categoryMapReverse[categoryCode] || categoryCode;
 
-    if (isMajor) {
-      result = `${day} ${credit} ${grade} ${department} ${category} ${time} 수업 알려줘`;
-    } else if (isLiberal) {
-      result = `${day} ${credit} ${category} ${time} 수업 알려줘`;
-    } else {
-      result = apiQuestion.replace(/'[^']+':/g, "").replace(/'/g, "");
+    // 3. 요일 복원
+    const dayMapUser = { 월: "월요일", 화: "화요일", 수: "수요일", 목: "목요일", 금: "금요일" };
+    const userDay = dayMapUser[dayShort] || "";
+
+    // 4. 보기 좋은 문장 조합
+    let parts = [];
+
+    if (category === "전공" || category === "기초전공") {
+      if (credit) parts.push(`${credit}학점짜리`);
+      if (title) parts.push(title);
+      if (grade) parts.push(grade);
+      parts.push(category);
+      if (userDay) parts.push(userDay);
+      if (time) parts.push(`${time} 시간`);
+    } else if (category === "교양선택") {
+      if (title) parts.push(title);
+      if (credit) parts.push(`${credit}학점짜리`);
+      if (userDay) parts.push(userDay);
+      if (time) parts.push(`${time} 시간`);
+    } else if (category === "교양필수") {
+      if (credit) parts.push(`${credit}학점짜리`);
+      parts.push(category);
+      if (userDay) parts.push(userDay);
+      if (time) parts.push(`${time} 시간`);
     }
 
-    return result.trim();
+    return parts.join(" ") + "에 해당하는 수업 알려줘";
   };
 
   // 지난 질문 조회 함수

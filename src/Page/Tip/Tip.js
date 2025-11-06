@@ -45,7 +45,6 @@ const Tip = () => {
   const navigate = useNavigate();
 
   // Tip 조회 함수
-  // ✅ Tip 조회 함수 (프로필 + 본문 이미지 Blob 변환)
   const loadTips = useCallback(async () => {
     if (isFetchingRef.current) return;
     isFetchingRef.current = true;
