@@ -99,13 +99,56 @@ const AcademicChat = () => {
     }
   }, [messages]);
 
+  // 질문 변환 함수
+  const formatUserQuestion = (apiQuestion) => {
+    if (!apiQuestion) return "";
+
+    // 전공/교양 판별
+    const isMajor = apiQuestion.includes("전공") || apiQuestion.includes("기전");
+    const isLiberal = apiQuestion.includes("교선") || apiQuestion.includes("교필");
+
+    // 각 정보 추출
+    const matchDept = apiQuestion.match(/'제목': '([^']+)'/);
+    const matchCategory = apiQuestion.match(/'이수구분': '([^']+)'/);
+    const matchDay = apiQuestion.match(/'강의시간': '([^']+)'/);
+    const matchCredit = apiQuestion.match(/'학점': '([^']+)'/);
+    const matchGrade = apiQuestion.match(/(\d학년)/);
+    const matchTime = apiQuestion.match(/(\d+)\s*시간/);
+
+    const department = matchDept?.[1] || "";
+    const category = matchCategory?.[1] || "";
+    const day = matchDay?.[1] ? `${matchDay[1]}요일` : "";
+    const credit = matchCredit?.[1] ? `${matchCredit[1]}학점짜리` : "";
+    const grade = matchGrade?.[1] || "";
+    const time = matchTime?.[1] ? `${matchTime[1]}시간` : "";
+
+    // 보기 좋은 형태로 조합
+    let result = "";
+
+    if (isMajor) {
+      result = `${day} ${credit} ${grade} ${department} ${category} ${time} 수업 알려줘`;
+    } else if (isLiberal) {
+      result = `${day} ${credit} ${category} ${time} 수업 알려줘`;
+    } else {
+      result = apiQuestion.replace(/'[^']+':/g, "").replace(/'/g, "");
+    }
+
+    return result.trim();
+  };
+
   // 지난 질문 조회 함수
   const loadHistory = async () => {
     if (loadingHistory) return;
     setLoadingHistory(true);
     try {
       const res = await fetchChatHistory(20);
-      setHistory(res || []);
+
+      const formatted = (res || []).map(item => ({
+        ...item,
+        question: formatUserQuestion(item.question),
+      }));
+
+      setHistory(formatted);
     } catch (err) {
       message.error("최근 질문 목록을 불러오지 못했습니다.");
     } finally {
@@ -119,12 +162,18 @@ const AcademicChat = () => {
 
   // 지난 질문 상세조회 함수
   const handleHistoryClick = async (msg) => {
-    if (isFetchingDetailRef.current) return; 
+    if (isFetchingDetailRef.current) return;
     isFetchingDetailRef.current = true;
 
     try {
       const detail = await fetchChatHistoryDetail(msg.id);
-      setSelectedQA(detail);
+
+      const formattedDetail = {
+        ...detail,
+        question: formatUserQuestion(detail.question),
+      };
+
+      setSelectedQA(formattedDetail);
       setModalOpen(true);
     } catch (err) {
       message.error("질문 상세를 불러오지 못했습니다.");
