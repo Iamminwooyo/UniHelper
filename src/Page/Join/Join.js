@@ -211,7 +211,7 @@ const Join = () => {
     });
     console.log("✅ signup() 응답:", response); // 2️⃣ 여기가 찍히면 서버에서 응답을 받은 것
 
-    if (response === "회원가입 성공") {
+    if (response && typeof response === 'string' && response.includes("회원가입 성공")) {
       message.success("회원가입 완료!");
       navigate("/login");
     } else {
