@@ -143,7 +143,8 @@ const NoticeCard = ({
               className={isBookmark ? "subscribecard_content" : "noticecard_content"}
               onClick={onClick}
             >
-              {truncateText(content, 100)}
+              {/* {truncateText(content, 100)} */}
+               <p className="text-content">{truncateText(content, 100)}</p>
             </div>
           )}
 

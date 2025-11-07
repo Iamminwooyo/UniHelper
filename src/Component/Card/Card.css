@@ -58,6 +58,17 @@
         cursor: pointer;
     }
 
+    .text-content {
+    font-size: min(11px, 0.8vw);
+    white-space: normal;       /* 줄바꿈 허용 */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;     /* 최대 3줄까지만 보이도록 */
+    -webkit-box-orient: vertical;
+    word-break: break-word;
+    }
+
     .noticecard_info {
         display: flex;
         align-items: center;
@@ -901,6 +912,17 @@
 
         cursor: pointer;
     }
+
+    .text-content {
+  font-size: min(11px, 0.8vw);
+  white-space: normal;       /* 줄바꿈 허용 */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;     /* 최대 3줄까지만 보이도록 */
+  -webkit-box-orient: vertical;
+  word-break: break-word;
+}
 
     .noticecard_info {
         display: flex;
@@ -1750,6 +1772,17 @@
 
         cursor: pointer;
     }
+
+    .text-content {
+  font-size: min(8.5px, 1.5vw);
+  white-space: normal;       /* 줄바꿈 허용 */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;     /* 최대 3줄까지만 보이도록 */
+  -webkit-box-orient: vertical;
+  word-break: break-word;
+}
 
     .noticecard_info {
         display: flex;
