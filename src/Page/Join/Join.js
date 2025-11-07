@@ -210,6 +210,8 @@ const Join = () => {
       student_number: studentId,
     });
 
+    console.log("📦 서버 응답 데이터:", response);
+
     // ✅ 수정된 부분
     if (response.status === 200) {
       message.success("회원가입 완료!");
