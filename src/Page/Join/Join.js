@@ -201,7 +201,8 @@ const Join = () => {
 
   setIsJoinProcessing(true);
 
-  try {
+    try {
+    console.log("📨 signup() 호출 전");
     const response = await signup({
       username: name,
       password,
@@ -209,18 +210,17 @@ const Join = () => {
       department,
       student_number: studentId,
     });
+    console.log("✅ signup() 응답:", response); // 2️⃣ 여기가 찍히면 서버에서 응답을 받은 것
 
-    console.log("📦 서버 응답 데이터:", response);
-
-    // ✅ 수정된 부분
-    if (response.status === 200) {
+    if (response.status === 200 || response.success) {
       message.success("회원가입 완료!");
       navigate("/login");
     } else {
+      console.log("❌ else 블록 응답:", response); // 3️⃣ 실패 시
       message.error(response.message || "회원가입에 실패했습니다.");
     }
   } catch (error) {
-    console.error(error);
+    console.error("🔥 catch 블록:", error); // 4️⃣ 예외 확인
     message.error(
       "회원가입 중 오류가 발생했습니다: " +
         (error.response?.data?.message || error.message)
