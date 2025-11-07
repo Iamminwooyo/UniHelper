@@ -216,6 +216,7 @@ const Join = () => {
       navigate("/login");
     } else {
       message.error(response.message || "회원가입에 실패했습니다.");
+      console.error(error);
     }
   } catch (error) {
     console.error(error);
