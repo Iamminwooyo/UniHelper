@@ -211,12 +211,11 @@ const Join = () => {
     });
 
     // ✅ 수정된 부분
-    if (response.success) {
+    if (response.status === 200) {
       message.success("회원가입 완료!");
       navigate("/login");
     } else {
       message.error(response.message || "회원가입에 실패했습니다.");
-      console.error(error);
     }
   } catch (error) {
     console.error(error);
