@@ -60,6 +60,8 @@
 
     .text-content {
     font-size: min(11px, 0.8vw);
+    margin: 0;
+  padding: 0;
     white-space: normal;       /* 줄바꿈 허용 */
     overflow: hidden;
     text-overflow: ellipsis;
@@ -915,6 +917,8 @@
 
     .text-content {
   font-size: min(11px, 0.8vw);
+  margin: 0;
+  padding: 0;
   white-space: normal;       /* 줄바꿈 허용 */
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1775,6 +1779,8 @@
 
     .text-content {
   font-size: min(8.5px, 1.5vw);
+  margin: 0;
+  padding: 0;
   white-space: normal;       /* 줄바꿈 허용 */
   overflow: hidden;
   text-overflow: ellipsis;
