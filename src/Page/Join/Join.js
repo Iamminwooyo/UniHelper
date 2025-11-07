@@ -160,63 +160,73 @@ const Join = () => {
 
   // 회원가입 함수
   const handleJoin = async (e) => {
-    e.preventDefault();
-    if (isJoinProcessing) return;
+  e.preventDefault();
+  if (isJoinProcessing) return;
 
-    if (emailVerificationStatus !== "verified") {
-      message.error("이메일 인증을 완료해주세요.");
-      setStep(1);
-      return;
-    }
-    if (!password) {
-      message.error("비밀번호를 입력해주세요.");
-      setStep(1);
-      return;
-    }
-    if (!confirmPassword) {
-      message.error("비밀번호 확인을 입력해주세요.");
-      setStep(1);
-      return;
-    }
-    if (password !== confirmPassword) {
-      message.error("비밀번호가 일치하지 않습니다.");
-      setStep(1);
-      return;
-    }
-    if (!name) {
-      message.error("이름을 입력해주세요.");
-      setStep(2);
-      return;
-    }
-    if (!studentId) {
-      message.error("학번을 입력해주세요.");
-      setStep(2);
-      return;
-    }
-    if (!department) {
-      message.error("학과를 선택해주세요.");
-      setStep(2);
-      return;
-    }
+  if (emailVerificationStatus !== "verified") {
+    message.error("이메일 인증을 완료해주세요.");
+    setStep(1);
+    return;
+  }
+  if (!password) {
+    message.error("비밀번호를 입력해주세요.");
+    setStep(1);
+    return;
+  }
+  if (!confirmPassword) {
+    message.error("비밀번호 확인을 입력해주세요.");
+    setStep(1);
+    return;
+  }
+  if (password !== confirmPassword) {
+    message.error("비밀번호가 일치하지 않습니다.");
+    setStep(1);
+    return;
+  }
+  if (!name) {
+    message.error("이름을 입력해주세요.");
+    setStep(2);
+    return;
+  }
+  if (!studentId) {
+    message.error("학번을 입력해주세요.");
+    setStep(2);
+    return;
+  }
+  if (!department) {
+    message.error("학과를 선택해주세요.");
+    setStep(2);
+    return;
+  }
 
-    setIsJoinProcessing(true);
+  setIsJoinProcessing(true);
 
-    try {
-      const response = await signup({ username: name, password, email, department, role: "STUDENT", student_number: studentId });
+  try {
+    const response = await signup({
+      username: name,
+      password,
+      email,
+      department,
+      student_number: studentId,
+    });
 
-      if (response.data.success || response.status === 200) {
-        message.success("회원가입 완료!");
-        navigate("/login");
-      } else {
-        message.error(response.data.message || "회원가입에 실패했습니다.");
-      }
-    } catch (error) {
-      console.error(error);
-      message.error("회원가입 중 오류가 발생했습니다: " + (error.response?.data || error.message));
-    } finally {
-      setIsJoinProcessing(false);
+    // ✅ 수정된 부분
+    if (response.success) {
+      message.success("회원가입 완료!");
+      navigate("/login");
+    } else {
+      message.error(response.message || "회원가입에 실패했습니다.");
     }
-  };
+  } catch (error) {
+    console.error(error);
+    message.error(
+      "회원가입 중 오류가 발생했습니다: " +
+        (error.response?.data?.message || error.message)
+    );
+  } finally {
+    setIsJoinProcessing(false);
+  }
+};
   
   // 타이머 함수
   useEffect(() => {
