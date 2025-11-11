@@ -55,7 +55,10 @@ const Join = () => {
 
   const navigate = useNavigate();
 
-  const schoolEmailRegex = /^[0-9]+@yiu\.ac\.kr$/;
+  const [showStudentIdField, setShowStudentIdField] = useState(true);
+
+  const schoolEmailRegex = /^[A-Za-z0-9._%+-]+@(yiu\.ac\.kr|yonin\.ac\.kr)$/;
+  const studentEmailRegex = /^[0-9]+@yiu\.ac\.kr$/;
 
   const isMobile = useMediaQuery({ maxWidth: 768 })
 
@@ -135,8 +138,14 @@ const Join = () => {
         setEmailVerificationStatus("verified");
         setEmailVerificationMessage("인증 완료");
         
-        const idPart = email.split("@")[0];
-        setStudentId(idPart);
+        if (studentEmailRegex.test(email)) {
+          const idPart = email.split("@")[0];
+          setStudentId(idPart);
+          setShowStudentIdField(true);
+        } else {
+          setStudentId("");
+          setShowStudentIdField(false);
+        }
       } else {
         setCodeVerificationStatus("error");
         setCodeVerificationMessage("인증번호가 틀립니다.");
@@ -207,7 +216,7 @@ const Join = () => {
       password,
       email,
       department,
-      student_number: studentId,
+      student_number: showStudentIdField ? studentId : null,
     });
 
     if (response && typeof response === 'string' && response.includes("회원가입 성공")) {
@@ -458,16 +467,18 @@ const Join = () => {
                 <p className="join_input_message hidden">&nbsp;</p>
               </div>
 
-              <div className="join_input_group join_input_with_input">
-                <p className="join_input_label">학번</p>
-                <Input
-                  type="text"
-                  placeholder="학번"
-                  value={studentId}
-                  readOnly
-                />
-                <p className="join_input_message hidden">&nbsp;</p>
-              </div>
+              {showStudentIdField && (
+                <div className="join_input_group join_input_with_input">
+                  <p className="join_input_label">학번</p>
+                  <Input
+                    type="text"
+                    placeholder="학번"
+                    value={studentId}
+                    readOnly
+                  />
+                  <p className="join_input_message hidden">&nbsp;</p>
+                </div>
+              )}
 
               <div className="join_input_group join_input_with_input">
                 <p className="join_input_label">학과</p>
