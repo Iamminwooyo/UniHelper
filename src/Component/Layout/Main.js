@@ -11,7 +11,7 @@ const Main = () => {
       <div className="main_row">
         <div 
           className="main_box card_info" 
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/academic/chat")}
         >
           <h3>학사정보</h3>
           <p>학사정보 관련 챗봇으로, 학사정보에 관한 내용을 물어보고 답변 받을 수 있습니다.</p>
