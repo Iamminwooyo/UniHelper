@@ -58,6 +58,7 @@ const NoticeDetail = () => {
 
     try {
       const data = await fetchNoticeDetail(id);
+      console.log("🟢 공지 상세 data:", data);
 
       // ✅ 1️⃣ 본문 이미지 Blob 처리
       const blobs = await Promise.all(
