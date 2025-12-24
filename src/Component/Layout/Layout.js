@@ -25,6 +25,7 @@ import AcademicManagement from "../../Page/Academic/AcademicManagement";
 import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
+import Snowfall from 'react-snowfall';
 import { useRecoilValue } from "recoil";
 import { askingState } from "../../Recoil/Atom"; 
 import { Spin } from "antd";
@@ -70,6 +71,7 @@ const Layout = () => {
     if (path === "/login") {
         return (
             <div className="layout_background">
+                <Snowfall color="#ffffff" />
                 <Login />
             </div>
         );
@@ -78,6 +80,7 @@ const Layout = () => {
     if (path === "/join") {
         return (
             <div className="layout_background">
+                <Snowfall color="#ffffff" />
                 <Join />
             </div>
         );
@@ -95,6 +98,7 @@ const Layout = () => {
     return(
         <div className="layout_background">
             {isAsking && <div className="global_overlay"></div>}
+            <Snowfall color="#ffffff" />
             <Header />
             <div className="layout_body">
                 {!isMain &&  <Side />}
