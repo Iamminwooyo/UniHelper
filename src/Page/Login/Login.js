@@ -105,7 +105,7 @@ const Login = () => {
     <div className="login_layout">
       {!isMobile && (
         <section className="login_image_frame">
-          <img className="login_image" src="/image/Login.png" alt="로그인 이미지" />
+          <img className="login_image" src="/image/Login_xmas.png" alt="로그인 이미지" />
           <div className="login_image_overlay">
             <h1 className="login_logo_text" onClick={() => navigate("/")}>UniHelper</h1>
           </div>

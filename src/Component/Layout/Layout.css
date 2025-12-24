@@ -71,7 +71,7 @@
     min-width: 0;
     margin-top: -1.5vw;
     margin-right: 20vw;
-    margin-bottom: 6vw;
+    margin-bottom: 5vw;
   }
 
   .header_side_nav {
@@ -131,6 +131,14 @@
     gap: 2vw;
     color: #ffffff;
   }
+
+  .main_hero {
+  width: 100%;
+  min-height: 420px;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
 
   .main_row {
     display: flex;

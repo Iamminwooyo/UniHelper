@@ -46,7 +46,7 @@ const Header = () => {
 
   return (
     <header className="header_layout">
-      <h2 style={{ margin: "10px 0 0 0" }}>
+      <h2>
         <Link to="/" onClick={() => setMenu(null)} className="header_logo">UniHelper</Link>
       </h2>
 
