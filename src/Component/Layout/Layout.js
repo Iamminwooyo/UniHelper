@@ -98,7 +98,16 @@ const Layout = () => {
     return(
         <div className="layout_background">
             {isAsking && <div className="global_overlay"></div>}
-            <Snowfall color="#ffffff" />
+            <Snowfall color="#ffffff" 
+            style={{
+            position: "fixed",
+            width: "100vw",
+            height: "100vh",
+            top: 0,
+            left: 0,
+            zIndex: 1,
+            pointerEvents: "none",
+            }}/>
             <Header />
             <div className="layout_body">
                 {!isMain &&  <Side />}
